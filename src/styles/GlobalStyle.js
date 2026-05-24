@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-     :root {
+    :root {
     --color-primary: ${({ theme }) => theme.colors.primary};
     --color-primary-hover: ${({ theme }) => theme.colors.primaryHover};
     --color-primary-active: ${({ theme }) => theme.colors.primaryActive};
@@ -33,7 +33,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
     * {
-    box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
     }
 
     a {

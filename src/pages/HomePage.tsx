@@ -1,11 +1,15 @@
+import styled from "styled-components";
+
 import Button from "../components/ui/Button";
 
 export default function HomePage() {
     return (
-        <div>
+        <HomePageStyle>
             <Button onClick={() => {}} navigate="/setting" isDanger={true}>
                 Click me
             </Button>
-        </div>
+        </HomePageStyle>
     );
 }
+
+const HomePageStyle = styled.div``;
