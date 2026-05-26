@@ -3,7 +3,7 @@ import styled from "styled-components";
 function Button({
     children,
     navigate,
-    onClick,
+    onClick = () => {},
     variant = "primary",
     size = "md",
     fullWidth = false,

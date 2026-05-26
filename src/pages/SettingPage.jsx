@@ -6,7 +6,6 @@ function SettingPage() {
 
     return (
         <div>
-            <h1>SettingPage</h1>
             <Button onClick={toggleTheme} variant="secondary">
                 Chuyển sang {isDarkMode ? "light" : "dark"} theme
             </Button>

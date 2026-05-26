@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import Body from "./Body";
+import NavBar from "../navigate-bar/NavBar";
 
 function MainLayout({ children }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -10,7 +11,9 @@ function MainLayout({ children }) {
 
     return (
         <LayoutStyle>
-            <DesktopSidebar>sidebar</DesktopSidebar>
+            <DesktopSidebar>
+                <NavBar />
+            </DesktopSidebar>
 
             <MobileHeader>
                 <MenuButton
@@ -25,7 +28,9 @@ function MainLayout({ children }) {
             <Overlay $isOpen={isSidebarOpen} onClick={closeSidebar} />
 
             <MobileSidebar $isOpen={isSidebarOpen}>
-                <MobileNav>sidebar</MobileNav>
+                <MobileNav>
+                    <NavBar />
+                </MobileNav>
             </MobileSidebar>
 
             <Content>
@@ -45,14 +50,13 @@ const DesktopSidebar = styled.aside`
     position: fixed;
     top: 0;
     left: 0;
-    width: 260px;
+    width: 360px;
     height: 100svh;
-    padding: 24px;
+    /* padding: 1em; */
     border-right: 1px solid var(--color-border);
     background-color: var(--color-card);
     color: var(--color-text);
     font-weight: 700;
-    overflow-y: auto;
 
     @media (max-width: 480px) {
         display: none;
@@ -64,7 +68,7 @@ const Content = styled.div`
     min-width: 0;
     flex: 1;
     flex-direction: column;
-    margin-left: 260px;
+    margin-left: 360px;
 
     @media (max-width: 480px) {
         margin-left: 0;
@@ -145,7 +149,6 @@ const MobileSidebar = styled.aside`
     bottom: 0;
     left: 0;
     width: min(78vw, 300px);
-    padding: 24px;
     border-right: 1px solid var(--color-border);
     background-color: var(--color-card);
     color: var(--color-text);

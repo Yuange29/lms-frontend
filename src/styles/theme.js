@@ -1,64 +1,71 @@
 export const lightTheme = {
     colors: {
-        primary: "#2563EB",
-        primaryHover: "#1D4ED8",
-        primaryActive: "#1E40AF",
-        primarySoft: "#DBEAFE",
-        onPrimary: "#FFFFFF",
+        // 30% - Xanh biển chủ đạo (Sử dụng tone Royal Blue hiện đại)
+        primary: "#577eeb",
+        primaryHover: "#2563EB",
+        primaryActive: "#3257d1",
+        primarySoft: "#EFF6FF",
+        onPrimary: "#f4f4f4",
 
-        secondary: "#E2E8F0",
-        secondaryHover: "#CBD5E1",
-        secondaryActive: "#94A3B8",
+        // Các thành phần phụ (Xanh xám nhẹ để hòa hợp với tổng thể)
+        secondary: "#F1F5F9",
+        secondaryHover: "#E2E8F0",
+        secondaryActive: "#CBD5E1",
         onSecondary: "#0F172A",
 
-        background: "#F8FAFC",
-        surface: "#F1F5F9",
+        // 60% - Trắng & Sáng (Nền tảng của giao diện)
+        background: "#d8d8d8",
+        surface: "#F8FAFC",
         card: "#FFFFFF",
 
-        text: "#111827",
-        textSoft: "#374151",
-        textMuted: "#6B7280",
+        // 10% - Đen & Tối (Điểm nhấn tương phản cao)
+        text: "#090D16", // Gần như đen tuyệt đối để cực kỳ sắc nét
+        textSoft: "#1E293B", // Đen xám cho nội dung phụ
+        textMuted: "#64748B",
 
-        border: "#CBD5E1",
+        border: "#E2E8F0",
         error: "#DC2626",
         errorHover: "#B91C1C",
         errorActive: "#991B1B",
         errorSoft: "#FEE2E2",
         onError: "#FFFFFF",
-        success: "#16A34A",
+        success: "#10B981",
         warning: "#F59E0B",
-        focusRing: "#93C5FD",
+        focusRing: "#3B82F6",
     },
 };
 
 export const darkTheme = {
     colors: {
+        // 30% - Xanh biển đêm (Deep Blue & Electric Blue)
         primary: "#3B82F6",
         primaryHover: "#60A5FA",
         primaryActive: "#2563EB",
         primarySoft: "#1E3A8A",
         onPrimary: "#FFFFFF",
 
-        secondary: "#334155",
-        secondaryHover: "#475569",
-        secondaryActive: "#64748B",
+        secondary: "#1E293B",
+        secondaryHover: "#334155",
+        secondaryActive: "#475569",
         onSecondary: "#F8FAFC",
 
-        background: "#111827",
-        surface: "#1F2937",
-        card: "#273449",
+        // 60% - Đen & Tối (Huyền bí, không bị mỏi mắt)
+        background: "#0F172A", // Màu xanh đen sẫm sâu thẳm
+        surface: "#1E293B",
+        card: "#111827",
 
-        text: "#F3F4F6",
-        textSoft: "#D1D5DB",
-        textMuted: "#9CA3AF",
+        // 10% - Trắng & Sáng (Nổi bật trên nền tối)
+        text: "#F8FAFC", // Trắng sáng giúp đọc content dễ dàng
+        textSoft: "#E2E8F0",
+        textMuted: "#94A3B8",
 
-        border: "#374151",
+        border: "#334155",
         error: "#F87171",
         errorHover: "#EF4444",
         errorActive: "#DC2626",
-        errorSoft: "#7F1D1D",
-        onError: "#111827",
-        success: "#4ADE80",
+        errorSoft: "#451A1A",
+        onError: "#FFFFFF",
+        success: "#34D399",
         warning: "#FBBF24",
         focusRing: "#60A5FA",
     },
