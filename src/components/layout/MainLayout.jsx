@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Body from "./Body";
 import NavBar from "../navigate-bar/NavBar";
 
@@ -8,6 +8,16 @@ function MainLayout({ children }) {
 
     const openSidebar = () => setIsSidebarOpen(true);
     const closeSidebar = () => setIsSidebarOpen(false);
+
+    useEffect(() => {
+        const handleAppNavigate = () => {
+            setIsSidebarOpen(false);
+        };
+
+        window.addEventListener("app:navigate", handleAppNavigate);
+        return () =>
+            window.removeEventListener("app:navigate", handleAppNavigate);
+    }, []);
 
     return (
         <LayoutStyle>

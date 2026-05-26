@@ -130,6 +130,13 @@ function AccountRole({ role }) {
 function MainFeatures() {
     const [openLabel, setOpenLabel] = useState(null);
 
+    useEffect(() => {
+        const handleAppNavigate = () => setOpenLabel(null);
+        window.addEventListener("app:navigate", handleAppNavigate);
+        return () =>
+            window.removeEventListener("app:navigate", handleAppNavigate);
+    }, []);
+
     const toggle = (label) => {
         setOpenLabel((prev) => (prev === label ? null : label));
     };
