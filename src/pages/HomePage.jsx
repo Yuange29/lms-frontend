@@ -1,7 +1,6 @@
-import styled from "styled-components";
-
 import Button from "../components/ui/Button";
 import { H } from "../components/ui/Text";
+import styled from "styled-components";
 
 export default function HomePage() {
     return (

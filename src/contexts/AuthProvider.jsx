@@ -1,11 +1,11 @@
-import { createContext, useState } from "react";
-import { signin, me } from "../services/auth.service";
-import { setAccessToken } from "../services/api";
+import { me, signin } from "../services/auth.service.js";
+
+import { AuthContext } from "./AuthContext.js";
+import { setAccessToken } from "../services/api.js";
+import { useState } from "react";
 import { useToast } from "./ToastContext.jsx";
 
-const AuthContext = createContext();
-
-function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     const { toast } = useToast();
@@ -28,6 +28,4 @@ function AuthProvider({ children }) {
             {children}
         </AuthContext.Provider>
     );
-}
-
-export { AuthContext, AuthProvider };
+};

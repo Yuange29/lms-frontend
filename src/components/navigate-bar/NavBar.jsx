@@ -1,29 +1,31 @@
-import styled from "styled-components";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Text } from "../ui/Text";
-import image from "../../assets/avatar.png";
+import blankImage from "../../assets/avatar.png";
 import { pageList } from "./nav-content";
+import styled from "styled-components";
+import { useAuth } from "../../hooks/authHook";
 
 export default function NavBar() {
+    const { user } = useAuth();
     return (
         <NavBarStyle>
             <AccountRole role="INSTRUCTOR" />
 
             <MainFeatures />
 
-            <UserBar
-                avatar={image}
-                userName="John Doe"
-                email="john.doe@example.com"
-            />
+            <UserBar user={user || null} />
         </NavBarStyle>
     );
 }
 
-function UserBar({ avatar, userName, email }) {
+function UserBar({ user }) {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const userBarRef = useRef(null);
+    const navigate = (to) => {
+        window.history.pushState({}, "", to);
+        window.dispatchEvent(new Event("app:navigate"));
+    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -44,7 +46,7 @@ function UserBar({ avatar, userName, email }) {
 
     return (
         <BaseBarStyle ref={userBarRef}>
-            <Avatar src={avatar} alt="User Avatar" />
+            <Avatar src={user?.avatar_url || blankImage} alt="User Avatar" />
             <UserInfo>
                 <Text
                     style={{
@@ -52,10 +54,10 @@ function UserBar({ avatar, userName, email }) {
                         fontWeight: "600",
                     }}
                 >
-                    {userName}
+                    {user?.full_name || "Guest"}
                 </Text>
                 <Text size="xs" style={{ color: "rgba(255, 255, 255, 0.7)" }}>
-                    {email}
+                    {user?.email || "your email"}
                 </Text>
             </UserInfo>
             <UserActionBtn
@@ -72,7 +74,21 @@ function UserBar({ avatar, userName, email }) {
             </UserActionBtn>
 
             <UserActionMenu style={{ display: isOpenMenu ? "flex" : "none" }}>
-                <Item>
+                <Item
+                    onClick={() => navigate("/signin")}
+                    style={{ display: !user ? "flex" : "none" }}
+                >
+                    <i class="fa-solid fa-user-lock"></i>
+                    <TitleText>Đăng nhập</TitleText>
+                </Item>
+                <Item
+                    onClick={() => navigate("/register")}
+                    style={{ display: !user ? "flex" : "none" }}
+                >
+                    <i class="fa-solid fa-user"></i>
+                    <TitleText>Đăng kí</TitleText>
+                </Item>
+                <Item style={{ display: user ? "flex" : "none" }}>
                     <i class="fa-solid fa-user"></i>
                     <TitleText>Thông tin tài khoản</TitleText>
                 </Item>
@@ -80,7 +96,7 @@ function UserBar({ avatar, userName, email }) {
                     <i class="fa-solid fa-cog"></i>
                     <TitleText>Cài đặt</TitleText>
                 </Item>
-                <Item>
+                <Item style={{ display: user ? "flex" : "none" }}>
                     <i class="fa-solid fa-sign-out-alt"></i>
                     <TitleText>Đăng xuất</TitleText>
                 </Item>

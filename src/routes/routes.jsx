@@ -1,5 +1,8 @@
-import MainLayout from "../components/layout/MainLayout";
+import AuthLayout from "../components/layout/AuthLayout";
 import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
+import MainLayout from "../components/layout/MainLayout";
+import RegisterPage from "../pages/RegisterPage";
 import SettingPage from "../pages/SettingPage";
 import { paths } from "./paths";
 
@@ -18,6 +21,16 @@ export const routes = [
         path: paths.setting,
         component: SettingPage,
         layout: MainLayout,
+    },
+    {
+        path: paths.signin,
+        component: LoginPage,
+        layout: AuthLayout,
+    },
+    {
+        path: paths.register,
+        component: RegisterPage,
+        layout: AuthLayout,
     },
 ];
 
