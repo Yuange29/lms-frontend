@@ -60,7 +60,7 @@ const DesktopSidebar = styled.aside`
     position: fixed;
     top: 0;
     left: 0;
-    width: 360px;
+    width: 300px;
     height: 100svh;
     /* padding: 1em; */
     border-right: 1px solid var(--color-border);

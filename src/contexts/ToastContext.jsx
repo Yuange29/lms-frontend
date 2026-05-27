@@ -7,7 +7,7 @@ import {
 } from "react";
 import styled, { keyframes } from "styled-components";
 
-const NotificationContext = createContext(null);
+const ToastContext = createContext(null);
 
 const notificationDefaults = {
     success: {
@@ -35,11 +35,11 @@ const appendAlpha = (hexColor, alphaHex) => {
     return hexColor;
 };
 
-export function NotificationProvider({ children }) {
-    const [notifications, setNotifications] = useState([]);
+export function ToastProvider({ children }) {
+    const [toasts, setToasts] = useState([]);
 
-    const removeNotification = useCallback((id) => {
-        setNotifications((current) => current.filter((item) => item.id !== id));
+    const removeToast = useCallback((id) => {
+        setToasts((current) => current.filter((item) => item.id !== id));
     }, []);
 
     const notify = useCallback(
@@ -54,13 +54,13 @@ export function NotificationProvider({ children }) {
                 duration,
             };
 
-            setNotifications((current) => [...current, notification]);
+            setToasts((current) => [...current, notification]);
 
             if (duration > 0) {
-                window.setTimeout(() => removeNotification(id), duration);
+                window.setTimeout(() => removeToast(id), duration);
             }
         },
-        [removeNotification],
+        [removeToast],
     );
 
     const makeNotifier = useCallback(
@@ -118,32 +118,27 @@ export function NotificationProvider({ children }) {
     );
 
     return (
-        <NotificationContext.Provider value={value}>
+        <ToastContext.Provider value={value}>
             {children}
-            <NotificationOutlet
-                notifications={notifications}
-                onDismiss={removeNotification}
-            />
-        </NotificationContext.Provider>
+            <ToastOutlet toasts={toasts} onDismiss={removeToast} />
+        </ToastContext.Provider>
     );
 }
 
-export function useNotification() {
-    const context = useContext(NotificationContext);
+export function useToast() {
+    const context = useContext(ToastContext);
 
     if (!context) {
-        throw new Error(
-            "useNotification must be used inside NotificationProvider",
-        );
+        throw new Error("useToast must be used inside ToastProvider");
     }
 
     return context;
 }
 
-function NotificationOutlet({ notifications, onDismiss }) {
+function ToastOutlet({ toasts, onDismiss }) {
     return (
         <ToastRoot>
-            {notifications.map((item) => (
+            {toasts.map((item) => (
                 <ToastCard
                     key={item.id}
                     type={item.type}
