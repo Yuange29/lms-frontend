@@ -1,20 +1,31 @@
 import api from "./api";
 
-export const signin = async (email, password) => {
-    const response = await api.post("/auth/signin", { email, password });
-    return response.data.accessToken;
-};
+export const authService = {
+    async signin(email, password) {
+        const res = await api.post("/auth/signin", { email, password });
+        return res.data.data;
+    },
+    async signup(email, password, full_name, avatar_url) {
+        const res = await api.post("/auth/signup", {
+            email,
+            password,
+            full_name,
+            avatar_url,
+        });
+        return res.data.data;
+    },
 
-export const signup = async (email, password, full_name) => {
-    const response = await api.post("/auth/signup", {
-        email,
-        password,
-        full_name,
-    });
-    return response.data;
-};
+    async refresh() {
+        const res = await api.post("/auth/refresh");
+        return res.data.data;
+    },
 
-export const me = async () => {
-    const response = await api.get("/auth/me");
-    return response.data.user;
+    async me() {
+        const res = await api.get("/auth/me");
+        return res.data.data;
+    },
+
+    async signout() {
+        await api.post("/auth/signout");
+    },
 };

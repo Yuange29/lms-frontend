@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Text } from "../ui/Text";
+import { authService } from "../../services/auth.service";
 import blankImage from "../../assets/avatar.png";
+import { clearAccessToken } from "../../services/api";
 import { pageList } from "./nav-content";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/authHook";
+import { useToast } from "../../contexts/ToastContext";
+
+const ROLE = { "fd4546e4-bf5c-4d4d-8a88-f62a8b43e832": "STUDENT" };
 
 export default function NavBar() {
     const { user } = useAuth();
     return (
         <NavBarStyle>
-            <AccountRole role="INSTRUCTOR" />
+            <AccountRole role={ROLE[user?.role_id]} />
 
             <MainFeatures />
 
@@ -20,6 +25,8 @@ export default function NavBar() {
 }
 
 function UserBar({ user }) {
+    const { setUser } = useAuth();
+    const { toast } = useToast();
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const userBarRef = useRef(null);
     const navigate = (to) => {
@@ -43,6 +50,20 @@ function UserBar({ user }) {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isOpenMenu]);
+
+    const handleLogout = async () => {
+        try {
+            await authService.signout();
+            clearAccessToken();
+            setUser(null);
+
+            window.history.pushState(null, "", "/");
+            window.dispatchEvent(new Event("app:navigate"));
+        } catch (error) {
+            toast.error("Lỗi: Đăng xuất thất bại");
+            console.log("Lỗi: ", error);
+        }
+    };
 
     return (
         <BaseBarStyle ref={userBarRef}>
@@ -96,7 +117,10 @@ function UserBar({ user }) {
                     <i class="fa-solid fa-cog"></i>
                     <TitleText>Cài đặt</TitleText>
                 </Item>
-                <Item style={{ display: user ? "flex" : "none" }}>
+                <Item
+                    onClick={() => handleLogout()}
+                    style={{ display: user ? "flex" : "none" }}
+                >
                     <i class="fa-solid fa-sign-out-alt"></i>
                     <TitleText>Đăng xuất</TitleText>
                 </Item>
@@ -133,7 +157,9 @@ function AccountRole({ role }) {
                         ? "Quản trị viên"
                         : role === "INSTRUCTOR"
                           ? "Giáo viên"
-                          : "Học sinh"}
+                          : role === "STUDENT"
+                            ? "Học sinh"
+                            : "Khách"}
                 </Text>
             </UserInfo>
             <UserActionBtn title="Thông báo">

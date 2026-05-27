@@ -12,112 +12,120 @@ const authApi = axios.create({
 
 let accessToken = null;
 let isRefreshing = false;
-let refreshSubscribers = [];
+let failedQueue = [];
 
-function onRefreshed(token) {
-    refreshSubscribers.forEach((cb) => cb(token));
-    refreshSubscribers = [];
-}
-
-function addRefreshSubscriber(cb) {
-    refreshSubscribers.push(cb);
-}
-
-async function refreshAccessToken() {
-    try {
-        const resp = await authApi.post("/auth/refresh");
-        const token = resp?.data?.accessToken;
-        if (token) {
-            accessToken = token;
-            api.defaults.headers.common.Authorization = `Bearer ${token}`;
+function processQueue(error, token = null) {
+    failedQueue.forEach((promise) => {
+        if (error) {
+            promise.reject(error);
+        } else {
+            promise.resolve(token);
         }
-        return token;
-    } catch (err) {
-        accessToken = null;
+    });
+
+    failedQueue = [];
+}
+
+export function setAccessToken(token) {
+    accessToken = token;
+
+    if (token) {
+        api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    } else {
         delete api.defaults.headers.common.Authorization;
-        throw err;
     }
 }
 
-api.interceptors.request.use(
-    async (config) => {
-        if (!config.headers) config.headers = {};
+export function clearAccessToken() {
+    accessToken = null;
+    delete api.defaults.headers.common.Authorization;
+}
 
-        if (config.url && config.url.includes("/auth/refresh")) return config;
+export function getAccessToken() {
+    return accessToken;
+}
+
+async function refreshAccessToken() {
+    const res = await authApi.post("/auth/refresh");
+
+    const newAccessToken = res.data?.accessToken;
+
+    if (!newAccessToken) {
+        throw new Error("Refresh response missing accessToken");
+    }
+
+    setAccessToken(newAccessToken);
+
+    return newAccessToken;
+}
+
+api.interceptors.request.use(
+    (config) => {
+        if (!config.headers) {
+            config.headers = {};
+        }
 
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
-            return config;
         }
 
-        if (!isRefreshing) {
-            isRefreshing = true;
-            try {
-                const token = await refreshAccessToken();
-                onRefreshed(token);
-            } catch (err) {
-                onRefreshed(null);
-                isRefreshing = false;
-                throw err;
-            }
-            isRefreshing = false;
-        }
-
-        return new Promise((resolve, reject) => {
-            addRefreshSubscriber((token) => {
-                if (token) {
-                    config.headers.Authorization = `Bearer ${token}`;
-                    resolve(config);
-                } else {
-                    reject(new Error("Unable to refresh access token"));
-                }
-            });
-        });
+        return config;
     },
     (error) => Promise.reject(error),
 );
 
 api.interceptors.response.use(
-    (resp) => resp,
+    (response) => response,
+
     async (error) => {
         const originalRequest = error.config;
-        if (
-            error.response &&
-            error.response.status === 401 &&
-            originalRequest &&
-            !originalRequest._retry
-        ) {
+
+        if (!error.response || !originalRequest) {
+            return Promise.reject(error);
+        }
+
+        const status = error.response.status;
+
+        const isAuthRoute =
+            originalRequest.url?.includes("/auth/sigin") ||
+            originalRequest.url?.includes("/auth/signup") ||
+            originalRequest.url?.includes("/auth/refresh") ||
+            originalRequest.url?.includes("/auth/logout");
+
+        if (status === 401 && !originalRequest._retry && !isAuthRoute) {
             originalRequest._retry = true;
-            try {
-                const token = await refreshAccessToken();
-                if (token) {
-                    originalRequest.headers = originalRequest.headers || {};
-                    api.defaults.headers.common.Authorization = `Bearer ${token}`;
-                    originalRequest.headers.Authorization = `Bearer ${token}`;
+
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject });
+                }).then((newAccessToken) => {
+                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                     return api(originalRequest);
-                }
-            } catch (err) {
-                return Promise.reject(err);
+                });
+            }
+
+            isRefreshing = true;
+
+            try {
+                const newAccessToken = await refreshAccessToken();
+
+                processQueue(null, newAccessToken);
+
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+                return api(originalRequest);
+            } catch (refreshError) {
+                processQueue(refreshError, null);
+                clearAccessToken();
+
+                return Promise.reject(refreshError);
+            } finally {
+                isRefreshing = false;
             }
         }
+
         return Promise.reject(error);
     },
 );
 
-function setAccessToken(token) {
-    accessToken = token;
-    if (token) api.defaults.headers.common.Authorization = `Bearer ${token}`;
-    else delete api.defaults.headers.common.Authorization;
-}
-
-function clearAccessToken() {
-    accessToken = null;
-    delete api.defaults.headers.common.Authorization;
-}
-
-function getAccessToken() {
-    return accessToken;
-}
-
-export { setAccessToken, clearAccessToken, getAccessToken };
 export default api;

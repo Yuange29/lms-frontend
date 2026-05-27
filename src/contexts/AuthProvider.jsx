@@ -1,30 +1,37 @@
-import { me, signin } from "../services/auth.service.js";
+import { useEffect, useState } from "react";
 
 import { AuthContext } from "./AuthContext.js";
+import { authService } from "../services/auth.service";
+import { clearAccessToken } from "../services/api.js";
 import { setAccessToken } from "../services/api.js";
-import { useState } from "react";
-import { useToast } from "./ToastContext.jsx";
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    const { toast } = useToast();
-
-    const handleLogin = async (data) => {
+    async function initAuth() {
+        setLoading(true);
         try {
-            const response = await signin(data.email, data.password);
-            setAccessToken(response.accessToken);
+            const res = await authService.refresh();
+            setAccessToken(res.accessToken);
 
-            const userData = await me();
-            setUser(userData);
-        } catch (error) {
-            toast.error("Đăng nhập thất bại");
-            console.error("Login error:", error);
+            const resMe = await authService.me();
+            setUser(resMe.user);
+        } catch (err) {
+            console.log("Error: ", err.message);
+            clearAccessToken();
+            setUser(null);
+        } finally {
+            setLoading(false);
         }
-    };
+    }
+
+    useEffect(() => {
+        initAuth();
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ user, handleLogin }}>
+        <AuthContext.Provider value={{ user, setUser, loading }}>
             {children}
         </AuthContext.Provider>
     );
