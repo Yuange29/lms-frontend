@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { ThemeProvider as StyledThemeProvider } from "styled-components";
-import { GlobalStyle } from "../styles/GlobalStyle";
 import { darkTheme, lightTheme } from "../styles/theme";
+import { useEffect, useMemo, useState } from "react";
 
-const ThemeContext = createContext(null);
+import { GlobalStyle } from "../styles/GlobalStyle";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import { ThemeContext } from "./ThemeContext";
+
 const THEME_STORAGE_KEY = "lms-theme-mode";
 
 export function AppThemeProvider({ children }) {
@@ -39,14 +40,4 @@ export function AppThemeProvider({ children }) {
             </StyledThemeProvider>
         </ThemeContext.Provider>
     );
-}
-
-export function useTheme() {
-    const context = useContext(ThemeContext);
-
-    if (!context) {
-        throw new Error("useTheme must be used inside AppThemeProvider");
-    }
-
-    return context;
 }

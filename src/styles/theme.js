@@ -42,7 +42,7 @@ export const darkTheme = {
         primaryHover: "#60A5FA",
         primaryActive: "#2563EB",
         primarySoft: "#1E3A8A",
-        onPrimary: "#FFFFFF",
+        onPrimary: "#ebe9e9",
 
         secondary: "#1E293B",
         secondaryHover: "#334155",

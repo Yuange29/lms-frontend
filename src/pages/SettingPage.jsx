@@ -1,5 +1,5 @@
 import Button from "../components/ui/Button";
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../hooks/themehHook";
 
 function SettingPage() {
     const { isDarkMode, toggleTheme } = useTheme();

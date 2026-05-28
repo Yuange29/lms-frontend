@@ -18,7 +18,7 @@ import { setAccessToken } from "../services/api";
 import styled from "styled-components";
 import { useAuth } from "../hooks/authHook";
 import { useState } from "react";
-import { useToast } from "../contexts/ToastContext";
+import { useToast } from "../hooks/toastHook";
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({
