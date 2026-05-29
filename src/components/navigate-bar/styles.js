@@ -52,6 +52,15 @@ export const UserInfo = styled.div`
     }
 `;
 
+export const UserSkeletonInfo = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5em;
+    overflow: hidden;
+`;
+
 export const UserActionBtn = styled.button`
     height: 36px;
     width: 36px;

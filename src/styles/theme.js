@@ -15,8 +15,8 @@ export const lightTheme = {
 
         // 60% - Trắng & Sáng (Nền tảng của giao diện)
         background: "#d8d8d8",
+        card: "#cacaca",
         surface: "#F8FAFC",
-        card: "#FFFFFF",
 
         // 10% - Đen & Tối (Điểm nhấn tương phản cao)
         text: "#090D16", // Gần như đen tuyệt đối để cực kỳ sắc nét
@@ -51,8 +51,8 @@ export const darkTheme = {
 
         // 60% - Đen & Tối (Huyền bí, không bị mỏi mắt)
         background: "#0F172A", // Màu xanh đen sẫm sâu thẳm
+        card: "#1e2b48",
         surface: "#1E293B",
-        card: "#111827",
 
         // 10% - Trắng & Sáng (Nổi bật trên nền tối)
         text: "#F8FAFC", // Trắng sáng giúp đọc content dễ dàng

@@ -10,6 +10,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import { Text } from "../ui/Text";
+import { UserSkeletonLoading } from "../loading/NavBarSkeleton";
 import { authService } from "../../services/auth.service";
 import blankImage from "../../assets/avatar.png";
 import { clearAccessToken } from "../../services/api";
@@ -18,7 +19,7 @@ import { useConfirm } from "../../hooks/confirmHook";
 import { useToast } from "../../hooks/toastHook";
 
 export default function UserBar({ user }) {
-    const { setUser } = useAuth();
+    const { setUser, loading } = useAuth();
     const { toast } = useToast();
     const { confirm } = useConfirm();
     const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -44,6 +45,8 @@ export default function UserBar({ user }) {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isOpenMenu]);
+
+    if (loading) return <UserSkeletonLoading />;
 
     const handleLogout = async () => {
         const isOk = await confirm({

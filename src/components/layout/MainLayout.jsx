@@ -1,7 +1,8 @@
-import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import Body from "./Body";
 import NavBar from "../navigate-bar/NavBar";
+import styled from "styled-components";
 
 function MainLayout({ children }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -78,7 +79,7 @@ const Content = styled.div`
     min-width: 0;
     flex: 1;
     flex-direction: column;
-    margin-left: 360px;
+    margin-left: 300px;
 
     @media (max-width: 480px) {
         margin-left: 0;

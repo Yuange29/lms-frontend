@@ -1,8 +1,14 @@
 import { RoleBarStyle, RoleIcon, UserActionBtn, UserInfo } from "./styles";
 
+import { RoleSkeletonLoading } from "../loading/NavBarSkeleton";
 import { Text } from "../ui/Text";
+import { useAuth } from "../../hooks/authHook";
 
 export default function AccountRole({ role }) {
+    const { loading } = useAuth();
+
+    if (loading) return <RoleSkeletonLoading />;
+
     return (
         <RoleBarStyle>
             <RoleIcon>
