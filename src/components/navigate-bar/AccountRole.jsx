@@ -2,12 +2,15 @@ import { RoleBarStyle, RoleIcon, UserActionBtn, UserInfo } from "./styles";
 
 import { RoleSkeletonLoading } from "../loading/NavBarSkeleton";
 import { Text } from "../ui/Text";
+import styled from "styled-components";
 import { useAuth } from "../../hooks/authHook";
 
 export default function AccountRole({ role }) {
     const { loading } = useAuth();
 
     if (loading) return <RoleSkeletonLoading />;
+
+    const notice = 0;
 
     return (
         <RoleBarStyle>
@@ -43,7 +46,25 @@ export default function AccountRole({ role }) {
             </UserInfo>
             <UserActionBtn title="Thông báo">
                 <i className="fa-solid fa-bell"></i>
+                <Notice style={{ display: notice > 0 ? "flex" : "none" }}>
+                    {notice}
+                </Notice>
             </UserActionBtn>
         </RoleBarStyle>
     );
 }
+
+const Notice = styled.p`
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-error);
+    border: 0;
+    border-radius: 999px;
+    font-size: 0.75em;
+    width: 15px;
+    height: 15px;
+`;

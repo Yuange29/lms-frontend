@@ -64,6 +64,7 @@ export const UserSkeletonInfo = styled.div`
 export const UserActionBtn = styled.button`
     height: 36px;
     width: 36px;
+    position: relative;
     border-radius: 8px;
     border: none;
     color: white;
@@ -75,7 +76,7 @@ export const UserActionBtn = styled.button`
 
     &:hover {
         scale: 1.1;
-        border: 1px solid var(--color-on-primary);
+        border: 1px solid var(--color-primary-active);
     }
 
     &:active {
