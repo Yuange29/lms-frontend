@@ -1,7 +1,7 @@
 import AuthLayout from "../components/layout/AuthLayout";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
-import MainLayout from "../components/layout/MainLayout";
+import MainLayout from "../components/layout/MainLayout.jsx";
 import RegisterPage from "../pages/RegisterPage";
 import SettingPage from "../pages/SettingPage";
 import { paths } from "./paths";

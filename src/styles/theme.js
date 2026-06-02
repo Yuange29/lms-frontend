@@ -14,8 +14,8 @@ export const lightTheme = {
         onSecondary: "#0F172A",
 
         // 60% - Trắng & Sáng (Nền tảng của giao diện)
-        background: "#d8d8d8",
-        card: "#cacaca",
+        background: "#f3f3f3",
+        card: "#e2e2e2bb",
         surface: "#F8FAFC",
 
         // 10% - Đen & Tối (Điểm nhấn tương phản cao)

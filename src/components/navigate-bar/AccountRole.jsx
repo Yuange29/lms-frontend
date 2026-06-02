@@ -1,13 +1,17 @@
 import { RoleBarStyle, RoleIcon, UserActionBtn, UserInfo } from "./styles";
+import { memo, useMemo } from "react";
 
 import { RoleSkeletonLoading } from "../loading/NavBarSkeleton";
 import { Text } from "../ui/Text";
+import { getRole } from "../../utils/getRole";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/authHook";
 
-export default function AccountRole({ role }) {
+function AccountRole({ role }) {
     const { loading } = useAuth();
+    const roleName = useMemo(() => getRole(role), [role]);
 
+    console.log("Role: ", role);
     if (loading) return <RoleSkeletonLoading />;
 
     const notice = 0;
@@ -35,13 +39,7 @@ export default function AccountRole({ role }) {
                         fontWeight: "700",
                     }}
                 >
-                    {role === "ADMIN"
-                        ? "Quản trị viên"
-                        : role === "INSTRUCTOR"
-                          ? "Giáo viên"
-                          : role === "STUDENT"
-                            ? "Học sinh"
-                            : "Khách"}
+                    {roleName}
                 </Text>
             </UserInfo>
             <UserActionBtn title="Thông báo">
@@ -68,3 +66,5 @@ const Notice = styled.p`
     width: 15px;
     height: 15px;
 `;
+
+export default memo(AccountRole);

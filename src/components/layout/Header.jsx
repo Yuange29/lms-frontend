@@ -1,7 +1,12 @@
+import { H } from "../ui/Text";
 import styled from "styled-components";
 
 function Header() {
-    return <HeaderStyle>Header</HeaderStyle>;
+    return (
+        <HeaderStyle>
+            <H>Trang chủ</H>
+        </HeaderStyle>
+    );
 }
 
 const HeaderStyle = styled.header`

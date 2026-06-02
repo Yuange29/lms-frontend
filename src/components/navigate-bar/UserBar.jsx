@@ -7,7 +7,7 @@ import {
     UserActionMenu,
     UserInfo,
 } from "./styles";
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Text } from "../ui/Text";
 import { UserSkeletonLoading } from "../loading/NavBarSkeleton";
@@ -18,16 +18,17 @@ import { useAuth } from "../../hooks/authHook";
 import { useConfirm } from "../../hooks/confirmHook";
 import { useToast } from "../../hooks/toastHook";
 
-export default function UserBar({ user }) {
+function UserBar({ user }) {
     const { setUser, loading } = useAuth();
     const { toast } = useToast();
     const { confirm } = useConfirm();
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const userBarRef = useRef(null);
-    const navigate = (to) => {
+
+    const navigate = useCallback((to) => {
         window.history.pushState({}, "", to);
         window.dispatchEvent(new Event("app:navigate"));
-    };
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -46,9 +47,7 @@ export default function UserBar({ user }) {
         };
     }, [isOpenMenu]);
 
-    if (loading) return <UserSkeletonLoading />;
-
-    const handleLogout = async () => {
+    const handleLogout = useCallback(async () => {
         const isOk = await confirm({
             title: "Đăng xuất",
             content: "Bạn chắc chắn muốn đăng xuất chứ",
@@ -56,19 +55,35 @@ export default function UserBar({ user }) {
             cancelText: "Trở lại",
         });
 
-        if (isOk)
-            try {
-                await authService.signout();
-                clearAccessToken();
-                setUser(null);
+        if (!isOk) return;
 
-                window.history.pushState(null, "", "/");
-                window.dispatchEvent(new Event("app:navigate"));
-            } catch (error) {
-                toast.error("Lỗi: Đăng xuất thất bại");
-                console.log("Lỗi: ", error);
-            }
-    };
+        try {
+            await authService.signout();
+            clearAccessToken();
+            setUser(null);
+
+            window.history.pushState(null, "", "/");
+            window.dispatchEvent(new Event("app:navigate"));
+        } catch (error) {
+            toast.error("Lỗi: Đăng xuất thất bại");
+            console.log("Lỗi: ", error);
+        }
+    }, [confirm, setUser, toast]);
+
+    const iconStyle = useMemo(
+        () => ({
+            transition: "transform 0.3s ease",
+            transform: `rotate(${isOpenMenu ? 90 : 0}deg)`,
+        }),
+        [isOpenMenu],
+    );
+
+    const menuStyle = useMemo(
+        () => ({ display: isOpenMenu ? "flex" : "none" }),
+        [isOpenMenu],
+    );
+
+    if (loading) return <UserSkeletonLoading />;
 
     return (
         <BaseBarStyle ref={userBarRef}>
@@ -88,18 +103,15 @@ export default function UserBar({ user }) {
             </UserInfo>
             <UserActionBtn
                 title="Cài đặt tài khoản"
-                onClick={() => setIsOpenMenu(!isOpenMenu)}
+                onClick={() => setIsOpenMenu((prev) => !prev)}
             >
                 <i
                     className="fa-solid fa-ellipsis-vertical"
-                    style={{
-                        transition: "transform 0.3s ease",
-                        transform: `rotate(${isOpenMenu ? 90 : 0}deg)`,
-                    }}
+                    style={iconStyle}
                 ></i>
             </UserActionBtn>
 
-            <UserActionMenu style={{ display: isOpenMenu ? "flex" : "none" }}>
+            <UserActionMenu style={menuStyle}>
                 <Item
                     onClick={() => navigate("/signin")}
                     style={{ display: !user ? "flex" : "none" }}
@@ -118,18 +130,20 @@ export default function UserBar({ user }) {
                     <i className="fa-solid fa-user"></i>
                     <TitleText>Thông tin tài khoản</TitleText>
                 </Item>
-                <Item>
+                <Item onClick={() => navigate("/setting")}>
                     <i className="fa-solid fa-cog"></i>
                     <TitleText>Cài đặt</TitleText>
                 </Item>
                 <Item
-                    onClick={() => handleLogout()}
+                    onClick={handleLogout}
                     style={{ display: user ? "flex" : "none" }}
                 >
-                    <i class="fa-solid fa-sign-out-alt"></i>
+                    <i className="fa-solid fa-sign-out-alt"></i>
                     <TitleText>Đăng xuất</TitleText>
                 </Item>
             </UserActionMenu>
         </BaseBarStyle>
     );
 }
+
+export default memo(UserBar);

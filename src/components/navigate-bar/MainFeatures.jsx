@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { pageList } from "./nav-content";
+import React, { memo, useCallback, useEffect, useState } from "react";
+
 import DropDownMenu from "./DropDownMenu";
 import { MainFeaturesStyle } from "./styles";
+import { pageList } from "./nav-content";
 
-export default function MainFeatures() {
+function MainFeatures() {
     const [openLabel, setOpenLabel] = useState(null);
 
     useEffect(() => {
@@ -13,9 +14,9 @@ export default function MainFeatures() {
             window.removeEventListener("app:navigate", handleAppNavigate);
     }, []);
 
-    const toggle = (label) => {
+    const toggle = useCallback((label) => {
         setOpenLabel((prev) => (prev === label ? null : label));
-    };
+    }, []);
 
     return (
         <MainFeaturesStyle>
@@ -32,3 +33,5 @@ export default function MainFeatures() {
         </MainFeaturesStyle>
     );
 }
+
+export default memo(MainFeatures);

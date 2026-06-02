@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { AuthContext } from "./AuthContext.js";
 import { authService } from "../services/auth.service";
@@ -30,9 +30,12 @@ export const AuthProvider = ({ children }) => {
         initAuth();
     }, []);
 
+    const value = useMemo(
+        () => ({ user, setUser, loading }),
+        [user, setUser, loading],
+    );
+
     return (
-        <AuthContext.Provider value={{ user, setUser, loading }}>
-            {children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     );
 };
