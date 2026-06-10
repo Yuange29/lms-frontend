@@ -1,4 +1,4 @@
-import { FormGroup, FormInput, FormLabel } from "../form_ui";
+import { FormGroup, FormInput, FormLabel } from "../ui/form_ui";
 
 import Button from "../ui/Button";
 import styled from "styled-components";
@@ -82,7 +82,6 @@ export function CreateCourseForm() {
                                     onChange={(event) =>
                                         setDescription(event.target.value)
                                     }
-                                    required
                                 />
                             </FormGroup>
 

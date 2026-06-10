@@ -8,7 +8,7 @@ export const CourseProvider = ({ children }) => {
     const { toast } = useToast();
 
     const [loading, setLoading] = useState(false);
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState(null | []);
 
     const getOwnerCourse = useCallback(async () => {
         setLoading(true);

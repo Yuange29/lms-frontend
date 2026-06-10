@@ -9,7 +9,7 @@ import {
     FormLinkText,
     FormTitle,
     FormWrapper,
-} from "../components/form_ui";
+} from "../components/ui/form_ui";
 import {
     faEnvelope,
     faImage,

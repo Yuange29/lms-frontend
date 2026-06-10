@@ -8,7 +8,7 @@ import {
     FormLinkText,
     FormTitle,
     FormWrapper,
-} from "../components/form_ui";
+} from "../components/ui/form_ui";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
 import Button from "../components/ui/Button";

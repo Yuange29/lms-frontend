@@ -15,8 +15,6 @@ import Body from "./Body";
 import Footer from "./Footer";
 import NavBar from "../navigate-bar/NavBar";
 
-// import Header from "./Header";
-
 function MainLayout({ children }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -58,7 +56,6 @@ function MainLayout({ children }) {
             </MobileSidebar>
 
             <Content>
-                {/* <Header /> */}
                 <Body>{children}</Body>
                 <Footer />
             </Content>
