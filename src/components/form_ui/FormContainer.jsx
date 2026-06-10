@@ -5,7 +5,8 @@ export const FormContainer = styled.div`
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    padding: 1rem;
 `;
 
 export const FormWrapper = styled.form`
@@ -13,11 +14,12 @@ export const FormWrapper = styled.form`
     flex-direction: column;
     gap: 1.5rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 560px;
     padding: 2rem;
-    background-color: var(--color-card);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.16);
 `;
 
 export const FormLinkContainer = styled.div`

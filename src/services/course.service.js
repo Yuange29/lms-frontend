@@ -38,14 +38,12 @@ export const courseService = {
     // Response 200: { course }
     // Error: 400, 401, 403
     async createCourse(title, description, thumbnail_url, price) {
-        const res = await api.post(
-            `/courses`,
+        await api.post(`/courses`, {
             title,
             description,
             thumbnail_url,
             price,
-        );
-        return res.data.data;
+        });
     },
 
     // Path: /courses/:id - Method: PATCH

@@ -48,10 +48,16 @@ export function getAccessToken() {
 async function refreshAccessToken() {
     const res = await authApi.post("/auth/refresh");
 
-    const newAccessToken = res.data?.accessToken;
+    const newAccessToken =
+        res.data?.accessToken ||
+        res.data?.data?.accessToken ||
+        res.data?.token ||
+        res.data?.data?.token;
 
     if (!newAccessToken) {
-        throw new Error("Refresh response missing accessToken");
+        throw new Error(
+            `Refresh response missing accessToken: ${JSON.stringify(res.data)}`,
+        );
     }
 
     setAccessToken(newAccessToken);
@@ -87,7 +93,7 @@ api.interceptors.response.use(
         const status = error.response.status;
 
         const isAuthRoute =
-            originalRequest.url?.includes("/auth/sigin") ||
+            originalRequest.url?.includes("/auth/signin") ||
             originalRequest.url?.includes("/auth/signup") ||
             originalRequest.url?.includes("/auth/refresh") ||
             originalRequest.url?.includes("/auth/logout");

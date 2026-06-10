@@ -12,6 +12,10 @@ export const pageList = [
                 path: "/my-courses",
             },
             {
+                name: "Thêm khóa học",
+                path: "/course-create",
+            },
+            {
                 name: "Tìm kiếm",
                 path: "/courses/search",
             },

@@ -15,7 +15,7 @@ const Label = styled.label`
     gap: 0.5rem;
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--color-text);
+    color: var(--color-text-soft);
 `;
 
 const IconWrapper = styled.span`

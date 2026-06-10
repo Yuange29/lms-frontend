@@ -11,7 +11,6 @@ function AccountRole({ role }) {
     const { loading } = useAuth();
     const roleName = useMemo(() => getRole(role), [role]);
 
-    console.log("Role: ", role);
     if (loading) return <RoleSkeletonLoading />;
 
     const notice = 0;

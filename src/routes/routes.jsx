@@ -1,4 +1,5 @@
 import AuthLayout from "../components/layout/AuthLayout";
+import CourseCreatePage from "../pages/CourseCreatePage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import MainLayout from "../components/layout/MainLayout.jsx";
@@ -26,6 +27,11 @@ export const routes = [
         path: paths.signin,
         component: LoginPage,
         layout: AuthLayout,
+    },
+    {
+        path: paths.courseCreate,
+        component: CourseCreatePage,
+        layout: MainLayout,
     },
     {
         path: paths.register,

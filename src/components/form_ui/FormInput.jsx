@@ -1,18 +1,22 @@
 import styled from "styled-components";
 
 const FormInput = styled.input`
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 2px solid var(--color-border);
-    border-radius: 8px;
-    background-color: var(--color-surface);
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
     color: var(--color-text);
-    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
     &:focus {
         outline: none;
         border-color: var(--color-primary);
-        box-shadow: 0 0 0 3px var(--color-primary-soft);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
     }
 
     &::placeholder {
@@ -22,7 +26,7 @@ const FormInput = styled.input`
     &:disabled {
         background-color: var(--color-secondary);
         cursor: not-allowed;
-        opacity: 0.6;
+        opacity: 0.65;
     }
 `;
 

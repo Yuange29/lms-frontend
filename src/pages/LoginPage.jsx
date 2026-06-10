@@ -52,6 +52,7 @@ export default function LoginPage() {
                 formData.email,
                 formData.password,
             );
+            console.log("Login success:");
             setAccessToken(res.accessToken);
 
             const resMe = await authService.me();
@@ -59,9 +60,8 @@ export default function LoginPage() {
 
             window.history.pushState(null, "", "/");
             window.dispatchEvent(new Event("app:navigate"));
-        } catch (error) {
-            console.error("Login error:", error);
-            toast.error(error.message || "Đăng nhập thất bại");
+        } catch {
+            toast.error("Sai tài khoản hoặc mật khẩu");
         } finally {
             setIsLoading(false);
         }

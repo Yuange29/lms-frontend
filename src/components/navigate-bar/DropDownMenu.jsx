@@ -1,17 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
 import {
-    DropDownMenuStyle,
-    IconWrapper,
     ClickableTitle,
-    TitleText,
-    ExpandIcon,
     DropDownContent,
     DropDownInner,
+    DropDownMenuStyle,
+    ExpandIcon,
+    IconWrapper,
     Item,
+    TitleText,
 } from "./styles";
+import { useEffect, useRef, useState } from "react";
+
+import { useAuth } from "../../hooks/authHook";
 
 export default function DropDownMenu({ title, paths, icon, open, onToggle }) {
     const [hovered, setHovered] = useState(false);
+    const { role } = useAuth();
 
     const navigate = (to) => {
         window.history.pushState({}, "", to);
@@ -70,6 +73,10 @@ export default function DropDownMenu({ title, paths, icon, open, onToggle }) {
                         paths.map((item) => (
                             <Item
                                 key={item.path}
+                                style={{
+                                    display:
+                                        role === "Học sinh" ? "none" : "flex",
+                                }}
                                 onClick={() => {
                                     navigate(item.path);
                                     onToggle(null);
