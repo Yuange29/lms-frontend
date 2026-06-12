@@ -4,5 +4,6 @@ export const paths = {
     signin: "/signin",
     register: "/register",
     courseCreate: "/course-create",
+    courseDetail: "/course-info",
     setting: "/setting",
 };

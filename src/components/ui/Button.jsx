@@ -101,7 +101,7 @@ const ButtonStyle = styled.button`
     gap: 8px;
     width: ${({ $fullWidth }) => ($fullWidth ? "100%" : "auto")};
     min-height: ${({ $size }) => getSize({ $size }).minHeight};
-    margin: 0;
+    margin: 0.6em;
     padding: ${({ $size }) => getSize({ $size }).padding};
     border: 1px solid ${({ $variant }) => getVariant({ $variant }).border};
     border-radius: 8px;

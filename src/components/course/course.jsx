@@ -1,27 +1,107 @@
-import { faEllipsisVertical, faFile } from "@fortawesome/free-solid-svg-icons";
-import { memo, useState } from "react";
+import {
+    CloseButton,
+    CourseDescription,
+    CoursePrice,
+    CourseTitle,
+    CourseWrapper,
+    CoursesWrapper,
+    Dialog,
+    DialogActions,
+    DialogBody,
+    DialogHeader,
+    DialogLabel,
+    DialogRow,
+    DialogSection,
+    DialogText,
+    DialogTitle,
+    DialogValue,
+    IconWrapper,
+    InfoWrapper,
+    MenuButton,
+    MenuWrapper,
+    Overlay,
+    SkeletonBox,
+    ThumbnailImage,
+} from "./courses-style";
+import {
+    faEllipsisVertical,
+    faFile,
+    faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+import { memo, useCallback, useState } from "react";
 
+import Button from "../ui/Button";
+import CourseItemSkeleton from "../loading/CourseItemSkeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Text } from "../ui/Text";
+import { courseService } from "./../../services/course.service";
 import { formatPrice } from "../../utils/getDay";
-import styled from "styled-components";
 
 function CoursesInfo({ courses = [] }) {
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [courseInfo, setCourseInfo] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    console.log(courseInfo);
+
+    const handleClick = useCallback(async (courseId) => {
+        setOpen(true);
+        setSelectedCourse(courseId);
+        setCourseInfo(null);
+        setError(null);
+        setLoading(true);
+
+        try {
+            const res = await courseService.getCourseInfo(courseId);
+            setCourseInfo(res?.course || res);
+        } catch (err) {
+            console.error("Error fetching course info:", err);
+            setError("Không thể tải thông tin khóa học. Vui lòng thử lại.");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const handleClose = useCallback(() => {
+        setOpen(false);
+        setSelectedCourse(null);
+        setCourseInfo(null);
+        setError(null);
+        setLoading(false);
+    }, []);
+
     return (
-        <CoursesWrapper>
-            {Array.isArray(courses) &&
-                courses.map((course) => (
-                    <CourseItemMemo key={course.id} course={course} />
-                ))}
-        </CoursesWrapper>
+        <>
+            <CoursesWrapper>
+                {Array.isArray(courses) &&
+                    courses.map((course) => (
+                        <CourseItemMemo
+                            key={course.id}
+                            course={course}
+                            onClick={() => handleClick(course.id)}
+                        />
+                    ))}
+            </CoursesWrapper>
+
+            {open && (
+                <CourseInfoDialog
+                    course={courseInfo}
+                    courseId={selectedCourse}
+                    loading={loading}
+                    error={error}
+                    onClose={handleClose}
+                />
+            )}
+        </>
     );
 }
 
-function CourseItem({ course }) {
+function CourseItem({ course, onClick }) {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
-        <CourseWrapper>
+        <CourseWrapper onClick={onClick}>
             <IconWrapper>
                 {course.thumbnail_url ? (
                     <ThumbnailImage
@@ -44,7 +124,12 @@ function CourseItem({ course }) {
             </InfoWrapper>
 
             <MenuWrapper>
-                <MenuButton onClick={() => setShowMenu(!showMenu)}>
+                <MenuButton
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        setShowMenu(!showMenu);
+                    }}
+                >
                     <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
                 </MenuButton>
             </MenuWrapper>
@@ -52,108 +137,130 @@ function CourseItem({ course }) {
     );
 }
 
-const CoursesWrapper = styled.div`
-    width: 100%;
-    margin-top: 1em;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+export function CourseInfoDialog({
+    course,
+    courseId,
+    loading,
+    error,
+    onClose,
+}) {
+    const sectionCount = Array.isArray(course?.sections)
+        ? course.sections.length
+        : 0;
+    const lessonCount = Array.isArray(course?.sections)
+        ? course.sections.reduce((sum, section) => {
+              const lessons = section.lessons ?? section.lesson ?? [];
+              return sum + (Array.isArray(lessons) ? lessons.length : 0);
+          }, 0)
+        : 0;
+    const quizCount = Array.isArray(course?.sections)
+        ? course.sections.reduce((sum, section) => {
+              const quizzes = section.quizzes ?? section.quiz ?? [];
+              return sum + (Array.isArray(quizzes) ? quizzes.length : 0);
+          }, 0)
+        : 0;
 
-    @media (max-width: 1000px) {
-        grid-template-columns: 1fr;
-    }
-`;
+    const viewDetailPath = course?.id
+        ? `/course-info/${course.id}`
+        : courseId
+          ? `/course-info/${courseId}`
+          : null;
 
-const CourseWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    height: 100px;
-    gap: 1rem;
-    padding: 0.5em;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    return (
+        <Overlay onClick={onClose}>
+            <Dialog onClick={(event) => event.stopPropagation()}>
+                <DialogHeader>
+                    <DialogTitle>
+                        {course?.title || "Thông tin khóa học"}
+                    </DialogTitle>
+                    <CloseButton type="button" onClick={onClose}>
+                        <FontAwesomeIcon icon={faTimes} size="sm" />
+                    </CloseButton>
+                </DialogHeader>
 
-    &:hover {
-        scale: 1.01;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-`;
+                <DialogBody>
+                    {loading ? (
+                        <>
+                            <DialogText>
+                                Đang tải thông tin khóa học...
+                            </DialogText>
+                            <CourseItemSkeleton />
+                            <DialogSection>
+                                <SkeletonBox height="22px" width="45%" />
+                                <SkeletonBox height="22px" width="45%" />
+                                <SkeletonBox height="22px" width="45%" />
+                            </DialogSection>
+                        </>
+                    ) : error ? (
+                        <DialogText>{error}</DialogText>
+                    ) : (
+                        <>
+                            <DialogText>
+                                {course?.description ||
+                                    "Chưa có mô tả cho khóa học này."}
+                            </DialogText>
 
-const IconWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 50px;
-    width: 80px;
-    height: 80px;
-    background-color: #f3f4f6;
-    border-radius: 6px;
-    overflow: hidden;
-`;
+                            <DialogSection>
+                                <DialogRow>
+                                    <DialogLabel>Giá</DialogLabel>
+                                    <DialogValue>
+                                        {formatPrice(course?.price)}
+                                    </DialogValue>
+                                </DialogRow>
+                                {course?.instructor?.full_name && (
+                                    <DialogRow>
+                                        <DialogLabel>Giảng viên</DialogLabel>
+                                        <DialogValue>
+                                            {course.instructor.full_name}
+                                        </DialogValue>
+                                    </DialogRow>
+                                )}
+                                {typeof course?.published !== "undefined" && (
+                                    <DialogRow>
+                                        <DialogLabel>Trạng thái</DialogLabel>
+                                        <DialogValue>
+                                            {course.published
+                                                ? "Đã publish"
+                                                : "Chưa publish"}
+                                        </DialogValue>
+                                    </DialogRow>
+                                )}
+                            </DialogSection>
 
-const ThumbnailImage = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-`;
+                            <DialogSection>
+                                <DialogRow>
+                                    <DialogLabel>Số chương</DialogLabel>
+                                    <DialogValue>{sectionCount}</DialogValue>
+                                </DialogRow>
+                                <DialogRow>
+                                    <DialogLabel>Số bài học</DialogLabel>
+                                    <DialogValue>{lessonCount}</DialogValue>
+                                </DialogRow>
+                                <DialogRow>
+                                    <DialogLabel>Số quiz</DialogLabel>
+                                    <DialogValue>{quizCount}</DialogValue>
+                                </DialogRow>
+                            </DialogSection>
+                        </>
+                    )}
+                </DialogBody>
 
-const InfoWrapper = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 0;
-`;
-
-const CourseTitle = styled(Text)`
-    font-weight: 600;
-    font-size: 1rem;
-    color: #1f2937;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`;
-
-const CoursePrice = styled(Text)`
-    font-weight: 500;
-    font-size: 0.975rem;
-    color: #1f2937;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`;
-
-const CourseDescription = styled(Text)`
-    font-size: 0.875rem;
-    color: #6b7280;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`;
-
-const MenuWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-const MenuButton = styled.button`
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #9ca3af;
-    transition: color 0.2s ease;
-
-    &:hover {
-        color: #1f2937;
-    }
-`;
+                <DialogActions>
+                    <Button variant="ghost" onClick={onClose}>
+                        Đóng
+                    </Button>
+                    <Button
+                        navigate={viewDetailPath}
+                        onClick={onClose}
+                        disabled={loading || !viewDetailPath}
+                    >
+                        Xem chi tiết
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </Overlay>
+    );
+}
 
 const CourseItemMemo = memo(CourseItem);
 

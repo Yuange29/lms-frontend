@@ -1,5 +1,6 @@
 import AuthLayout from "../components/layout/AuthLayout";
 import CourseCreatePage from "../pages/CourseCreatePage";
+import CourseDetailPage from "../pages/CourseDetailPage.jsx";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import MainLayout from "../components/layout/MainLayout.jsx";
@@ -34,6 +35,11 @@ export const routes = [
         layout: MainLayout,
     },
     {
+        path: paths.courseDetail,
+        component: CourseDetailPage,
+        layout: MainLayout,
+    },
+    {
         path: paths.register,
         component: RegisterPage,
         layout: AuthLayout,
@@ -41,5 +47,16 @@ export const routes = [
 ];
 
 export function getRoute(pathname) {
-    return routes.find((route) => route.path === pathname) || routes[0];
+    const exactRoute = routes.find((route) => route.path === pathname);
+    if (exactRoute) {
+        return exactRoute;
+    }
+
+    const detailRoute = routes.find(
+        (route) =>
+            route.path === paths.courseDetail &&
+            pathname.startsWith(`${paths.courseDetail}/`),
+    );
+
+    return detailRoute || routes[0];
 }

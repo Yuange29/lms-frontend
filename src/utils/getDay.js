@@ -17,3 +17,16 @@ export const formatPriceSimple = (price) => {
     if (!price && price !== 0) return "0 VND";
     return `${price?.toLocaleString("vi-VN")} VND`;
 };
+
+export const formatDate = (iso) => {
+    if (!iso) return "-";
+    try {
+        return new Date(iso).toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
+    } catch {
+        return iso;
+    }
+};

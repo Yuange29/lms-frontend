@@ -1,7 +1,15 @@
+import {
+    CloseButton,
+    Dialog,
+    DialogActions,
+    DialogForm,
+    DialogHeader,
+    DialogTitle,
+    Overlay,
+} from "./courses-style";
 import { FormGroup, FormInput, FormLabel } from "../ui/form_ui";
 
 import Button from "../ui/Button";
-import styled from "styled-components";
 import { useCourse } from "../../hooks/courseHook";
 import { useState } from "react";
 
@@ -34,10 +42,11 @@ export function CreateCourseForm() {
 
     return (
         <>
-            <Button type="button" onClick={() => setOpen(true)}>
-                Thêm khóa học
-            </Button>
-
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <Button type="button" onClick={() => setOpen(true)}>
+                    Thêm khóa học
+                </Button>
+            </div>
             {open ? (
                 <Overlay>
                     <Dialog onClick={(event) => event.stopPropagation()}>
@@ -136,67 +145,3 @@ export function CreateCourseForm() {
         </>
     );
 }
-
-const Overlay = styled.div`
-    position: fixed;
-    inset: 0;
-    z-index: 30;
-    display: grid;
-    place-items: center;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(3px);
-`;
-
-const Dialog = styled.div`
-    width: min(600px, calc(100% - 32px));
-    border-radius: 24px;
-    padding: 24px;
-    background: var(--color-surface);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
-    color: var(--color-text);
-`;
-
-const DialogHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 20px;
-`;
-
-const DialogTitle = styled.h2`
-    margin: 0;
-    font-size: 1.25rem;
-    color: var(--color-text);
-`;
-
-const CloseButton = styled.button`
-    width: 42px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--color-border);
-    border-radius: 50%;
-    background: var(--color-background);
-    color: var(--color-text);
-    cursor: pointer;
-    font-size: 1.25rem;
-
-    &:hover {
-        background: var(--color-secondary);
-    }
-`;
-
-const DialogForm = styled.form`
-    display: grid;
-    gap: 18px;
-`;
-
-const DialogActions = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 8px;
-`;
