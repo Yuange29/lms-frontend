@@ -4,7 +4,7 @@ export const lightTheme = {
         primary: "#577eeb",
         primaryHover: "#2563EB",
         primaryActive: "#3257d1",
-        primarySoft: "#EFF6FF",
+        primarySoft: "#ddddddd8",
         onPrimary: "#f4f4f4",
 
         // Các thành phần phụ (Xanh xám nhẹ để hòa hợp với tổng thể)
@@ -14,9 +14,10 @@ export const lightTheme = {
         onSecondary: "#0F172A",
 
         // 60% - Trắng & Sáng (Nền tảng của giao diện)
-        background: "#f3f3f3",
-        card: "#e2e2e2bb",
+        background: "#f4f4f4",
+        card: "#e9e9e9",
         surface: "#F8FAFC",
+        surfaceSoft: "#ededed",
 
         // 10% - Đen & Tối (Điểm nhấn tương phản cao)
         text: "#090D16", // Gần như đen tuyệt đối để cực kỳ sắc nét
@@ -41,7 +42,7 @@ export const darkTheme = {
         primary: "#3B82F6",
         primaryHover: "#60A5FA",
         primaryActive: "#2563EB",
-        primarySoft: "#1E3A8A",
+        primarySoft: "#1d2773bf",
         onPrimary: "#ebe9e9",
 
         secondary: "#1E293B",
@@ -53,6 +54,7 @@ export const darkTheme = {
         background: "#0F172A", // Màu xanh đen sẫm sâu thẳm
         card: "#1e2b48",
         surface: "#1E293B",
+        surfaceSoft: "#273449",
 
         // 10% - Trắng & Sáng (Nổi bật trên nền tối)
         text: "#F8FAFC", // Trắng sáng giúp đọc content dễ dàng

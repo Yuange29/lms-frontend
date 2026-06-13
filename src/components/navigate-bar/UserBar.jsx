@@ -97,7 +97,13 @@ function UserBar({ user }) {
                 >
                     {user?.full_name || "Guest"}
                 </Text>
-                <Text size="xs" style={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                <Text
+                    size="xs"
+                    style={{
+                        color: "var(--color-on-primary)",
+                        opacity: 0.7,
+                    }}
+                >
                     {user?.email || "your email"}
                 </Text>
             </UserInfo>

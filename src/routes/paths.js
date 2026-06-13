@@ -3,6 +3,7 @@ export const paths = {
     homeAlias: "/home",
     signin: "/signin",
     register: "/register",
+    course: "/my-courses",
     courseCreate: "/course-create",
     courseDetail: "/course-info",
     setting: "/setting",

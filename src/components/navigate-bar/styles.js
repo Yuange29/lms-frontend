@@ -104,7 +104,6 @@ export const UserActionMenu = styled.div`
     position: absolute;
     bottom: 1em;
     right: -256px;
-    background-color: red;
     padding: 0.5em;
     border-radius: 8px;
     background-color: var(--color-primary-active);
@@ -194,7 +193,7 @@ export const DropDownContent = styled.div`
 `;
 
 export const DropDownInner = styled.div`
-    border-left: 2px solid white;
+    border-left: 2px solid var(--color-on-primary);
     margin-left: 1em;
     padding: 0.3em 0 0.3em 0.8em;
 `;
@@ -206,19 +205,9 @@ export const Item = styled.div`
     font-size: 0.9em;
     letter-spacing: 0.05em;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-on-primary);
     border-radius: 0.5em;
     display: flex;
     align-items: center;
     transition: all 0.2s ease;
-
-    &:hover {
-        color: var(--color-on-primary);
-        background-color: rgba(255, 255, 255, 0.08);
-        padding-left: 1.3em;
-    }
-
-    &:active {
-        scale: 0.98;
-    }
 `;

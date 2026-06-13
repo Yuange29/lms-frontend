@@ -76,11 +76,11 @@ export const DialogRow = styled.div`
     gap: 12px;
     padding: 16px;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-surface-soft);
 `;
 
 export const DialogLabel = styled.span`
-    color: #6b7280;
+    color: var(--color-text-muted);
     font-size: 0.95rem;
 `;
 
@@ -149,16 +149,17 @@ export const CourseDetailThumbnail = styled.img`
     height: 240px;
     object-fit: cover;
     border-radius: 24px;
-    background: #f3f4f6;
+    background: var(--color-card);
 `;
 
 export const CourseDetailMeta = styled.div`
     display: grid;
-    gap: 16px;
+    gap: 1em;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
+        gap: 0.5em;
     }
 `;
 
@@ -167,11 +168,15 @@ export const CourseDetailMetaItem = styled.div`
     gap: 6px;
     padding: 18px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--color-primary-soft);
+
+    @media (max-width: 768px) {
+        padding: 0.8em;
+    }
 `;
 
 export const CourseDetailMetaLabel = styled.span`
-    color: #6b7280;
+    color: var(--color-text-muted);
     font-size: 0.9rem;
 `;
 
@@ -213,7 +218,7 @@ export const CourseDetailSectionItem = styled.div`
     gap: 14px;
     padding: 20px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--color-surface-soft);
 `;
 
 export const CourseDetailSectionTitle = styled.h4`
@@ -224,7 +229,7 @@ export const CourseDetailSectionTitle = styled.h4`
 
 export const CourseDetailSectionSubtitle = styled.p`
     margin: 0;
-    color: #6b7280;
+    color: var(--color-text-muted);
     font-size: 0.9rem;
 `;
 
@@ -232,7 +237,7 @@ export const CourseDetailRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    color: #374151;
+    color: var(--color-text-soft);
     font-weight: 600;
 `;
 
@@ -263,7 +268,7 @@ export const CourseWrapper = styled.div`
     height: 100px;
     gap: 1rem;
     padding: 0.5em;
-    background-color: #fff;
+    background-color: var(--color-primary-soft);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
@@ -281,7 +286,7 @@ export const IconWrapper = styled.div`
     min-width: 50px;
     width: 80px;
     height: 80px;
-    background-color: #f3f4f6;
+    background-color: var(--color-secondary);
     border-radius: 6px;
     overflow: hidden;
 `;
@@ -303,7 +308,7 @@ export const InfoWrapper = styled.div`
 export const CourseTitle = styled(Text)`
     font-weight: 600;
     font-size: 1rem;
-    color: #1f2937;
+    color: var(--color-text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -312,7 +317,7 @@ export const CourseTitle = styled(Text)`
 export const CoursePrice = styled(Text)`
     font-weight: 500;
     font-size: 0.975rem;
-    color: #1f2937;
+    color: var(--color-text-soft);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -320,7 +325,7 @@ export const CoursePrice = styled(Text)`
 
 export const CourseDescription = styled(Text)`
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -340,10 +345,10 @@ export const MenuButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9ca3af;
+    color: var(--color-text-muted);
     transition: color 0.2s ease;
 
     &:hover {
-        color: #1f2937;
+        color: var(--color-text);
     }
 `;

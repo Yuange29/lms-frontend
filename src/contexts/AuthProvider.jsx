@@ -30,7 +30,8 @@ export const AuthProvider = ({ children }) => {
 
             const resMe = await authService.me();
             setUser(resMe.user);
-            setRole(getRole(resMe.user.roleId));
+            setRole(getRole(resMe.user.role_id));
+            console.log(resMe);
         } catch (err) {
             console.log("Error: ", err.message);
             clearAccessToken();

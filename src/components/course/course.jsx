@@ -35,6 +35,7 @@ import CourseItemSkeleton from "../loading/CourseItemSkeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { courseService } from "./../../services/course.service";
 import { formatPrice } from "../../utils/getDay";
+import { useToast } from "./../../hooks/toastHook";
 
 function CoursesInfo({ courses = [] }) {
     const [selectedCourse, setSelectedCourse] = useState(null);
@@ -42,8 +43,7 @@ function CoursesInfo({ courses = [] }) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    console.log(courseInfo);
+    const { toast } = useToast();
 
     const handleClick = useCallback(async (courseId) => {
         setOpen(true);
@@ -56,7 +56,8 @@ function CoursesInfo({ courses = [] }) {
             const res = await courseService.getCourseInfo(courseId);
             setCourseInfo(res?.course || res);
         } catch (err) {
-            console.error("Error fetching course info:", err);
+            toast.error("Không tìm thấy thông tin khóa học.");
+            console.log("Error fetching course info:", err);
             setError("Không thể tải thông tin khóa học. Vui lòng thử lại.");
         } finally {
             setLoading(false);

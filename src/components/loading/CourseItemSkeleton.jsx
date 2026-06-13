@@ -56,13 +56,18 @@ const CourseSkeletonWrapper = styled.div`
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background-color: #fff;
+    background-color: var(--color-card);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const SkeletonBase = styled.div`
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background: linear-gradient(
+        90deg,
+        var(--color-surface) 25%,
+        var(--color-surface-soft) 50%,
+        var(--color-surface) 75%
+    );
     background-size: 1000px 100%;
     animation: ${shimmer} 2s infinite;
     border-radius: 4px;

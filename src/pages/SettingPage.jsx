@@ -2,21 +2,19 @@ import { H, Text } from "../components/ui/Text";
 
 import Button from "../components/ui/Button";
 import { Section } from "../components/ui/Secttion";
-import { getRole } from "../utils/getRole";
 import styled from "styled-components";
 import { useAuth } from "../hooks/authHook";
 import { useTheme } from "../hooks/themehHook";
 
 function SettingPage() {
     const { isDarkMode, toggleTheme } = useTheme();
-    const { user } = useAuth();
-    const roleName = getRole(user?.role_id);
+    const { user, role } = useAuth();
     return (
         <>
             <InfomationCard title={"Thông tin tài khoản"}>
                 <Text>Tên: {user?.full_name}</Text>
                 <Text>Email: {user?.email}</Text>
-                <Text>Vai trò: {roleName}</Text>
+                <Text>Vai trò: {role}</Text>
             </InfomationCard>
 
             <InfomationCard title={"Tùy chỉnh"}>

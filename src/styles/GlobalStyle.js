@@ -15,6 +15,7 @@ export const GlobalStyle = createGlobalStyle`
 
     --color-background: ${({ theme }) => theme.colors.background};
     --color-surface: ${({ theme }) => theme.colors.surface};
+    --color-surface-soft: ${({ theme }) => theme.colors.surfaceSoft};
     --color-card: ${({ theme }) => theme.colors.card};
 
     --color-text: ${({ theme }) => theme.colors.text};

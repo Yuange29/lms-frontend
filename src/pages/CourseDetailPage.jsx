@@ -117,7 +117,7 @@ export default function CourseDetailPage() {
                             </Text>
                         </div>
                         <CourseDetailThumbnail
-                            src={course.thumbnail_url || ""}
+                            src={course.thumbnail_url || null}
                             alt={course.title}
                         />
                     </CourseDetailHeader>

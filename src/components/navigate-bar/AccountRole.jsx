@@ -1,15 +1,13 @@
 import { RoleBarStyle, RoleIcon, UserActionBtn, UserInfo } from "./styles";
-import { memo, useMemo } from "react";
 
 import { RoleSkeletonLoading } from "../loading/NavBarSkeleton";
 import { Text } from "../ui/Text";
-import { getRole } from "../../utils/getRole";
+import { memo } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/authHook";
 
-function AccountRole({ role }) {
-    const { loading } = useAuth();
-    const roleName = useMemo(() => getRole(role), [role]);
+function AccountRole() {
+    const { loading, role } = useAuth();
 
     if (loading) return <RoleSkeletonLoading />;
 
@@ -24,7 +22,8 @@ function AccountRole({ role }) {
                 <Text
                     size="xs"
                     style={{
-                        color: "rgba(255, 255, 255, 0.6)",
+                        color: "var(--color-on-primary)",
+                        opacity: 0.65,
                         textTransform: "uppercase",
                         letterSpacing: "1px",
                     }}
@@ -38,7 +37,7 @@ function AccountRole({ role }) {
                         fontWeight: "700",
                     }}
                 >
-                    {roleName}
+                    {role}
                 </Text>
             </UserInfo>
             <UserActionBtn title="Thông báo">
