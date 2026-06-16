@@ -29,6 +29,13 @@ const appendAlpha = (hexColor, alphaHex) => {
     return hexColor;
 };
 
+const getTypeColor = (theme, type) => {
+    if (!theme || !theme.colors) return undefined;
+    // map info -> primary if info not defined in theme
+    if (type === "info") return theme.colors.info || theme.colors.primary;
+    return theme.colors[type] || undefined;
+};
+
 export function ToastProvider({ children }) {
     const [toasts, setToasts] = useState([]);
 
@@ -186,11 +193,17 @@ const ToastCard = styled.div`
     padding: 0.95rem 1rem;
     border-radius: 16px;
     background: ${({ theme, type }) =>
-        appendAlpha(theme.colors?.[type], "22") || "rgba(255, 255, 255, 0.14)"};
+        appendAlpha(
+            getTypeColor(theme, type) || theme.colors?.background,
+            "22",
+        ) || "rgba(255, 255, 255, 0.14)"};
     border: 1px solid
         ${({ theme, type }) =>
-            appendAlpha(theme.colors?.[type], "55") || "rgba(0, 0, 0, 0.12)"};
-    color: ${({ theme, type }) => theme.colors?.[type] || "#111"};
+            appendAlpha(
+                getTypeColor(theme, type) || theme.colors?.border,
+                "55",
+            ) || "rgba(0, 0, 0, 0.12)"};
+    color: ${({ theme }) => theme.colors?.text || "#111"};
     box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
     animation: ${slideIn} 220ms ease forwards;
     pointer-events: auto;
@@ -203,8 +216,10 @@ const ToastIcon = styled.div`
     border-radius: 50%;
     display: grid;
     place-items: center;
-    color: ${({ theme, type }) => theme.colors?.[type] || "#111"};
-    background: rgba(255, 255, 255, 0.4);
+    color: ${({ theme, type }) =>
+        getTypeColor(theme, type) || theme.colors?.text};
+    background: ${({ theme, type }) =>
+        appendAlpha(getTypeColor(theme, type) || theme.colors?.surface, "55")};
     font-size: 1.1rem;
 `;
 

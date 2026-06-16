@@ -29,7 +29,7 @@ export const courseService = {
     // Error: 401, 403, 404
     async getCourseInfo(courseId) {
         const res = await api.get(`/courses/${courseId}`);
-        return res.data.data;
+        return res.data.data.course || res.data;
     },
 
     // Path: /courses - Method: POST

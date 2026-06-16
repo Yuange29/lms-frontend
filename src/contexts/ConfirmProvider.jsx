@@ -91,7 +91,7 @@ const Overlay = styled.div`
 
 const Dialog = styled.div`
     width: min(480px, 100%);
-    background: var(--color-background, #a76969);
+    background: var(--color-card);
     border-radius: 18px;
     box-shadow: rgba(15, 23, 42, 0.18) 0px 20px 60px;
     padding: 1.5rem;

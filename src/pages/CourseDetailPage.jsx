@@ -19,9 +19,13 @@ import { H, Text } from "../components/ui/text";
 import { formatDate, formatPrice } from "../utils/getDay";
 import { useEffect, useState } from "react";
 
+import Button from "../components/ui/Button";
 import CourseItemSkeleton from "../components/loading/CourseItemSkeleton";
 import { Section } from "../components/ui/Secttion";
 import { courseService } from "../services/course.service";
+import quizService from "../services/quiz.service";
+import { useCourse } from "./../hooks/courseHook";
+import { useToast } from "./../hooks/toastHook";
 
 const getCourseIdFromPath = () => {
     const segments = window.location.pathname.split("/").filter(Boolean);
@@ -32,46 +36,35 @@ const getCourseIdFromPath = () => {
     return segments.slice(1).join("/");
 };
 
-const countSectionItems = (sections, key) => {
-    if (!Array.isArray(sections)) return 0;
-
-    return sections.reduce((sum, section) => {
-        const items = section[key] ?? section[key + "s"] ?? [];
-        return sum + (Array.isArray(items) ? items.length : 0);
-    }, 0);
-};
-
 export default function CourseDetailPage() {
+    const { toast } = useToast();
+    const { getQuiz, quiz } = useCourse();
+
     const [courseId, setCourseId] = useState(getCourseIdFromPath());
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (!courseId) {
-            return;
-        }
+        if (!courseId) return;
 
         const fetchCourse = async () => {
             setLoading(true);
-            setError(null);
             setCourse(null);
 
             try {
                 const res = await courseService.getCourseInfo(courseId);
+                await getQuiz(courseId);
                 setCourse(res?.course || res);
             } catch (err) {
+                toast.error("Không thể tải dữ liệu khóa học!");
                 console.error(err);
-                setError(
-                    "Không thể tải dữ liệu khóa học. Vui lòng thử lại sau.",
-                );
             } finally {
                 setLoading(false);
             }
         };
 
         fetchCourse();
-    }, [courseId]);
+    }, [courseId, toast, getQuiz]);
 
     useEffect(() => {
         const handleRouteChange = () => {
@@ -87,26 +80,18 @@ export default function CourseDetailPage() {
         };
     }, []);
 
-    const totalSections = Array.isArray(course?.sections)
-        ? course.sections.length
-        : 0;
-    const totalLessons = countSectionItems(course?.sections, "lessons");
-    const totalQuizzes =
-        countSectionItems(course?.sections, "quizzes") ||
-        countSectionItems(course?.sections, "quiz");
+    const totalSections = 0;
+    const totalLessons = 0;
+    const totalQuizzes = quiz.length | 0;
 
     return (
         <Section>
             <H>Thông tin chi tiết của khóa học</H>
 
             {!courseId ? (
-                <Text>Không tìm thấy courseId trong URL.</Text>
+                toast.error("Đường dẫn bị lỗi!")
             ) : loading ? (
                 <CourseItemSkeleton />
-            ) : error ? (
-                <Text>{error}</Text>
-            ) : !course ? (
-                <Text>Không tìm thấy khóa học.</Text>
             ) : (
                 <CourseDetailContainer>
                     <CourseDetailHeader>
@@ -202,6 +187,22 @@ export default function CourseDetailPage() {
                                 </CourseDetailMetaLabel>
                                 <CourseDetailMetaValue>
                                     {totalQuizzes}
+                                </CourseDetailMetaValue>
+                            </CourseDetailMetaItem>
+                            <CourseDetailMetaItem>
+                                <CourseDetailMetaLabel />
+                                <CourseDetailMetaValue>
+                                    <Button
+                                        size="sm"
+                                        navigate={
+                                            courseId
+                                                ? `/course-info/${courseId}/quiz`
+                                                : undefined
+                                        }
+                                        disabled={!courseId}
+                                    >
+                                        Tạo Quiz
+                                    </Button>
                                 </CourseDetailMetaValue>
                             </CourseDetailMetaItem>
                         </CourseDetailMeta>

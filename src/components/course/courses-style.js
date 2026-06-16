@@ -1,6 +1,13 @@
 import { Text } from "../ui/text";
 import styled from "styled-components";
 
+const appendAlpha = (hexColor, alphaHex) => {
+    if (!hexColor || typeof hexColor !== "string") return hexColor;
+    const cleanHex = hexColor.replace("#", "");
+    if (cleanHex.length === 6) return `#${cleanHex}${alphaHex}`;
+    return hexColor;
+};
+
 // course dialog
 export const Overlay = styled.div`
     position: fixed;
@@ -190,9 +197,12 @@ export const CourseDetailStatus = styled.span`
     align-items: center;
     padding: 6px 12px;
     border-radius: 999px;
-    background: ${({ published }) =>
-        published ? "rgba(16, 185, 129, 0.12)" : "rgba(249, 115, 22, 0.12)"};
-    color: ${({ published }) => (published ? "#10b981" : "#f97316")};
+    background: ${({ published, theme }) =>
+        published
+            ? appendAlpha(theme.colors.success, "22")
+            : appendAlpha(theme.colors.warning, "22")};
+    color: ${({ published, theme }) =>
+        published ? theme.colors.success : theme.colors.warning};
     font-weight: 600;
     font-size: 0.95rem;
 `;

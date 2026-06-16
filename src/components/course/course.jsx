@@ -110,7 +110,11 @@ function CourseItem({ course, onClick }) {
                         alt={course.title}
                     />
                 ) : (
-                    <FontAwesomeIcon icon={faFile} size="xl" color="#6366f1" />
+                    <FontAwesomeIcon
+                        icon={faFile}
+                        size="xl"
+                        color="var(--color-primary)"
+                    />
                 )}
             </IconWrapper>
 

@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { CourseContext } from "./CourseContext";
 import { courseService } from "../services/course.service";
+import quizService from "../services/quiz.service";
 import { useToast } from "./../hooks/toastHook";
 
 export const CourseProvider = ({ children }) => {
@@ -9,7 +10,9 @@ export const CourseProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(false);
     const [courses, setCourses] = useState(null | []);
+    const [quiz, setQuiz] = useState(null | []);
 
+    // COURSE MANAGER
     const getOwnerCourse = useCallback(async () => {
         setLoading(true);
         try {
@@ -47,14 +50,31 @@ export const CourseProvider = ({ children }) => {
         [toast, getOwnerCourse],
     );
 
+    // QUIZ MANAGER
+    const getQuiz = useCallback(
+        async (courseId) => {
+            try {
+                const res = await quizService.getQuizzes(courseId);
+                setQuiz(res);
+            } catch (error) {
+                toast.error("Lấy quiz thất bại!");
+                console.log("fetch quiz: ", error);
+            }
+        },
+        [toast],
+    );
+
+    // VALUE MANAGER
     const value = useMemo(
         () => ({
             courses,
+            loading,
+            quiz,
             getOwnerCourse,
             createCourse,
-            loading,
+            getQuiz,
         }),
-        [courses, loading, getOwnerCourse, createCourse],
+        [courses, loading, quiz, getQuiz, getOwnerCourse, createCourse],
     );
 
     return (
