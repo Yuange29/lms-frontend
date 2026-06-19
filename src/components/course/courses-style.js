@@ -148,6 +148,7 @@ export const CourseDetailHeader = styled.div`
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
+        gap: 0.5em;
     }
 `;
 
@@ -160,6 +161,7 @@ export const CourseDetailThumbnail = styled.img`
 `;
 
 export const CourseDetailMeta = styled.div`
+    margin-top: 0.5em;
     display: grid;
     gap: 1em;
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -1,33 +1,30 @@
-import { AnimationWrapper } from "../../styles/Animation";
+import { LoadingCircle, LoadingLine, LoadingSquare } from "./loading-style";
+
 import styled from "styled-components";
 
 function UserSkeletonLoading() {
     return (
-        <AnimationWrapper>
-            <LoadingWrapper>
-                <Avatar></Avatar>
-                <Info>
-                    <Line width="120px" />
-                    <Line width="160px" />
-                </Info>
-                <UserBtn />
-            </LoadingWrapper>
-        </AnimationWrapper>
+        <LoadingWrapper>
+            <LoadingCircle $width="42px" $right="0.5em" />
+            <Info>
+                <LoadingLine $width="120px" />
+                <LoadingLine $width="160px" />
+            </Info>
+            <LoadingSquare $width="35px" />
+        </LoadingWrapper>
     );
 }
 
 function RoleSkeletonLoading() {
     return (
-        <AnimationWrapper>
-            <LoadingWrapper>
-                <Icon />
-                <Info>
-                    <Line width="120px" />
-                    <Line width="160px" />
-                </Info>
-                <UserBtn />
-            </LoadingWrapper>
-        </AnimationWrapper>
+        <LoadingWrapper>
+            <LoadingSquare $width="42px" $right="0.5em" />
+            <Info>
+                <LoadingLine $width="120px" />
+                <LoadingLine $width="160px" />
+            </Info>
+            <LoadingSquare $width="35px" />
+        </LoadingWrapper>
     );
 }
 
@@ -43,14 +40,6 @@ const LoadingWrapper = styled.div`
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
-const Avatar = styled.div`
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    margin-right: 0.8em;
-`;
-
 const Info = styled.div`
     display: flex;
     flex: 1;
@@ -58,28 +47,6 @@ const Info = styled.div`
     justify-content: center;
     gap: 0.5em;
     overflow: hidden;
-`;
-
-const Line = styled.div`
-    height: 10px;
-    width: ${({ width }) => width || "100%"};
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.15);
-`;
-
-const UserBtn = styled.div`
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.15);
-`;
-
-const Icon = styled.div`
-    height: 40px;
-    width: 40px;
-    margin-right: 0.8em;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.15);
 `;
 
 export { UserSkeletonLoading, RoleSkeletonLoading };

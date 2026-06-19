@@ -20,6 +20,7 @@ import {
 import Button from "../components/ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authService } from "../services/auth.service";
+import { navigate } from "./../utils/navigate";
 import { setAccessToken } from "../services/api";
 import styled from "styled-components";
 import { useAuth } from "../hooks/authHook";
@@ -85,8 +86,7 @@ export default function RegisterPage() {
             const resMe = await authService.me();
             setUser(resMe.user);
 
-            window.history.pushState(null, "", "/");
-            window.dispatchEvent(new Event("app:navigate"));
+            navigate("/");
         } catch (error) {
             console.error("Register error:", error);
             toast.error(error.message || "Đăng kí thất bại");
@@ -180,10 +180,7 @@ export default function RegisterPage() {
                 <FormLinkContainer>
                     <FormLinkText>Đã có tài khoản? </FormLinkText>
                     <LinkButton
-                        onClick={() => {
-                            window.history.pushState(null, "", "/signin");
-                            window.dispatchEvent(new Event("app:navigate"));
-                        }}
+                        onClick={() => navigate("/signin")}
                         disabled={isLoading}
                     >
                         Đăng nhập ngay

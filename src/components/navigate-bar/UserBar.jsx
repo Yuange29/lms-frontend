@@ -14,6 +14,7 @@ import { UserSkeletonLoading } from "../loading/NavBarSkeleton";
 import { authService } from "../../services/auth.service";
 import blankImage from "../../assets/avatar.png";
 import { clearAccessToken } from "../../services/api";
+import { navigate as nav } from "../../utils/navigate";
 import { useAuth } from "../../hooks/authHook";
 import { useConfirm } from "../../hooks/confirmHook";
 import { useToast } from "../../hooks/toastHook";
@@ -26,8 +27,7 @@ function UserBar({ user }) {
     const userBarRef = useRef(null);
 
     const navigate = useCallback((to) => {
-        window.history.pushState({}, "", to);
-        window.dispatchEvent(new Event("app:navigate"));
+        nav(to);
     }, []);
 
     useEffect(() => {
@@ -62,13 +62,12 @@ function UserBar({ user }) {
             clearAccessToken();
             setUser(null);
 
-            window.history.pushState(null, "", "/");
-            window.dispatchEvent(new Event("app:navigate"));
+            navigate("/");
         } catch (error) {
             toast.error("Lỗi: Đăng xuất thất bại");
             console.log("Lỗi: ", error);
         }
-    }, [confirm, setUser, toast]);
+    }, [confirm, setUser, toast, navigate]);
 
     const iconStyle = useMemo(
         () => ({

@@ -14,6 +14,7 @@ import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authService } from "../services/auth.service";
+import { navigate } from "./../utils/navigate";
 import { setAccessToken } from "../services/api";
 import styled from "styled-components";
 import { useAuth } from "../hooks/authHook";
@@ -58,8 +59,7 @@ export default function LoginPage() {
             const resMe = await authService.me();
             setUser(resMe.user);
 
-            window.history.pushState(null, "", "/");
-            window.dispatchEvent(new Event("app:navigate"));
+            navigate("/");
         } catch {
             toast.error("Sai tài khoản hoặc mật khẩu");
         } finally {
@@ -117,10 +117,7 @@ export default function LoginPage() {
                 <FormLinkContainer>
                     <FormLinkText>Chưa có tài khoản? </FormLinkText>
                     <LinkButton
-                        onClick={() => {
-                            window.history.pushState(null, "", "/register");
-                            window.dispatchEvent(new Event("app:navigate"));
-                        }}
+                        onClick={() => navigate("/register")}
                         disabled={isLoading}
                     >
                         Đăng kí ngay

@@ -10,16 +10,12 @@ import {
 } from "./styles";
 import { useEffect, useRef, useState } from "react";
 
+import { navigate } from "../../utils/navigate";
 import { useAuth } from "../../hooks/authHook";
 
 export default function DropDownMenu({ title, paths, icon, open, onToggle }) {
     const [hovered, setHovered] = useState(false);
     const { role } = useAuth();
-
-    const navigate = (to) => {
-        window.history.pushState({}, "", to);
-        window.dispatchEvent(new Event("app:navigate"));
-    };
 
     const contentRef = useRef(null);
     const isSingleLink = typeof paths === "string";

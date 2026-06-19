@@ -7,6 +7,7 @@ import {
     QuizHeader,
     QuizWrapper,
 } from "../components/QuizComponent/quiz";
+import { navigate, navigateBack } from "../utils/navigate";
 import { useEffect, useState } from "react";
 
 import Button from "../components/ui/Button";
@@ -164,8 +165,7 @@ export default function CreateQuizPage() {
                 }
             }
 
-            window.history.pushState(null, "", `/course-info/${courseId}`);
-            window.dispatchEvent(new Event("app:navigate"));
+            navigate(`/course-info/${courseId}`);
         } catch (err) {
             console.log(err);
         } finally {
@@ -299,10 +299,7 @@ export default function CreateQuizPage() {
                         <Button type="submit" disabled={submitting}>
                             {submitting ? "Đang tạo..." : "Tạo Quiz"}
                         </Button>
-                        <Button
-                            type="button"
-                            onClick={() => window.history.back()}
-                        >
+                        <Button type="button" onClick={() => navigateBack()}>
                             Huỷ
                         </Button>
                     </div>

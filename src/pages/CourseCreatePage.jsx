@@ -3,10 +3,12 @@ import { CoursesSkeleton } from "../components/loading/CourseItemSkeleton";
 import { CreateCourseForm } from "../components/course/createCourseFrom";
 import { H } from "../components/ui/Text";
 import { Section } from "../components/ui/Secttion";
+import { useAuth } from "./../hooks/authHook";
 import { useCourse } from "./../hooks/courseHook";
 import { useEffect } from "react";
 
 export default function CourseCreatePage() {
+    const { loading: auth } = useAuth();
     const { courses, loading, getOwnerCourse } = useCourse();
 
     useEffect(() => {
@@ -17,7 +19,7 @@ export default function CourseCreatePage() {
         <>
             <Section id={"create-course"}>
                 <H>Các khóa học đã tạo</H>
-                {loading ? (
+                {loading || auth ? (
                     <CoursesSkeleton />
                 ) : (
                     <CourseInfo courses={courses} />

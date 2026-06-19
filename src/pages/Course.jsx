@@ -7,7 +7,7 @@ import { useCourse } from "../hooks/courseHook";
 import { useEffect } from "react";
 
 export default function Course() {
-    const { role } = useAuth();
+    const { role, loading: auth } = useAuth();
     const { courses, loading, getOwnerCourse } = useCourse();
 
     useEffect(() => {
@@ -16,6 +16,7 @@ export default function Course() {
             // func get own student course
         }
     }, [courses, getOwnerCourse, role]);
+
     return (
         <>
             <Section>
@@ -27,7 +28,7 @@ export default function Course() {
                     Các khóa học
                     {role === "Giáo Viên" ? " đã tạo" : " đã tham gia"}
                 </H>
-                {loading ? (
+                {loading || auth ? (
                     <CoursesSkeleton />
                 ) : (
                     <CourseInfo courses={courses} />

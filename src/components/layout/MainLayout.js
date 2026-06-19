@@ -17,7 +17,7 @@ export const DesktopSidebar = styled.aside`
     color: var(--color-text);
     font-weight: 700;
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
         display: none;
     }
 `;
@@ -29,7 +29,7 @@ export const Content = styled.div`
     flex-direction: column;
     margin-left: 300px;
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
         margin-left: 0;
         padding-top: 56px;
     }
@@ -38,7 +38,7 @@ export const Content = styled.div`
 export const MobileHeader = styled.header`
     display: none;
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
         position: fixed;
         z-index: 30;
         top: 0;
@@ -96,7 +96,7 @@ export const Overlay = styled.div`
     pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
     transition: opacity 220ms ease;
 
-    @media (min-width: 481px) {
+    @media (min-width: 768px) {
         display: none;
     }
 `;
@@ -115,7 +115,7 @@ export const MobileSidebar = styled.aside`
     transform: translateX(${({ $isOpen }) => ($isOpen ? "0" : "-100%")});
     transition: transform 260ms ease;
 
-    @media (min-width: 481px) {
+    @media (min-width: 768px) {
         display: none;
     }
 `;

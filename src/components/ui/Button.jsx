@@ -1,3 +1,4 @@
+import { navigate as nav } from "./../../utils/navigate";
 import styled from "styled-components";
 
 function Button({
@@ -19,8 +20,7 @@ function Button({
             return;
         }
 
-        window.history.pushState(null, "", navigate);
-        window.dispatchEvent(new Event("app:navigate"));
+        nav(navigate);
     };
 
     return (

@@ -1,27 +1,19 @@
-import styled, { keyframes } from "styled-components";
+import { LoadingLine, LoadingRectangle, LoadingSquare } from "./loading-style";
 
 import { memo } from "react";
-
-const shimmer = keyframes`
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
-`;
+import styled from "styled-components";
 
 function CourseItemSkeleton() {
     return (
         <CourseSkeletonWrapper>
-            <IconSkeleton />
+            <LoadingSquare $width="50px" />
 
             <InfoSkeletonWrapper>
-                <TitleSkeleton />
-                <DescriptionSkeleton />
+                <LoadingLine $width="60%" />
+                <LoadingLine $width="80%" />
             </InfoSkeletonWrapper>
 
-            <MenuSkeleton />
+            <LoadingRectangle $width="50px" $height="50px" />
         </CourseSkeletonWrapper>
     );
 }
@@ -56,28 +48,8 @@ const CourseSkeletonWrapper = styled.div`
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background-color: var(--color-card);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const SkeletonBase = styled.div`
-    background: linear-gradient(
-        90deg,
-        var(--color-surface) 25%,
-        var(--color-surface-soft) 50%,
-        var(--color-surface) 75%
-    );
-    background-size: 1000px 100%;
-    animation: ${shimmer} 2s infinite;
-    border-radius: 4px;
-`;
-
-const IconSkeleton = styled(SkeletonBase)`
-    min-width: 50px;
-    width: 50px;
-    height: 50px;
-    border-radius: 6px;
 `;
 
 const InfoSkeletonWrapper = styled.div`
@@ -86,24 +58,6 @@ const InfoSkeletonWrapper = styled.div`
     flex-direction: column;
     gap: 0.5rem;
     min-width: 0;
-`;
-
-const TitleSkeleton = styled(SkeletonBase)`
-    height: 1rem;
-    width: 70%;
-    border-radius: 4px;
-`;
-
-const DescriptionSkeleton = styled(SkeletonBase)`
-    height: 0.875rem;
-    width: 90%;
-    border-radius: 4px;
-`;
-
-const MenuSkeleton = styled(SkeletonBase)`
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
 `;
 
 export default memo(CourseItemSkeleton);
