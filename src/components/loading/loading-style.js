@@ -17,17 +17,17 @@ const blink = keyframes`
 const baseCss = css`
     width: ${({ $width }) => $width || "100%"};
     margin-top: ${({ $top }) => $top || "0"};
-    margin-bottom: ${({ $bottom }) => $bottom || "0"};
+    margin-bottom: ${({ $bottom }) => $bottom || "10px"};
     margin-left: ${({ $left }) => $left || "0"};
     margin-right: ${({ $right }) => $right || "0"};
-    background: var(--color-surface-soft);
+    background: #8989899f;
     border-radius: 0.5em;
     animation: ${blink} 1.2s ease-in-out infinite;
 `;
 
 // use for letter
 export const LoadingLine = styled.div`
-    height: 10px;
+    height: 1em;
     border-radius: 999px;
     ${baseCss}
 `;
@@ -45,6 +45,7 @@ export const LoadingRectangle = styled.div`
 
 // use for avata
 export const LoadingCircle = styled.div`
-    height: ${({ $width }) => $width || "100%"};
     ${baseCss}
+    height: ${({ $width }) => $width || "100%"};
+    border-radius: 50%;
 `;

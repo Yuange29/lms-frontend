@@ -45,7 +45,7 @@ const Info = styled.div`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    gap: 0.5em;
+    /* gap: 0.5em; */
     overflow: hidden;
 `;
 

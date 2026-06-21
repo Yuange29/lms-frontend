@@ -4,13 +4,13 @@ import {
     CourseDetailMeta,
     CourseDetailThumbnail,
 } from "../components/course/courses-style";
-import { H, Text } from "../components/ui/text";
 import { formatDate, formatPrice } from "../utils/format";
 import { useEffect, useState } from "react";
 
-import Button from "../components/ui/Button";
-import CourseItemSkeleton from "../components/loading/CourseItemSkeleton";
-import { DetailInfo } from "../components/course/course";
+import { AddInfoCard } from "../components/course/course";
+import { CourseDetailPageSkeleton } from "../components/loading/CourseItemSkeleton";
+import { H } from "../components/ui/text";
+import { InfomationCard } from "../components/course/course";
 import { Section } from "../components/ui/Secttion";
 import { courseService } from "../services/course.service";
 import defaultImg from "../assets/defaultImg.png";
@@ -70,6 +70,7 @@ export default function CourseDetailPage() {
         };
     }, []);
 
+    const publish = course?.publish ? "Đã đăng" : "Chưa đăng";
     const totalSections = 0;
     const totalLessons = 0;
     const totalQuizzes = quiz.length | 0;
@@ -82,16 +83,24 @@ export default function CourseDetailPage() {
             {!courseId ? (
                 toast.error("Đường dẫn bị lỗi!")
             ) : loading ? (
-                <CourseItemSkeleton />
+                <CourseDetailPageSkeleton />
             ) : (
                 <CourseDetailContainer>
                     <Section id={"course-header"}>
                         <CourseDetailHeader>
                             <div style={{ flex: 1 }}>
-                                <H>{course.title}</H>
-                                <Text>
-                                    {course.description || "Không có mô tả."}
-                                </Text>
+                                <InfomationCard
+                                    label={"Tên khóa học:"}
+                                    content={course.title || "***"}
+                                    size={"xl"}
+                                    spacing={false}
+                                />
+
+                                <InfomationCard
+                                    label={"Mô tả:"}
+                                    content={course.description || "***"}
+                                    spacing={false}
+                                />
                             </div>
                             <CourseDetailThumbnail
                                 style={{ flex: 1 }}
@@ -104,87 +113,52 @@ export default function CourseDetailPage() {
                     <Section id={"basic-info"}>
                         <H size="h3">Thông tin cơ bản</H>
                         <CourseDetailMeta>
-                            <DetailInfo title={"ID"} desc={course.id} />
-                            <DetailInfo
-                                title={"Giá"}
-                                desc={formatPrice(course.price)}
+                            <InfomationCard
+                                label={"Giá"}
+                                content={formatPrice(course.price)}
                             />
-                            <DetailInfo
-                                title={"Giáo viên"}
-                                desc={course.instructor?.full_name | "-"}
+
+                            <InfomationCard
+                                label={"Giáo viên"}
+                                content={course.instructor.full_name}
                             />
-                            <DetailInfo
-                                title={"Trạng thái"}
-                                desc={
-                                    course.published
-                                        ? "Đã publish"
-                                        : "Chưa publish"
-                                }
+                            <InfomationCard
+                                label={"Trạng thái"}
+                                content={publish}
                             />
-                            <DetailInfo
-                                title={"Ngày tạo"}
-                                desc={formatDate(course.created_at)}
-                            />
-                            <DetailInfo
-                                title={"Ngày cập nhật"}
-                                desc={formatDate(course.updated_at)}
+                            <InfomationCard
+                                label={"Ngày tạo: "}
+                                content={formatDate(course.created_at)}
                             />
                         </CourseDetailMeta>
                     </Section>
 
                     <Section id={"course-sections"}>
-                        <H size="h3">Thông tin khóa học</H>
+                        <H size="h3">Số chương, bài, quiz: </H>
 
                         <CourseDetailMeta>
-                            <DetailInfo
-                                title={"Số chương"}
-                                desc={totalSections}
+                            <AddInfoCard
+                                label={"Số chương:"}
+                                content={totalSections}
+                                courseId={courseId}
+                                add={""}
                             />
-                            <DetailInfo>
-                                <Button
-                                    size="sm"
-                                    navigate={
-                                        courseId
-                                            ? `/course-info/${courseId}/quiz`
-                                            : undefined
-                                    }
-                                    disabled={!courseId}
-                                >
-                                    Tạo Quiz
-                                </Button>
-                            </DetailInfo>
-                            <DetailInfo
-                                title={"Số bài học"}
-                                desc={totalLessons}
+                            <AddInfoCard
+                                label={"Số bài học:"}
+                                content={totalLessons}
+                                courseId={courseId}
+                                add={""}
                             />
-                            <DetailInfo>
-                                <Button
-                                    size="sm"
-                                    navigate={
-                                        courseId
-                                            ? `/course-info/${courseId}/quiz`
-                                            : undefined
-                                    }
-                                    disabled={!courseId}
-                                >
-                                    Tạo Quiz
-                                </Button>
-                            </DetailInfo>
-                            <DetailInfo title={"Số quiz"} desc={totalQuizzes} />
-
-                            <DetailInfo>
-                                <Button
-                                    size="sm"
-                                    navigate={
-                                        courseId
-                                            ? `/course-info/${courseId}/quiz`
-                                            : undefined
-                                    }
-                                    disabled={!courseId}
-                                >
-                                    Tạo Quiz
-                                </Button>
-                            </DetailInfo>
+                            <AddInfoCard
+                                label={"Số quiz:"}
+                                content={totalQuizzes}
+                                courseId={courseId}
+                                add={
+                                    courseId
+                                        ? `/course-info/${courseId}/quiz`
+                                        : undefined
+                                }
+                            />
                         </CourseDetailMeta>
                     </Section>
                 </CourseDetailContainer>

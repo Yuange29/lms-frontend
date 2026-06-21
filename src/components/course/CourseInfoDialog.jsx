@@ -4,40 +4,24 @@ import {
     DialogActions,
     DialogBody,
     DialogHeader,
-    DialogLabel,
-    DialogRow,
-    DialogSection,
-    DialogText,
-    DialogTitle,
-    DialogValue,
+    ItemContent,
     Overlay,
-    SkeletonBox,
 } from "./courses-style";
 
 import Button from "../ui/Button";
-import CourseItemSkeleton from "../loading/CourseItemSkeleton";
+import { CourseDialogSkeleton } from "../loading/CourseItemSkeleton";
 import { Text } from "../ui/text";
-import { formatPrice } from "../../utils/format";
+import { useAuth } from "./../../hooks/authHook";
 import { useToast } from "./../../hooks/toastHook";
 
-function CourseInfoDialog({ course, courseId, loading, error, onClose }) {
+function CourseInfoDialog({ course, quiz, courseId, loading, error, onClose }) {
     const { toast } = useToast();
+    const { role } = useAuth();
 
-    const sectionCount = Array.isArray(course?.sections)
-        ? course.sections.length
-        : 0;
-    const lessonCount = Array.isArray(course?.sections)
-        ? course.sections.reduce((sum, section) => {
-              const lessons = section.lessons ?? section.lesson ?? [];
-              return sum + (Array.isArray(lessons) ? lessons.length : 0);
-          }, 0)
-        : 0;
-    const quizCount = Array.isArray(course?.sections)
-        ? course.sections.reduce((sum, section) => {
-              const quizzes = section.quizzes ?? section.quiz ?? [];
-              return sum + (Array.isArray(quizzes) ? quizzes.length : 0);
-          }, 0)
-        : 0;
+    const publish = course?.publish ? "Đã đăng" : "Chưa đăng";
+    const sectionTotal = 0;
+    const lessonTotal = 0;
+    const quizTotal = quiz?.length | 0;
 
     const viewDetailPath = course?.id
         ? `/course-info/${course.id}`
@@ -49,11 +33,8 @@ function CourseInfoDialog({ course, courseId, loading, error, onClose }) {
         <Overlay onClick={onClose}>
             <Dialog onClick={(event) => event.stopPropagation()}>
                 <DialogHeader>
-                    <DialogTitle>
-                        {course?.title || "Thông tin khóa học"}
-                    </DialogTitle>
+                    <Text> </Text>
                     <CloseButton type="button" onClick={onClose}>
-                        {/* <FontAwesomeIcon icon={faTimes} size="sm" /> */}
                         <Text>
                             <i className="fa-solid fa-xmark"></i>
                         </Text>
@@ -62,67 +43,37 @@ function CourseInfoDialog({ course, courseId, loading, error, onClose }) {
 
                 <DialogBody>
                     {loading ? (
-                        <>
-                            <DialogText>
-                                Đang tải thông tin khóa học...
-                            </DialogText>
-                            <CourseItemSkeleton />
-                            <DialogSection>
-                                <SkeletonBox height="22px" width="45%" />
-                                <SkeletonBox height="22px" width="45%" />
-                                <SkeletonBox height="22px" width="45%" />
-                            </DialogSection>
-                        </>
+                        <CourseDialogSkeleton />
                     ) : error ? (
                         toast.error("Không thể tải được khóa học!")
                     ) : (
                         <>
-                            <DialogText>
-                                {course?.description ||
-                                    "Chưa có mô tả cho khóa học này."}
-                            </DialogText>
-
-                            <DialogSection>
-                                <DialogRow>
-                                    <DialogLabel>Giá</DialogLabel>
-                                    <DialogValue>
-                                        {formatPrice(course?.price)}
-                                    </DialogValue>
-                                </DialogRow>
-                                {course?.instructor?.full_name && (
-                                    <DialogRow>
-                                        <DialogLabel>Giảng viên</DialogLabel>
-                                        <DialogValue>
-                                            {course.instructor.full_name}
-                                        </DialogValue>
-                                    </DialogRow>
-                                )}
-                                {typeof course?.published !== "undefined" && (
-                                    <DialogRow>
-                                        <DialogLabel>Trạng thái</DialogLabel>
-                                        <DialogValue>
-                                            {course.published
-                                                ? "Đã publish"
-                                                : "Chưa publish"}
-                                        </DialogValue>
-                                    </DialogRow>
-                                )}
-                            </DialogSection>
-
-                            <DialogSection>
-                                <DialogRow>
-                                    <DialogLabel>Số chương</DialogLabel>
-                                    <DialogValue>{sectionCount}</DialogValue>
-                                </DialogRow>
-                                <DialogRow>
-                                    <DialogLabel>Số bài học</DialogLabel>
-                                    <DialogValue>{lessonCount}</DialogValue>
-                                </DialogRow>
-                                <DialogRow>
-                                    <DialogLabel>Số quiz</DialogLabel>
-                                    <DialogValue>{quizCount}</DialogValue>
-                                </DialogRow>
-                            </DialogSection>
+                            <Text color="muted">Tên khóa học: </Text>
+                            <Text align="center" size="xl" weight="extrabold">
+                                {course?.title}
+                            </Text>
+                            <ItemContent>
+                                <Text color="muted">Mô tả khóa học: </Text>
+                                <Text weight="bold">{course?.description}</Text>
+                            </ItemContent>
+                            <ItemContent
+                                style={{ display: role === "Giáo viên" }}
+                            >
+                                <Text color="muted">publish: </Text>
+                                <Text weight="bold">{publish}</Text>
+                            </ItemContent>
+                            <ItemContent>
+                                <Text color="muted">Số chương: </Text>
+                                <Text weight="bold">{sectionTotal}</Text>
+                            </ItemContent>
+                            <ItemContent>
+                                <Text color="muted">Số bài học: </Text>
+                                <Text weight="bold">{lessonTotal}</Text>
+                            </ItemContent>
+                            <ItemContent>
+                                <Text color="muted">Số quiz: </Text>
+                                <Text weight="bold">{quizTotal}</Text>
+                            </ItemContent>
                         </>
                     )}
                 </DialogBody>

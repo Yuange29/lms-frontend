@@ -2,6 +2,7 @@ import CourseInfo from "../components/course/course";
 import { CoursesSkeleton } from "../components/loading/CourseItemSkeleton";
 import { CreateCourseForm } from "../components/course/createCourseFrom";
 import { H } from "../components/ui/Text";
+import { LoadingLine } from "../components/loading/loading-style";
 import { Section } from "../components/ui/Secttion";
 import { useAuth } from "./../hooks/authHook";
 import { useCourse } from "./../hooks/courseHook";
@@ -18,11 +19,16 @@ export default function CourseCreatePage() {
     return (
         <>
             <Section id={"create-course"}>
-                <H>Các khóa học đã tạo</H>
                 {loading || auth ? (
-                    <CoursesSkeleton />
+                    <>
+                        <LoadingLine $width="300px" />
+                        <CoursesSkeleton />
+                    </>
                 ) : (
-                    <CourseInfo courses={courses} />
+                    <>
+                        <H>Các khóa học đã tạo</H>
+                        <CourseInfo courses={courses} />
+                    </>
                 )}
             </Section>
             <Section id={"create-course"}>

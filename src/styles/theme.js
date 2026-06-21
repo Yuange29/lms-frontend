@@ -16,8 +16,8 @@ export const lightTheme = {
         // 60% Không gian học tập (Nền web, Khung bài học, Khung tài liệu)
         background: "#F8FAFC", // Slate 50 - Nền web dịu mắt, không bị chói như trắng tinh
         card: "#F4F4F4", // Trắng tinh để các block bài học nổi lên trên nền background
-        surface: "#F1F5F9", // Slate 100 - Dùng cho các phân vùng phụ
-        surfaceSoft: "#E2E8F0", // Slate 200
+        surface: "#E2E8F0", // Slate 200
+        surfaceSoft: "#F1F5F9", // Slate 100 - Dùng cho các phân vùng phụ
 
         // Chữ và nội dung bài học
         text: "#0F172A", // Slate 900 - Chữ chính đọc sách, làm quiz

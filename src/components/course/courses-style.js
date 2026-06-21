@@ -21,9 +21,9 @@ export const Overlay = styled.div`
 
 export const Dialog = styled.div`
     width: min(600px, calc(100% - 32px));
-    border-radius: 24px;
-    padding: 24px;
-    background: var(--color-surface);
+    border-radius: 1em;
+    padding: 1em;
+    background: var(--color-primary-soft);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
     color: var(--color-text);
@@ -37,26 +37,19 @@ export const DialogHeader = styled.div`
     margin-bottom: 20px;
 `;
 
-export const DialogTitle = styled.h2`
-    margin: 0;
-    font-size: 1.25rem;
-    color: var(--color-text);
-`;
-
 export const CloseButton = styled.button`
-    width: 42px;
-    height: 42px;
     display: grid;
     place-items: center;
-    border: 1px solid var(--color-border);
+    border: 0;
     border-radius: 50%;
-    background: var(--color-background);
+    background: transparent;
     color: var(--color-text);
     cursor: pointer;
-    font-size: 1.25rem;
+    font-size: 18px;
 
     &:hover {
-        background: var(--color-secondary);
+        opacity: 0.8;
+        scale: 1.02;
     }
 `;
 
@@ -67,63 +60,7 @@ export const DialogForm = styled.form`
 
 export const DialogBody = styled.div`
     display: grid;
-    gap: 18px;
-    margin-top: 12px;
-`;
-
-export const DialogSection = styled.div`
-    display: grid;
-    gap: 12px;
-`;
-
-export const DialogRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    border-radius: 16px;
-    background: var(--color-surface-soft);
-`;
-
-export const DialogLabel = styled.span`
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-`;
-
-export const DialogValue = styled.span`
-    font-weight: 600;
-    color: var(--color-text);
-`;
-
-export const DialogText = styled.p`
-    margin: 0;
-    color: var(--color-text);
-    line-height: 1.75;
-    white-space: pre-wrap;
-`;
-
-export const SkeletonBox = styled.div`
-    width: ${({ width }) => width || "100%"};
-    height: ${({ height }) => height || "16px"};
-    border-radius: 12px;
-    background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.08),
-        rgba(255, 255, 255, 0.16),
-        rgba(255, 255, 255, 0.08)
-    );
-    background-size: 200% 100%;
-    animation: loading 1.2s ease-in-out infinite;
-
-    @keyframes loading {
-        0% {
-            background-position: 200% 0;
-        }
-        100% {
-            background-position: -200% 0;
-        }
-    }
+    gap: 0.5em;
 `;
 
 export const DialogActions = styled.div`
@@ -134,6 +71,16 @@ export const DialogActions = styled.div`
     margin-top: 8px;
 `;
 
+export const ItemContent = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+    border: 0;
+    border-radius: 0.7em;
+    background-color: var(--color-card);
+`;
+
+// course detail
 export const CourseDetailContainer = styled.div`
     display: grid;
     gap: 24px;
@@ -146,24 +93,28 @@ export const CourseDetailHeader = styled.div`
     grid-template-columns: 1fr 240px;
     align-items: start;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
         grid-template-columns: 1fr;
+        grid-template-rows: 1fr 240px;
         gap: 0.5em;
     }
 `;
 
 export const CourseDetailThumbnail = styled.img`
-    width: 100%;
-    height: 240px;
+    height: 100%;
     object-fit: cover;
     border-radius: 24px;
     background: var(--color-card);
+    margin: 0 auto;
+
+    @media (min-width: 1024px) {
+        width: 100%;
+    }
 `;
 
 export const CourseDetailMeta = styled.div`
     margin-top: 0.5em;
     display: grid;
-    gap: 1em;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
     @media (max-width: 768px) {
@@ -362,5 +313,44 @@ export const MenuButton = styled.button`
 
     &:hover {
         color: var(--color-text);
+    }
+`;
+
+export const InfoCardWrapper = styled.div`
+    display: grid;
+    padding: 0.5em 1em;
+    margin: 0.5em 0.25em;
+    border: 0;
+    border-radius: 0.5em;
+    grid-template-columns: 1fr 3fr;
+    background-color: #fff;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+`;
+
+export const AddInfoCardWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 0.5em 1em;
+    margin: 0.5em 0.25em;
+    border: 0;
+    border-radius: 0.5em;
+
+    .text-group {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5em 1em;
+        margin-bottom: 0.5em;
+    }
+    .btn-group {
+        display: flex;
+    }
+
+    .btn-group > button {
+        flex: 1;
     }
 `;

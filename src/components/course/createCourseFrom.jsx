@@ -4,7 +4,6 @@ import {
     DialogActions,
     DialogForm,
     DialogHeader,
-    DialogTitle,
     Overlay,
 } from "./courses-style";
 import { FormGroup, FormInput, FormLabel } from "../ui/form_ui";
@@ -51,7 +50,6 @@ export function CreateCourseForm() {
                 <Overlay>
                     <Dialog onClick={(event) => event.stopPropagation()}>
                         <DialogHeader>
-                            <DialogTitle>Tạo khóa học mới</DialogTitle>
                             <CloseButton
                                 type="button"
                                 onClick={handleClose}

@@ -18,6 +18,7 @@ const textSizes = {
     md: "1rem",
     lg: "1.125rem",
     xl: "1.25rem",
+    sl: "1.5em",
 };
 
 const headingSizes = {
@@ -41,7 +42,6 @@ const getHeadingSize = ({ $size }) => headingSizes[$size] || headingSizes.h2;
 const getWeight = ({ $weight }) => fontWeights[$weight] || fontWeights.regular;
 
 const baseTextStyles = css`
-    margin: 0;
     color: ${getColor};
     font-weight: ${getWeight};
     letter-spacing: 0;

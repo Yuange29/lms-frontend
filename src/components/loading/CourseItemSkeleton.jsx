@@ -1,5 +1,7 @@
+import { CourseDetailHeader, CourseDetailMeta } from "../course/courses-style";
 import { LoadingLine, LoadingRectangle, LoadingSquare } from "./loading-style";
 
+import { Section } from "../ui/Secttion";
 import { memo } from "react";
 import styled from "styled-components";
 
@@ -10,6 +12,7 @@ function CourseItemSkeleton() {
 
             <InfoSkeletonWrapper>
                 <LoadingLine $width="60%" />
+                <LoadingLine $width="80%" />
                 <LoadingLine $width="80%" />
             </InfoSkeletonWrapper>
 
@@ -28,17 +31,76 @@ function CoursesSkeleton({ count = 4 }) {
     );
 }
 
+function CourseDialogSkeleton() {
+    return (
+        <BodySkeleton>
+            <LoadingLine $width="80px" />
+            <LoadingLine $width="50%" style={{ margin: "0 auto 10px" }} />
+            <LoadingRectangle $height="30px" $width="100%" />
+            <LoadingRectangle $height="30px" $width="100%" />
+            <LoadingRectangle $height="30px" $width="100%" />
+            <LoadingRectangle $height="30px" $width="100%" />
+            <LoadingRectangle $height="30px" $width="100%" />
+        </BodySkeleton>
+    );
+}
+
+function CourseDetailPageSkeleton() {
+    return (
+        <>
+            <Section>
+                <LoadingRectangle $width="70%" $height="30px" />
+            </Section>
+            <Section>
+                <LoadingRectangle $width="45%" $height="30px" />
+                <CourseDetailHeader>
+                    <div style={{ flex: 1 }}>
+                        <LoadingRectangle $width="50%" $height="30px" />
+                        <LoadingRectangle $width="40%" $height="30px" />
+                    </div>
+                    <LoadingSquare $width="240px" />
+                </CourseDetailHeader>
+            </Section>
+            <Section>
+                <LoadingRectangle $width="25%" $height="30px" />
+                <CourseDetailMeta>
+                    <LoadingRectangle $width="90%" $height="30px" />
+                    <LoadingRectangle $width="90%" $height="30px" />
+                    <LoadingRectangle $width="90%" $height="30px" />
+                    <LoadingRectangle $width="90%" $height="30px" />
+                </CourseDetailMeta>
+            </Section>
+            <Section>
+                <LoadingRectangle $width="25%" $height="30px" />
+                <CourseDetailMeta>
+                    <LoadingRectangle $width="90%" $height="80px" />
+                    <LoadingRectangle $width="90%" $height="80px" />
+                    <LoadingRectangle $width="90%" $height="80px" />
+                </CourseDetailMeta>
+            </Section>
+        </>
+    );
+}
+
+const BodySkeleton = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 const CoursesSkeletonWrapper = styled.div`
     width: 100%;
+    max-height: 250px;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
 
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
+    &::-webkit-scrollbar {
+        display: none;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
         grid-template-columns: 1fr;
     }
 `;
@@ -46,19 +108,18 @@ const CoursesSkeletonWrapper = styled.div`
 const CourseSkeletonWrapper = styled.div`
     display: flex;
     align-items: center;
-    gap: 1rem;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.305);
 `;
 
 const InfoSkeletonWrapper = styled.div`
+    margin-left: 10px;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     min-width: 0;
 `;
 
 export default memo(CourseItemSkeleton);
-export { CoursesSkeleton };
+export { CoursesSkeleton, CourseDialogSkeleton, CourseDetailPageSkeleton };
