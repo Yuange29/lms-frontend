@@ -69,6 +69,10 @@ export const DialogActions = styled.div`
     justify-content: flex-end;
     gap: 12px;
     margin-top: 8px;
+
+    .remove-btn {
+        justify-self: start;
+    }
 `;
 
 export const ItemContent = styled.div`
@@ -215,6 +219,7 @@ export const CoursesWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    scroll-behavior: smooth;
 
     &::-webkit-scrollbar {
         display: none;
@@ -228,10 +233,9 @@ export const CoursesWrapper = styled.div`
 export const CourseWrapper = styled.div`
     display: flex;
     align-items: center;
-    height: 100px;
     gap: 1rem;
-    padding: 0.5em;
-    background-color: var(--color-primary-soft);
+    padding: 0.5em 1em;
+    background-color: var(--color-background);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;

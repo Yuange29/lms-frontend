@@ -8,12 +8,16 @@ import { formatDate, formatPrice } from "../utils/format";
 import { useEffect, useState } from "react";
 
 import { AddInfoCard } from "../components/course/course";
+import Button from "../components/ui/Button";
 import { CourseDetailPageSkeleton } from "../components/loading/CourseItemSkeleton";
 import { H } from "../components/ui/text";
 import { InfomationCard } from "../components/course/course";
+import QuizCards from "../components/course/QuizCards";
 import { Section } from "../components/ui/Secttion";
 import { courseService } from "../services/course.service";
 import defaultImg from "../assets/defaultImg.png";
+import { navigateBack } from "../utils/navigate";
+import { useConfirm } from "../hooks/confirmHook";
 import { useCourse } from "./../hooks/courseHook";
 import { useToast } from "./../hooks/toastHook";
 
@@ -28,11 +32,39 @@ const getCourseIdFromPath = () => {
 
 export default function CourseDetailPage() {
     const { toast } = useToast();
-    const { getQuiz, quiz } = useCourse();
+    const { getQuiz, quiz, courses, setCourses } = useCourse();
+    const { confirm } = useConfirm();
 
     const [courseId, setCourseId] = useState(getCourseIdFromPath());
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isRemove, setIsRemove] = useState(false);
+
+    const handleRemove = async (courseId) => {
+        setIsRemove(true);
+        const isOk = await confirm({
+            title: "Xóa khóa học",
+            content: "Bạn chắc chắn muốn xóa khóa học này chứ",
+            confirmText: "Chắc chắn",
+            cancelText: "Hủy",
+        });
+
+        if (!isOk) return;
+
+        try {
+            await courseService.deleteCourse(courseId);
+
+            toast.success("Xóa thành công");
+            navigateBack();
+
+            setCourses(courses.filter((i) => i.id != courseId));
+        } catch (error) {
+            toast.error("Xóa thất bại");
+            console.log("Delete Course Error: ", error);
+        } finally {
+            setIsRemove(false);
+        }
+    };
 
     useEffect(() => {
         if (!courseId) return;
@@ -160,6 +192,22 @@ export default function CourseDetailPage() {
                                 }
                             />
                         </CourseDetailMeta>
+                    </Section>
+
+                    <Section id={"course-quiz"}>
+                        <QuizCards quizzes={quiz} />
+                    </Section>
+
+                    <Section>
+                        <div style={{ display: "flex", justifyContent: "end" }}>
+                            <Button
+                                variant="danger"
+                                disabled={isRemove}
+                                onClick={() => handleRemove(courseId)}
+                            >
+                                Xóa khóa học
+                            </Button>
+                        </div>
                     </Section>
                 </CourseDetailContainer>
             )}

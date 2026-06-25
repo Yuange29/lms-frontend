@@ -1,6 +1,7 @@
 import CourseInfo from "../components/course/course";
 import { CoursesSkeleton } from "../components/loading/CourseItemSkeleton";
 import { H } from "../components/ui/text";
+import { LoadingLine } from "../components/loading/loading-style";
 import { Section } from "../components/ui/Secttion";
 import { useAuth } from "./../hooks/authHook";
 import { useCourse } from "../hooks/courseHook";
@@ -24,14 +25,19 @@ export default function Course() {
             </Section>
 
             <Section>
-                <H>
-                    Các khóa học
-                    {role === "Giáo Viên" ? " đã tạo" : " đã tham gia"}
-                </H>
                 {loading || auth ? (
-                    <CoursesSkeleton />
+                    <>
+                        <LoadingLine $width="50%" />
+                        <CoursesSkeleton />
+                    </>
                 ) : (
-                    <CourseInfo courses={courses} />
+                    <>
+                        <H>
+                            Các khóa học
+                            {role === "Giáo Viên" ? " đã tạo" : " đã tham gia"}
+                        </H>
+                        <CourseInfo courses={courses} />
+                    </>
                 )}
             </Section>
         </>

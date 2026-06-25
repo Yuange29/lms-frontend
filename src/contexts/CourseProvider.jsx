@@ -70,11 +70,20 @@ export const CourseProvider = ({ children }) => {
             courses,
             loading,
             quiz,
+            setCourses,
             getOwnerCourse,
             createCourse,
             getQuiz,
         }),
-        [courses, loading, quiz, getQuiz, getOwnerCourse, createCourse],
+        [
+            courses,
+            loading,
+            quiz,
+            getQuiz,
+            setCourses,
+            getOwnerCourse,
+            createCourse,
+        ],
     );
 
     return (

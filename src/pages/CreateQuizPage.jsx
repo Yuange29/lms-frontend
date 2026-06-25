@@ -1,9 +1,6 @@
 import {
-    FormContainer,
-    FormWrapper,
-} from "../components/ui/form_ui/FormContainer";
-import {
     QuestionBox,
+    QuizFormWrapper,
     QuizHeader,
     QuizWrapper,
 } from "../components/QuizComponent/quiz";
@@ -12,18 +9,21 @@ import { useEffect, useState } from "react";
 
 import Button from "../components/ui/Button";
 import CourseItemSkeleton from "../components/loading/CourseItemSkeleton";
+import { FormContainer } from "../components/ui/form_ui/FormContainer";
 import FormGroup from "../components/ui/form_ui/FormGroup";
-import FormInput from "../components/ui/form_ui/FormInput";
+import { QuizInpuFrom as FormInput } from "../components/QuizComponent/quiz";
 import FormLabel from "../components/ui/form_ui/FormLabel";
 import FormTitle from "../components/ui/form_ui/FormTitle";
+import { Text } from "../components/ui/text";
 import answerService from "../services/answer.service";
 import { courseService } from "../services/course.service";
 import questionService from "../services/question.service";
 import quizService from "../services/quiz.service";
+import { useConfirm } from "./../hooks/confirmHook";
 
 function getCourseIdFromPath() {
     const segments = window.location.pathname.split("/").filter(Boolean);
-    // expected /course-info/:id/quiz
+
     if (segments[0] !== "course-info") return "";
     const middle = segments.slice(1, -1);
     return middle.join("/");
@@ -32,6 +32,7 @@ function getCourseIdFromPath() {
 export default function CreateQuizPage() {
     const courseId = getCourseIdFromPath();
 
+    const { confirm } = useConfirm();
     const [loading, setLoading] = useState(true);
     const [course, setCourse] = useState(null);
 
@@ -42,6 +43,17 @@ export default function CreateQuizPage() {
 
     const [questions, setQuestions] = useState([]);
     const [submitting, setSubmitting] = useState(false);
+
+    const handleCancel = async () => {
+        const isOk = await confirm({
+            title: "Chắc chắc muốn thoát ?",
+            desc: "quiz mẫu sẽ không lưu",
+        });
+
+        if (!isOk) return;
+
+        navigateBack();
+    };
 
     useEffect(() => {
         let mounted = true;
@@ -184,12 +196,12 @@ export default function CreateQuizPage() {
     return (
         <QuizWrapper>
             <QuizHeader>
-                <h2>Thêm Quiz cho course</h2>
+                <Text color="muted">Khóa học</Text>
                 <div>
                     {course ? (
-                        <strong>
+                        <Text weight="bold" size="lg">
                             {course.title || course.name || course.course_title}
-                        </strong>
+                        </Text>
                     ) : (
                         <em>Khóa học không tìm thấy</em>
                     )}
@@ -197,11 +209,11 @@ export default function CreateQuizPage() {
             </QuizHeader>
 
             <FormContainer>
-                <FormWrapper onSubmit={handleSubmit}>
-                    <FormTitle>Thêm Quiz cho course</FormTitle>
+                <QuizFormWrapper onSubmit={handleSubmit}>
+                    <FormTitle>Thêm thông tin </FormTitle>
 
                     <FormGroup>
-                        <FormLabel>Tiêu đề quiz</FormLabel>
+                        <FormLabel>Tiêu đề</FormLabel>
                         <FormInput
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
@@ -295,15 +307,29 @@ export default function CreateQuizPage() {
                         </QuestionBox>
                     ))}
 
-                    <div style={{ display: "flex", gap: 8 }}>
-                        <Button type="submit" disabled={submitting}>
-                            {submitting ? "Đang tạo..." : "Tạo Quiz"}
-                        </Button>
-                        <Button type="button" onClick={() => navigateBack()}>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-evenly",
+                        }}
+                    >
+                        <Button
+                            type="button"
+                            $width="30%"
+                            variant="danger"
+                            onClick={() => handleCancel()}
+                        >
                             Huỷ
                         </Button>
+                        <Button
+                            $width="30%"
+                            type="submit"
+                            disabled={submitting}
+                        >
+                            {submitting ? "Đang tạo..." : "Tạo Quiz"}
+                        </Button>
                     </div>
-                </FormWrapper>
+                </QuizFormWrapper>
             </FormContainer>
         </QuizWrapper>
     );

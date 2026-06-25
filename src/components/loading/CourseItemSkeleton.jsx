@@ -94,6 +94,7 @@ const CoursesSkeletonWrapper = styled.div`
     scrollbar-width: none;
     -ms-overflow-style: none;
     display: grid;
+    gap: 0.5em;
     grid-template-columns: repeat(2, 1fr);
 
     &::-webkit-scrollbar {
@@ -108,9 +109,10 @@ const CoursesSkeletonWrapper = styled.div`
 const CourseSkeletonWrapper = styled.div`
     display: flex;
     align-items: center;
-    padding: 1rem;
+    padding: 0.5em 1em;
+    border: 2px solid rgba(0, 0, 0, 0.207);
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.305);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.305);
 `;
 
 const InfoSkeletonWrapper = styled.div`

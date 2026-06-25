@@ -14,6 +14,10 @@ export const QuizHeader = styled.div`
     margin-bottom: 1rem;
 `;
 
+export const QuizFormWrapper = styled.div`
+    width: 100%;
+`;
+
 export const QuizForm = styled.form`
     display: flex;
     flex-direction: column;
@@ -49,9 +53,10 @@ export const TextArea = styled.textarea`
 `;
 
 export const QuestionBox = styled.div`
+    margin-top: 1em;
     padding: 0.75rem;
     border-radius: 8px;
-    background: var(--color-surface);
+
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -71,13 +76,35 @@ export const SmallInput = styled.input`
     color: var(--color-text);
 `;
 
-export const Button = styled.button`
-    padding: 0.6rem 0.9rem;
-    border-radius: 6px;
-    border: none;
-    background: var(--color-primary);
-    color: white;
-    cursor: pointer;
+export const QuizInpuFrom = styled.input`
+    width: 100%;
+    min-height: 46px;
+    margin-top: 1em;
+    padding: 12px 14px;
+    border-radius: 16px;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    color: var(--color-text);
+    font-size: 0.95rem;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+
+    &::placeholder {
+        color: var(--color-text-muted);
+    }
+
+    &:disabled {
+        background-color: var(--color-secondary);
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
 `;
 
 export default {};

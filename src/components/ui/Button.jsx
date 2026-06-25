@@ -99,7 +99,7 @@ const ButtonStyle = styled.button`
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: ${({ $fullWidth }) => ($fullWidth ? "100%" : "auto")};
+    width: ${({ $width }) => $width || "auto"};
     min-height: ${({ $size }) => getSize({ $size }).minHeight};
     margin: 0.6em;
     padding: ${({ $size }) => getSize({ $size }).padding};
