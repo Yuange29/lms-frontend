@@ -86,8 +86,6 @@ export const ItemContent = styled.div`
 
 // course detail
 export const CourseDetailContainer = styled.div`
-    display: grid;
-    gap: 24px;
     margin-top: 24px;
 `;
 

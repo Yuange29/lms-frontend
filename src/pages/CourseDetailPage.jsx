@@ -19,6 +19,7 @@ import defaultImg from "../assets/defaultImg.png";
 import { navigateBack } from "../utils/navigate";
 import { useConfirm } from "../hooks/confirmHook";
 import { useCourse } from "./../hooks/courseHook";
+import { useQuiz } from "./../hooks/quizHook";
 import { useToast } from "./../hooks/toastHook";
 
 const getCourseIdFromPath = () => {
@@ -32,13 +33,45 @@ const getCourseIdFromPath = () => {
 
 export default function CourseDetailPage() {
     const { toast } = useToast();
-    const { getQuiz, quiz, courses, setCourses } = useCourse();
+    const {
+        course,
+        courses,
+        loadingCourse,
+        courseId,
+        setCourses,
+        setCourseId,
+        getCourseDetail,
+    } = useCourse();
     const { confirm } = useConfirm();
+    const { quizzes, getQuizzes, loading: loadingQuizzes } = useQuiz();
 
-    const [courseId, setCourseId] = useState(getCourseIdFromPath());
-    const [course, setCourse] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [isRemove, setIsRemove] = useState(false);
+    const [isPublish, setIsPublish] = useState(false);
+
+    const handlePublish = async (courseId) => {
+        const isOk = await confirm({
+            title: "Đăng khóa học",
+            content: `Bạn chắc chắn muốn ${course?.publish ? "hủy đăng" : "đăng"} khóa học này chứ`,
+            confirmText: `${!course?.publish ? "Đăng" : "Gỡ"}`,
+            cancelText: "Chờ đã",
+        });
+
+        if (!isOk) return;
+
+        setIsPublish(true);
+
+        try {
+            await courseService.publishCourse(courseId);
+            toast.success("Cập nhật trạng thái thành công");
+            await getCourseDetail(courseId);
+            console.log("Publish Course Success: ", course);
+        } catch (error) {
+            toast.error("Cập nhật trạng thái thất bại");
+            console.log("Publish Course Error: ", error);
+        } finally {
+            setIsPublish(false);
+        }
+    };
 
     const handleRemove = async (courseId) => {
         setIsRemove(true);
@@ -66,27 +99,18 @@ export default function CourseDetailPage() {
         }
     };
 
+    useEffect(() => setCourseId(getCourseIdFromPath()), [setCourseId]);
+
     useEffect(() => {
         if (!courseId) return;
 
-        const fetchCourse = async () => {
-            setLoading(true);
-            setCourse(null);
-
-            try {
-                const res = await courseService.getCourseInfo(courseId);
-                await getQuiz(courseId);
-                setCourse(res?.course || res);
-            } catch (err) {
-                toast.error("Không thể tải dữ liệu khóa học!");
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
+        const fetchCourseAndQuizzes = async (courseId) => {
+            await getCourseDetail(courseId);
+            await getQuizzes(courseId);
         };
 
-        fetchCourse();
-    }, [courseId, toast, getQuiz]);
+        fetchCourseAndQuizzes(courseId);
+    }, [courseId, getQuizzes, getCourseDetail]);
 
     useEffect(() => {
         const handleRouteChange = () => {
@@ -100,12 +124,12 @@ export default function CourseDetailPage() {
             window.removeEventListener("popstate", handleRouteChange);
             window.removeEventListener("app:navigate", handleRouteChange);
         };
-    }, []);
+    }, [setCourseId]);
 
     const publish = course?.publish ? "Đã đăng" : "Chưa đăng";
     const totalSections = 0;
     const totalLessons = 0;
-    const totalQuizzes = quiz.length | 0;
+    const totalQuizzes = quizzes?.length | 0;
 
     return (
         <>
@@ -113,8 +137,10 @@ export default function CourseDetailPage() {
                 <H size="h1">Thông tin chi tiết của khóa học</H>
             </Section>
             {!courseId ? (
-                toast.error("Đường dẫn bị lỗi!")
-            ) : loading ? (
+                <Section>
+                    <H size="h3">Đang có lỗi xảy ra</H>
+                </Section>
+            ) : loadingCourse || loadingQuizzes ? (
                 <CourseDetailPageSkeleton />
             ) : (
                 <CourseDetailContainer>
@@ -123,21 +149,21 @@ export default function CourseDetailPage() {
                             <div style={{ flex: 1 }}>
                                 <InfomationCard
                                     label={"Tên khóa học:"}
-                                    content={course.title || "***"}
+                                    content={course?.title || "***"}
                                     size={"xl"}
                                     spacing={false}
                                 />
 
                                 <InfomationCard
                                     label={"Mô tả:"}
-                                    content={course.description || "***"}
+                                    content={course?.description || "***"}
                                     spacing={false}
                                 />
                             </div>
                             <CourseDetailThumbnail
                                 style={{ flex: 1 }}
-                                src={course.thumbnail_url || defaultImg}
-                                alt={course.title}
+                                src={course?.thumbnail_url || defaultImg}
+                                alt={course?.title}
                             />
                         </CourseDetailHeader>
                     </Section>
@@ -147,12 +173,12 @@ export default function CourseDetailPage() {
                         <CourseDetailMeta>
                             <InfomationCard
                                 label={"Giá"}
-                                content={formatPrice(course.price)}
+                                content={formatPrice(course?.price)}
                             />
 
                             <InfomationCard
                                 label={"Giáo viên"}
-                                content={course.instructor.full_name}
+                                content={course?.instructor?.full_name}
                             />
                             <InfomationCard
                                 label={"Trạng thái"}
@@ -160,7 +186,7 @@ export default function CourseDetailPage() {
                             />
                             <InfomationCard
                                 label={"Ngày tạo: "}
-                                content={formatDate(course.created_at)}
+                                content={formatDate(course?.created_at)}
                             />
                         </CourseDetailMeta>
                     </Section>
@@ -195,12 +221,26 @@ export default function CourseDetailPage() {
                     </Section>
 
                     <Section id={"course-quiz"}>
-                        <QuizCards quizzes={quiz} />
+                        <QuizCards quizzes={quizzes} />
                     </Section>
 
                     <Section>
-                        <div style={{ display: "flex", justifyContent: "end" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                            }}
+                        >
                             <Button
+                                $width="200px"
+                                variant="secondary"
+                                disabled={isPublish}
+                                onClick={() => handlePublish(courseId)}
+                            >
+                                {course?.publish ? "Đã đăng" : "Chưa đăng"}
+                            </Button>
+                            <Button
+                                $width="200px"
                                 variant="danger"
                                 disabled={isRemove}
                                 onClick={() => handleRemove(courseId)}

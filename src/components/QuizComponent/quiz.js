@@ -14,7 +14,7 @@ export const QuizHeader = styled.div`
     margin-bottom: 1rem;
 `;
 
-export const QuizFormWrapper = styled.div`
+export const QuizFormWrapper = styled.form`
     width: 100%;
 `;
 

@@ -9,7 +9,7 @@ function QuizzesInfo({ quizzes, children }) {
         <>
             <H>Các quiz</H>
             <QuizWrapper>
-                {quizzes.map((quiz) => (
+                {quizzes?.map((quiz) => (
                     <QuizCard quiz={quiz} key={quiz.id} />
                 ))}
                 {children}
@@ -20,16 +20,16 @@ function QuizzesInfo({ quizzes, children }) {
 
 export function QuizCard({ quiz }) {
     return (
-        <CourseCardWrapper onClick={() => navigate("test")}>
+        <CourseCardWrapper onClick={() => navigate(`quiz/${quiz?.id}`)}>
             <div className="quiz-title">
                 <Text color="muted" size="sm">
                     Bài tập:
                 </Text>
                 <Text size="lg" weight="bold" className="indent">
-                    {quiz.title}
+                    {quiz?.title}
                 </Text>
                 <Text color="muted" size="sm">
-                    Số lần đã làm: 0
+                    Thời gian làm bài: {quiz?.time_limit} phút
                 </Text>
             </div>
         </CourseCardWrapper>

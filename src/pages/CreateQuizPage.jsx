@@ -16,10 +16,11 @@ import FormLabel from "../components/ui/form_ui/FormLabel";
 import FormTitle from "../components/ui/form_ui/FormTitle";
 import { Text } from "../components/ui/text";
 import answerService from "../services/answer.service";
-import { courseService } from "../services/course.service";
 import questionService from "../services/question.service";
 import quizService from "../services/quiz.service";
 import { useConfirm } from "./../hooks/confirmHook";
+import { useCourse } from "./../hooks/courseHook";
+import { useToast } from "../hooks/toastHook";
 
 function getCourseIdFromPath() {
     const segments = window.location.pathname.split("/").filter(Boolean);
@@ -32,13 +33,15 @@ function getCourseIdFromPath() {
 export default function CreateQuizPage() {
     const courseId = getCourseIdFromPath();
 
+    const { course, getCourseDetail } = useCourse();
+    const { toast } = useToast();
     const { confirm } = useConfirm();
+
     const [loading, setLoading] = useState(true);
-    const [course, setCourse] = useState(null);
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [timeLimit, setTimeLimit] = useState(0);
+    const [timeLimit, setTimeLimit] = useState(60);
     const [numQuestions, setNumQuestions] = useState(1);
 
     const [questions, setQuestions] = useState([]);
@@ -59,11 +62,12 @@ export default function CreateQuizPage() {
         let mounted = true;
 
         async function load() {
+            if (!courseId) return;
             try {
-                const res = await courseService.getCourseInfo(courseId);
+                await getCourseDetail(courseId);
                 if (!mounted) return;
-                setCourse(res.course || res);
             } catch (err) {
+                navigateBack();
                 console.error(err);
             } finally {
                 if (mounted) setLoading(false);
@@ -75,7 +79,7 @@ export default function CreateQuizPage() {
         return () => {
             mounted = false;
         };
-    }, [courseId]);
+    }, [courseId, getCourseDetail, toast]);
 
     useEffect(() => {
         setQuestions((prev) => {
@@ -107,7 +111,7 @@ export default function CreateQuizPage() {
 
         try {
             const quiz = await quizService.createQuiz(
-                courseId,
+                course.id,
                 title,
                 description,
                 timeLimit || undefined,
@@ -116,7 +120,6 @@ export default function CreateQuizPage() {
             if (!quiz.id)
                 throw new Error("Không lấy được quiz_id sau khi tạo quiz");
 
-            // cho id để tránh trùng lặp
             const localQuestionMap = [];
 
             for (let i = 0; i < questions.length; i++) {
@@ -135,7 +138,10 @@ export default function CreateQuizPage() {
 
             const missing = localQuestionMap.filter((m) => !m.id);
             if (missing.length > 0) {
-                const quizDetail = await quizService.getQuiz(courseId, quizId);
+                const quizDetail = await quizService.getQuiz(
+                    course?.id,
+                    quiz?.id,
+                );
                 const remoteQuestions =
                     quizDetail.quiz?.questions ||
                     quizDetail.questions ||
@@ -168,7 +174,7 @@ export default function CreateQuizPage() {
 
                 for (let j = 0; j < q.answers.length; j++) {
                     const text = q.answers[j];
-                    const is_correct = j === 0; // first answer is correct
+                    const is_correct = j === 0;
                     await answerService.createAnswer(
                         questionId,
                         text,
@@ -177,9 +183,11 @@ export default function CreateQuizPage() {
                 }
             }
 
-            navigate(`/course-info/${courseId}`);
+            navigate(`/course-info/${course.id}`);
+            toast.success("Tạo quiz thành công!");
         } catch (err) {
             console.log(err);
+            toast.error("Tạo quiz thất bại!");
         } finally {
             setSubmitting(false);
         }
@@ -216,6 +224,7 @@ export default function CreateQuizPage() {
                         <FormLabel>Tiêu đề</FormLabel>
                         <FormInput
                             value={title}
+                            placeholder="Bài kiểm tra thường kì"
                             onChange={(e) => setTitle(e.target.value)}
                             required
                         />
@@ -225,6 +234,7 @@ export default function CreateQuizPage() {
                         <FormLabel>Mô tả</FormLabel>
                         <FormInput
                             as="textarea"
+                            placeholder="Bài kiểm tra 60' thường kì"
                             rows={3}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -236,6 +246,8 @@ export default function CreateQuizPage() {
                         <FormInput
                             type="number"
                             value={timeLimit}
+                            placeholder="60"
+                            required
                             onChange={(e) =>
                                 setTimeLimit(Number(e.target.value))
                             }

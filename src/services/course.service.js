@@ -19,7 +19,7 @@ export const courseService = {
     // Error: 401, 403
     async getMyCourse() {
         const res = await api.get("/courses/my");
-        return res.data.data;
+        return res.data.data.courses || res.data.data;
     },
 
     // Path: /courses/:id - Method: GET
@@ -28,6 +28,7 @@ export const courseService = {
     // Response 200: { course: { id, title, description, published, instructor, sections: [ ... ] } }
     // Error: 401, 403, 404
     async getCourseInfo(courseId) {
+        if (!courseId || courseId.includes("/quiz")) return null;
         const res = await api.get(`/courses/${courseId}`);
         return res.data.data.course || res.data;
     },

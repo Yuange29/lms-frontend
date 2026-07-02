@@ -12,43 +12,31 @@ import { CourseInfoDialog } from "./CourseInfoDialog";
 import { CoursesWrapper } from "./courses-style";
 import { InfoCardWrapper } from "./courses-style";
 import { Text } from "../ui/text";
-import { courseService } from "./../../services/course.service";
 import { navigate } from "./../../utils/navigate";
 import { useCourse } from "../../hooks/courseHook";
-import { useToast } from "./../../hooks/toastHook";
+import { useQuiz } from "./../../hooks/quizHook";
 
 function CoursesInfo({ courses = [] }) {
-    const [selectedCourse, setSelectedCourse] = useState(null);
-    const [courseInfo, setCourseInfo] = useState(null);
+    const { quizzes } = useQuiz();
+    const { course, loadingCourse, getCourseDetail, courseId, setCourseId } =
+        useCourse();
+    const { getQuizzes } = useQuiz();
+
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const { quiz, getQuiz } = useCourse();
-    const { toast } = useToast();
 
-    const handleClick = useCallback(async (courseId) => {
-        setOpen(true);
-        setSelectedCourse(courseId);
-        setCourseInfo(null);
-        setLoading(true);
+    const handleClick = useCallback(
+        async (courseId) => {
+            setOpen(true);
+            setCourseId(courseId);
 
-        try {
-            const res = await courseService.getCourseInfo(courseId);
-            setCourseInfo(res?.course || res);
-
-            await getQuiz(courseId);
-        } catch (err) {
-            toast.error("Không tìm thấy thông tin khóa học.");
-            console.log("Error fetching course info:", err);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
+            await getCourseDetail(courseId, true);
+            await getQuizzes(courseId);
+        },
+        [getCourseDetail, getQuizzes, setCourseId],
+    );
 
     const handleClose = useCallback(() => {
         setOpen(false);
-        setSelectedCourse(null);
-        setCourseInfo(null);
-        setLoading(false);
     }, []);
 
     return (
@@ -66,10 +54,10 @@ function CoursesInfo({ courses = [] }) {
 
             {open && (
                 <CourseInfoDialog
-                    course={courseInfo}
-                    quiz={quiz}
-                    courseId={selectedCourse}
-                    loading={loading}
+                    course={course}
+                    quiz={quizzes}
+                    courseId={courseId}
+                    loading={loadingCourse}
                     onClose={handleClose}
                 />
             )}
@@ -114,7 +102,11 @@ export function AddInfoCard({ label, content, add, check, courseId }) {
                 <Text weight="bold">{content | "***"}</Text>
             </div>
             <div className="btn-group">
-                <Button disabled={!courseId} onClick={() => navigate(check)}>
+                <Button
+                    variant="secondary"
+                    disabled={!courseId}
+                    onClick={() => navigate(check)}
+                >
                     Xem
                 </Button>
                 <Button disabled={!courseId} onClick={() => navigate(add)}>

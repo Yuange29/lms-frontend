@@ -2,29 +2,50 @@ import { useCallback, useMemo, useState } from "react";
 
 import { CourseContext } from "./CourseContext";
 import { courseService } from "../services/course.service";
-import quizService from "../services/quiz.service";
+import { useAuth } from "../hooks/authHook";
 import { useToast } from "./../hooks/toastHook";
 
 export const CourseProvider = ({ children }) => {
     const { toast } = useToast();
+    const { role } = useAuth();
 
     const [loading, setLoading] = useState(false);
+    const [loadingCourse, setLoadingCourse] = useState(false);
+    const [courseId, setCourseId] = useState("");
+    const [course, setCourse] = useState(null | {});
     const [courses, setCourses] = useState(null | []);
-    const [quiz, setQuiz] = useState(null | []);
 
-    // COURSE MANAGER
-    const getOwnerCourse = useCallback(async () => {
+    const getCourseDetail = useCallback(
+        async (courseId) => {
+            if (courseId.trim() === "") return;
+
+            setLoadingCourse(true);
+            try {
+                setCourse(await courseService.getCourseInfo(courseId));
+            } catch (error) {
+                toast.error("Không thể lấy thông tin khóa học");
+                console.error("Course Provider:", error);
+            } finally {
+                setLoadingCourse(false);
+            }
+        },
+        [toast],
+    );
+
+    const getOwnerCourses = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await courseService.getMyCourse();
-            setCourses(res.courses);
+            if (role === "Giáo Viên")
+                setCourses(await courseService.getMyCourse());
+            if (role === "Học Sinh")
+                setCourses(await courseService.getMyCourse());
         } catch (error) {
-            toast.error("Không thể lấy các course của bạn");
+            toast.error("Không thể lấy các khóa học của bạn");
             console.log("Error fetching courses:", error);
         } finally {
             setLoading(false);
         }
-    }, [toast]);
+    }, [toast, role]);
 
     const createCourse = useCallback(
         async (title, description, thumbnail_url, price) => {
@@ -39,7 +60,7 @@ export const CourseProvider = ({ children }) => {
 
                 toast.success("Khóa học đã được tạo thành công!");
 
-                getOwnerCourse();
+                getOwnerCourses();
             } catch (error) {
                 toast.error("Tạo khóa học thất bại.");
                 console.log("Error creating course:", error);
@@ -47,42 +68,33 @@ export const CourseProvider = ({ children }) => {
                 setLoading(false);
             }
         },
-        [toast, getOwnerCourse],
-    );
-
-    // QUIZ MANAGER
-    const getQuiz = useCallback(
-        async (courseId) => {
-            try {
-                const res = await quizService.getQuizzes(courseId);
-                setQuiz(res);
-            } catch (error) {
-                toast.error("Lấy quiz thất bại!");
-                console.log("fetch quiz: ", error);
-            }
-        },
-        [toast],
+        [toast, getOwnerCourses],
     );
 
     // VALUE MANAGER
     const value = useMemo(
         () => ({
+            course,
             courses,
             loading,
-            quiz,
+            loadingCourse,
+            courseId,
+            setCourseId,
+            setCourse,
             setCourses,
-            getOwnerCourse,
+            getOwnerCourses,
             createCourse,
-            getQuiz,
+            getCourseDetail,
         }),
         [
+            course,
             courses,
             loading,
-            quiz,
-            getQuiz,
-            setCourses,
-            getOwnerCourse,
+            loadingCourse,
+            courseId,
             createCourse,
+            getOwnerCourses,
+            getCourseDetail,
         ],
     );
 

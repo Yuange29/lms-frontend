@@ -15,6 +15,7 @@ export const quizService = {
 
     // Path: /courses/:courseId/quizzes - Method: GET
     async getQuizzes(courseId, params) {
+        if (!courseId || courseId.includes("/quiz")) return [];
         const res = await api.get(`/courses/${courseId}/quizzes`, { params });
         return res.data.data.quizzes || res.data;
     },

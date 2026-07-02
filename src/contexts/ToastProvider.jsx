@@ -31,7 +31,6 @@ const appendAlpha = (hexColor, alphaHex) => {
 
 const getTypeColor = (theme, type) => {
     if (!theme || !theme.colors) return undefined;
-    // map info -> primary if info not defined in theme
     if (type === "info") return theme.colors.info || theme.colors.primary;
     return theme.colors[type] || undefined;
 };
@@ -175,7 +174,7 @@ const ToastRoot = styled.div`
     display: flex;
     flex-direction: column-reverse;
     gap: 0.75rem;
-    width: min(360px, calc(100% - 2rem));
+    width: min(200px, calc(100% - 2rem));
     pointer-events: none;
 
     @media (max-width: 640px) {
@@ -195,8 +194,8 @@ const ToastCard = styled.div`
     background: ${({ theme, type }) =>
         appendAlpha(
             getTypeColor(theme, type) || theme.colors?.background,
-            "22",
-        ) || "rgba(255, 255, 255, 0.14)"};
+            "60",
+        ) || "rgba(255, 255, 255, 0.816)"};
     border: 1px solid
         ${({ theme, type }) =>
             appendAlpha(
@@ -219,7 +218,7 @@ const ToastIcon = styled.div`
     color: ${({ theme, type }) =>
         getTypeColor(theme, type) || theme.colors?.text};
     background: ${({ theme, type }) =>
-        appendAlpha(getTypeColor(theme, type) || theme.colors?.surface, "55")};
+        appendAlpha(getTypeColor(theme, type) || theme.colors?.surface, "20")};
     font-size: 1.1rem;
 `;
 

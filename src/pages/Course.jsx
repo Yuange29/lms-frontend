@@ -9,14 +9,13 @@ import { useEffect } from "react";
 
 export default function Course() {
     const { role, loading: auth } = useAuth();
-    const { courses, loading, getOwnerCourse } = useCourse();
+    const { courses, loading, getOwnerCourses } = useCourse();
 
     useEffect(() => {
-        if (!courses && role === "Giáo Viên") getOwnerCourse();
-        else {
-            // func get own student course
-        }
-    }, [courses, getOwnerCourse, role]);
+        const fetchCourses = async () => await getOwnerCourses();
+
+        fetchCourses();
+    }, [getOwnerCourses, role]);
 
     return (
         <>
