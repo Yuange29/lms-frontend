@@ -1,13 +1,12 @@
 import { CourseCardWrapper, QuizWrapper } from "./quiz-style";
-import { H, Text } from "../ui/text";
 
+import { Text } from "../ui/text";
 import { memo } from "react";
 import { navigate } from "./../../utils/navigate";
 
 function QuizzesInfo({ quizzes, children }) {
     return (
         <>
-            <H>Các quiz</H>
             <QuizWrapper>
                 {quizzes?.map((quiz) => (
                     <QuizCard quiz={quiz} key={quiz.id} />

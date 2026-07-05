@@ -174,7 +174,7 @@ const ToastRoot = styled.div`
     display: flex;
     flex-direction: column-reverse;
     gap: 0.75rem;
-    width: min(200px, calc(100% - 2rem));
+    width: min(360px, calc(100% - 2rem));
     pointer-events: none;
 
     @media (max-width: 640px) {

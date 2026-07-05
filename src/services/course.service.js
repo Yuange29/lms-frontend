@@ -28,7 +28,6 @@ export const courseService = {
     // Response 200: { course: { id, title, description, published, instructor, sections: [ ... ] } }
     // Error: 401, 403, 404
     async getCourseInfo(courseId) {
-        if (!courseId || courseId.includes("/quiz")) return null;
         const res = await api.get(`/courses/${courseId}`);
         return res.data.data.course || res.data;
     },

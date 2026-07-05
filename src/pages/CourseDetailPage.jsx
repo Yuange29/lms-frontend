@@ -3,11 +3,15 @@ import {
     CourseDetailHeader,
     CourseDetailMeta,
     CourseDetailThumbnail,
+    InfoCardLabel,
 } from "../components/course/courses-style";
+import SectionsCard, {
+    AddSectionCard,
+} from "../components/course/SectionsCard";
 import { formatDate, formatPrice } from "../utils/format";
+import { navigate, navigateBack } from "../utils/navigate";
 import { useEffect, useState } from "react";
 
-import { AddInfoCard } from "../components/course/course";
 import Button from "../components/ui/Button";
 import { CourseDetailPageSkeleton } from "../components/loading/CourseItemSkeleton";
 import { H } from "../components/ui/text";
@@ -16,7 +20,6 @@ import QuizCards from "../components/course/QuizCards";
 import { Section } from "../components/ui/Secttion";
 import { courseService } from "../services/course.service";
 import defaultImg from "../assets/defaultImg.png";
-import { navigateBack } from "../utils/navigate";
 import { useConfirm } from "../hooks/confirmHook";
 import { useCourse } from "./../hooks/courseHook";
 import { useQuiz } from "./../hooks/quizHook";
@@ -27,7 +30,6 @@ const getCourseIdFromPath = () => {
     if (segments[0] !== "course-info") {
         return "";
     }
-
     return segments.slice(1).join("/");
 };
 
@@ -47,6 +49,7 @@ export default function CourseDetailPage() {
 
     const [isRemove, setIsRemove] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
+    const [isHideAddSection, setIsHideAddSection] = useState(true);
 
     const handlePublish = async (courseId) => {
         const isOk = await confirm({
@@ -127,9 +130,6 @@ export default function CourseDetailPage() {
     }, [setCourseId]);
 
     const publish = course?.publish ? "Đã đăng" : "Chưa đăng";
-    const totalSections = 0;
-    const totalLessons = 0;
-    const totalQuizzes = quizzes?.length | 0;
 
     return (
         <>
@@ -192,35 +192,38 @@ export default function CourseDetailPage() {
                     </Section>
 
                     <Section id={"course-sections"}>
-                        <H size="h3">Số chương, bài, quiz: </H>
-
-                        <CourseDetailMeta>
-                            <AddInfoCard
-                                label={"Số chương:"}
-                                content={totalSections}
-                                courseId={courseId}
-                                add={""}
-                            />
-                            <AddInfoCard
-                                label={"Số bài học:"}
-                                content={totalLessons}
-                                courseId={courseId}
-                                add={""}
-                            />
-                            <AddInfoCard
-                                label={"Số quiz:"}
-                                content={totalQuizzes}
-                                courseId={courseId}
-                                add={
-                                    courseId
-                                        ? `/course-info/${courseId}/quiz`
-                                        : undefined
+                        <InfoCardLabel>
+                            <H>Các chương</H>
+                            <Button
+                                onClick={() =>
+                                    setIsHideAddSection(!isHideAddSection)
                                 }
-                            />
-                        </CourseDetailMeta>
+                            >
+                                <i className="fa-solid fa-plus"></i>
+                            </Button>
+                        </InfoCardLabel>
+                        <AddSectionCard
+                            isHide={isHideAddSection}
+                            courseId={course?.id}
+                        />
+                        <SectionsCard sections={course?.sections} />
                     </Section>
 
                     <Section id={"course-quiz"}>
+                        <InfoCardLabel>
+                            <H>Các quiz</H>
+                            <Button
+                                onClick={() =>
+                                    navigate(
+                                        courseId
+                                            ? `/course-info/${courseId}/quiz`
+                                            : undefined,
+                                    )
+                                }
+                            >
+                                <i className="fa-solid fa-plus"></i>
+                            </Button>
+                        </InfoCardLabel>
                         <QuizCards quizzes={quizzes} />
                     </Section>
 
@@ -235,7 +238,7 @@ export default function CourseDetailPage() {
                                 $width="200px"
                                 variant="secondary"
                                 disabled={isPublish}
-                                onClick={() => handlePublish(courseId)}
+                                onClick={() => handlePublish(course.id)}
                             >
                                 {course?.publish ? "Đã đăng" : "Chưa đăng"}
                             </Button>
@@ -243,7 +246,7 @@ export default function CourseDetailPage() {
                                 $width="200px"
                                 variant="danger"
                                 disabled={isRemove}
-                                onClick={() => handleRemove(courseId)}
+                                onClick={() => handleRemove(course.id)}
                             >
                                 Xóa khóa học
                             </Button>

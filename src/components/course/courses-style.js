@@ -356,3 +356,17 @@ export const AddInfoCardWrapper = styled.div`
         flex: 1;
     }
 `;
+
+export const InfoCardLabel = styled.div`
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    border: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-focus-ring);
+
+    & > h2 {
+        color: white;
+    }
+`;

@@ -17,7 +17,7 @@ export const CourseProvider = ({ children }) => {
 
     const getCourseDetail = useCallback(
         async (courseId) => {
-            if (courseId.trim() === "") return;
+            if (courseId.trim() === "" || undefined || !courseId) return;
 
             setLoadingCourse(true);
             try {
