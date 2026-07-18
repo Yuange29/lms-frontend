@@ -14,6 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     --color-on-secondary: ${({ theme }) => theme.colors.onSecondary};
 
     --color-background: ${({ theme }) => theme.colors.background};
+    --color-section: ${({ theme }) => theme.colors.section};
     --color-surface: ${({ theme }) => theme.colors.surface};
     --color-surface-soft: ${({ theme }) => theme.colors.surfaceSoft};
     --color-card: ${({ theme }) => theme.colors.card};

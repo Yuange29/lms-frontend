@@ -1,5 +1,10 @@
 import { CourseDetailHeader, CourseDetailMeta } from "../course/courses-style";
-import { LoadingLine, LoadingRectangle, LoadingSquare } from "./loading-style";
+import {
+    LoadingDivWrapper,
+    LoadingLine,
+    LoadingRectangle,
+    LoadingSquare,
+} from "./loading-style";
 
 import { Section } from "../ui/Secttion";
 import { memo } from "react";
@@ -7,7 +12,7 @@ import styled from "styled-components";
 
 function CourseItemSkeleton() {
     return (
-        <CourseSkeletonWrapper>
+        <LoadingDivWrapper>
             <LoadingSquare $width="50px" />
 
             <InfoSkeletonWrapper>
@@ -17,7 +22,7 @@ function CourseItemSkeleton() {
             </InfoSkeletonWrapper>
 
             <LoadingRectangle $width="50px" $height="50px" />
-        </CourseSkeletonWrapper>
+        </LoadingDivWrapper>
     );
 }
 
@@ -104,15 +109,6 @@ const CoursesSkeletonWrapper = styled.div`
     @media (max-width: 1024px) {
         grid-template-columns: 1fr;
     }
-`;
-
-const CourseSkeletonWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 0.5em 1em;
-    border: 2px solid rgba(0, 0, 0, 0.207);
-    border-radius: 8px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.305);
 `;
 
 const InfoSkeletonWrapper = styled.div`

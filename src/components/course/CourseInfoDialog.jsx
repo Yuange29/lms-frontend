@@ -4,23 +4,32 @@ import {
     DialogActions,
     DialogBody,
     DialogHeader,
-    ItemContent,
     Overlay,
 } from "./courses-style";
 
 import Button from "../ui/Button";
 import { CourseDialogSkeleton } from "../loading/CourseItemSkeleton";
-import { Text } from "../ui/text";
+import { GreyDialogContent } from "../InfomationLabel";
+import { Text } from "../ui/Text";
 import { useAuth } from "./../../hooks/authHook";
 import { useToast } from "./../../hooks/toastHook";
+
+const countLessons = (sections) => {
+    let count = 0;
+    sections?.forEach((section) => {
+        count += section?.lessons?.length;
+    });
+    return count;
+};
 
 function CourseInfoDialog({ course, quiz, courseId, loading, error, onClose }) {
     const { toast } = useToast();
     const { role } = useAuth();
 
     const publish = course?.publish ? "Đã đăng" : "Chưa đăng";
-    const sectionTotal = 0;
-    const lessonTotal = 0;
+    const sectionTotal = course?.sections?.length | 0;
+    const lessonTotal = countLessons(course?.sections) | 0;
+
     const quizTotal = quiz?.length | 0;
 
     const viewDetailPath = course?.id
@@ -52,37 +61,38 @@ function CourseInfoDialog({ course, quiz, courseId, loading, error, onClose }) {
                             <Text align="center" size="xl" weight="extrabold">
                                 {course?.title}
                             </Text>
-                            <ItemContent>
-                                <Text color="muted">Mô tả khóa học: </Text>
-                                <Text weight="bold">{course?.description}</Text>
-                            </ItemContent>
-                            <ItemContent
+
+                            <GreyDialogContent
+                                label="Mô tả khóa học"
+                                content={course?.description}
+                            />
+                            <GreyDialogContent
                                 style={{ display: role === "Giáo viên" }}
-                            >
-                                <Text color="muted">publish: </Text>
-                                <Text weight="bold">{publish}</Text>
-                            </ItemContent>
-                            <ItemContent>
-                                <Text color="muted">Số chương: </Text>
-                                <Text weight="bold">{sectionTotal}</Text>
-                            </ItemContent>
-                            <ItemContent>
-                                <Text color="muted">Số bài học: </Text>
-                                <Text weight="bold">{lessonTotal}</Text>
-                            </ItemContent>
-                            <ItemContent>
-                                <Text color="muted">Số quiz: </Text>
-                                <Text weight="bold">{quizTotal}</Text>
-                            </ItemContent>
+                                label="publish"
+                                content={publish}
+                            />
+                            <GreyDialogContent
+                                label="Số chương"
+                                content={sectionTotal}
+                            />
+                            <GreyDialogContent
+                                label="Số bài học"
+                                content={lessonTotal}
+                            />
+                            <GreyDialogContent
+                                label="Số quiz"
+                                content={quizTotal}
+                            />
                         </>
                     )}
                 </DialogBody>
 
                 <DialogActions>
-                    <Button variant="ghost" onClick={onClose}>
+                    <Button $width="30%" variant="secondary" onClick={onClose}>
                         Đóng
                     </Button>
                     <Button
+                        $width="30%"
                         navigate={viewDetailPath}
                         onClick={onClose}
                         disabled={loading || !viewDetailPath}

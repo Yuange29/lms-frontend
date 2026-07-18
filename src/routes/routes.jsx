@@ -6,6 +6,7 @@ import CreateQuizPage from "../pages/CreateQuizPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import MainLayout from "../components/layout/MainLayout.jsx";
+import QuizShowPage from "../pages/QuizShowPage.jsx";
 import RegisterPage from "../pages/RegisterPage";
 import SettingPage from "../pages/SettingPage";
 import { paths } from "./paths";
@@ -68,6 +69,18 @@ export function getRoute(pathname) {
         return {
             path: pathname,
             component: CreateQuizPage,
+            layout: MainLayout,
+        };
+    }
+
+    if (
+        pathname.startsWith(`${paths.courseBase}/`) &&
+        pathname.includes("quiz") &&
+        pathname.endsWith("/show")
+    ) {
+        return {
+            path: pathname,
+            component: QuizShowPage,
             layout: MainLayout,
         };
     }

@@ -14,7 +14,7 @@ import FormGroup from "../components/ui/form_ui/FormGroup";
 import { QuizInpuFrom as FormInput } from "../components/QuizComponent/quiz";
 import FormLabel from "../components/ui/form_ui/FormLabel";
 import FormTitle from "../components/ui/form_ui/FormTitle";
-import { Text } from "../components/ui/text";
+import { Text } from "../components/ui/Text";
 import answerService from "../services/answer.service";
 import questionService from "../services/question.service";
 import quizService from "../services/quiz.service";

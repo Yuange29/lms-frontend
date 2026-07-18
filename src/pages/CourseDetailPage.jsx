@@ -5,6 +5,7 @@ import {
     CourseDetailThumbnail,
     InfoCardLabel,
 } from "../components/course/courses-style";
+import { H, HeaderCard } from "../components/ui/Text";
 import SectionsCard, {
     AddSectionCard,
 } from "../components/course/SectionsCard";
@@ -14,7 +15,6 @@ import { useEffect, useState } from "react";
 
 import Button from "../components/ui/Button";
 import { CourseDetailPageSkeleton } from "../components/loading/CourseItemSkeleton";
-import { H } from "../components/ui/text";
 import { InfomationCard } from "../components/course/course";
 import QuizCards from "../components/course/QuizCards";
 import { Section } from "../components/ui/Secttion";
@@ -77,7 +77,6 @@ export default function CourseDetailPage() {
     };
 
     const handleRemove = async (courseId) => {
-        setIsRemove(true);
         const isOk = await confirm({
             title: "Xóa khóa học",
             content: "Bạn chắc chắn muốn xóa khóa học này chứ",
@@ -87,6 +86,7 @@ export default function CourseDetailPage() {
 
         if (!isOk) return;
 
+        setIsRemove(true);
         try {
             await courseService.deleteCourse(courseId);
 
@@ -134,7 +134,7 @@ export default function CourseDetailPage() {
     return (
         <>
             <Section>
-                <H size="h1">Thông tin chi tiết của khóa học</H>
+                <HeaderCard title={"Thông tin chi tiết của khóa học"} />
             </Section>
             {!courseId ? (
                 <Section>

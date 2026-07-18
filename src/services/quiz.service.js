@@ -17,13 +17,13 @@ export const quizService = {
     async getQuizzes(courseId, params) {
         if (!courseId || courseId.includes("/quiz")) return [];
         const res = await api.get(`/courses/${courseId}/quizzes`, { params });
-        return res.data.data.quizzes || res.data;
+        return res.data?.data?.quizzes || res.data;
     },
 
     // Path: /courses/:courseId/quizzes/:quizId - Method: GET
     async getQuiz(courseId, quizId) {
         const res = await api.get(`/courses/${courseId}/quizzes/${quizId}`);
-        return res.data.data.quiz || res.data;
+        return res.data?.data?.quiz || res.data;
     },
 };
 

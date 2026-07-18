@@ -30,3 +30,8 @@ export const formatDate = (iso) => {
         return iso;
     }
 };
+
+export const formatFirstLetter = (str) => {
+    str.trim();
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};

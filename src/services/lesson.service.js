@@ -14,14 +14,13 @@ export const lessonService = {
         duration,
         is_preview,
     ) {
-        const res = await api.post(
-            `/sections/${sectionId}/lessons`,
+        const res = await api.post(`/sections/${sectionId}/lessons`, {
             title,
             content,
             video_url,
             duration,
             is_preview,
-        );
+        });
         return res.data.lesson || res.data.data;
     },
 

@@ -11,7 +11,7 @@ import { CourseCard } from "./CourseCard";
 import { CourseInfoDialog } from "./CourseInfoDialog";
 import { CoursesWrapper } from "./courses-style";
 import { InfoCardWrapper } from "./courses-style";
-import { Text } from "../ui/text";
+import { Text } from "../ui/Text";
 import { navigate } from "./../../utils/navigate";
 import { useCourse } from "../../hooks/courseHook";
 import { useQuiz } from "./../../hooks/quizHook";

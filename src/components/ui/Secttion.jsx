@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-function Section({ id, bgColor = false, children }) {
+function Section({ id, children }) {
     return (
-        <SectionStyle id={id} $bgColor={bgColor}>
+        <SectionStyle id={id}>
             <MainContent>{children}</MainContent>
         </SectionStyle>
     );
@@ -18,8 +18,7 @@ const SectionStyle = styled.section`
     padding: 0.5em 1em;
     border-radius: 0.5em;
     border: 0;
-    background-color: ${($bgColor) =>
-        $bgColor ? "var(--color-card)" : "transparent"};
+    background-color: var(--color-section);
 `;
 
 const ContentStyle = styled.div`

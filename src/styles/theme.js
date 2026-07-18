@@ -1,41 +1,49 @@
 export const lightTheme = {
     colors: {
-        // 10% Điểm nhấn (Nút hành động chính, CTA, Tiến độ)
-        primary: "#1E40AF", // Xanh dương đậm chuyên nghiệp, uy tín
-        primaryHover: "#1D4ED8", // Sáng hơn một chút khi hover
-        primaryActive: "#1E3A8A", // Đậm lại khi click
-        primarySoft: "#EFF6FF", // Nền text highlight hoặc badge nhẹ
-        onPrimary: "#FFFFFF", // Chữ trên nền primary phải là trắng tinh để dễ đọc
+        primary: "#0B3FC1",
+        primaryHover: "#082F91",
+        primaryActive: "#0B3FC1",
+        primarySoft: "#EFF6FF",
+        onPrimary: "#FFFFFF",
 
-        // 30% Cấu trúc (Sidebar, Header, Menu điều hướng)
-        secondary: "#0F172A", // Slate 900 - tạo khối điều hướng cực rõ ràng
-        secondaryHover: "#1E293B", // Slate 800
-        secondaryActive: "#334155", // Slate 700
-        onSecondary: "#F8FAFC", // Chữ trên menu điều hướng
+        secondary: "#CFDCFC",
+        secondaryHover: "#9FB8F9", // 200
+        secondaryActive: "#6E95F7", // 100
+        onSecondary: "#031030",
 
-        // 60% Không gian học tập (Nền web, Khung bài học, Khung tài liệu)
-        background: "#F8FAFC", // Slate 50 - Nền web dịu mắt, không bị chói như trắng tinh
-        card: "#F4F4F4", // Trắng tinh để các block bài học nổi lên trên nền background
-        surface: "#E2E8F0", // Slate 200
-        surfaceSoft: "#F1F5F9", // Slate 100 - Dùng cho các phân vùng phụ
+        background: "#f4f4f4", // 50
+        section: "#ebebeb8a",
+        card: "#CFDCFC",
+        surface: "#E2E8F0",
+        surfaceSoft: "#F1F5F9",
 
-        // Chữ và nội dung bài học
-        text: "#0F172A", // Slate 900 - Chữ chính đọc sách, làm quiz
-        textSoft: "#334155", // Slate 700 - Chữ mô tả ngắn, thông tin phụ
-        textMuted: "#64748B", // Slate 500 - Subtitle, ngày tháng
+        text: "#061F60", // 900
+        textSoft: "rgb(65, 85, 112)",
+        textMuted: "#64748B",
 
-        // Các trạng thái hệ thống
-        border: "#E2E8F0", // Đường kẻ phân chia các bài học
-        error: "#EF4444", // Đỏ - Khi làm sai quiz, rớt môn
+        border: "#bcbcbc",
+        error: "#EF4444",
         errorHover: "#DC2626",
         errorActive: "#B91C1C",
         errorSoft: "#FEE2E2",
         onError: "#FFFFFF",
-        success: "#10B981", // Xanh lá - Khi hoàn thành bài học, qua môn
-        warning: "#F59E0B", // Cam - Cảnh báo deadline, bài tập sắp hạn
-        focusRing: "#3B82F6", // Viền khi tab bằng bàn phím
+        success: "#10B981",
+        warning: "#F59E0B",
+        focusRing: "#3B82F6",
     },
 };
+
+// --color-royal-blue-50: #e7edfe;
+// --color-royal-blue-100: #cfdcfc;
+// --color-royal-blue-200: #9fb8f9;
+// --color-royal-blue-300: #6e95f7;
+// --color-royal-blue-400: #3e72f4;
+// --color-royal-blue-500: #0e4ef1;
+// --color-royal-blue-600: #0b3fc1;
+// --color-royal-blue-700: #082f91;
+// --color-royal-blue-800: #061f60;
+// --color-royal-blue-900: #031030;
+// --color-royal-blue-950: #020b22;
 
 export const darkTheme = {
     colors: {

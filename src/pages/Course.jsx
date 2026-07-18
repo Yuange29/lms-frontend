@@ -1,6 +1,6 @@
 import CourseInfo from "../components/course/course";
 import { CoursesSkeleton } from "../components/loading/CourseItemSkeleton";
-import { H } from "../components/ui/text";
+import { H } from "../components/ui/Text";
 import { LoadingLine } from "../components/loading/loading-style";
 import { Section } from "../components/ui/Secttion";
 import { useAuth } from "./../hooks/authHook";

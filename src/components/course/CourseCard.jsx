@@ -10,7 +10,7 @@ import {
     ThumbnailImage,
 } from "./courses-style";
 
-import { Text } from "../ui/text";
+import { Text } from "../ui/Text";
 import defaultImg from "../../assets/defaultImg.png";
 import { formatPrice } from "../../utils/format";
 import { useState } from "react";

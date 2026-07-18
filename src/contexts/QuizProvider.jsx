@@ -7,6 +7,7 @@ import { useToast } from "../hooks/toastHook";
 
 export const QuizProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
+    const [loadingQuiz, setLoadingQuiz] = useState(false);
     const [quiz, setQuiz] = useState(null);
     const [quizzes, setQuizzes] = useState(null);
     const [quizId, setQuizId] = useState("");
@@ -31,18 +32,38 @@ export const QuizProvider = ({ children }) => {
         [toast],
     );
 
+    const getQuiz = useCallback(
+        async (courseId, quizId) => {
+            if (!courseId || !quizId) return;
+
+            setLoadingQuiz(true);
+            try {
+                const res = await quizService.getQuiz(courseId, quizId);
+                setQuiz(res);
+            } catch (error) {
+                toast.error("Lấy quiz thất bại!");
+                console.error("fetch quiz: ", error);
+            } finally {
+                setLoadingQuiz(false);
+            }
+        },
+        [toast],
+    );
+
     const value = useMemo(
         () => ({
             quizzes,
             quiz,
             quizId,
             loading,
+            loadingQuiz,
             setQuiz,
             setQuizzes,
             setQuizId,
+            getQuiz,
             getQuizzes,
         }),
-        [quizzes, quiz, quizId, loading, getQuizzes],
+        [quizzes, quiz, quizId, loading, loadingQuiz, getQuizzes, getQuiz],
     );
 
     return (

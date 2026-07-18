@@ -1,6 +1,7 @@
 import { H, Text } from "../components/ui/Text";
 import { useCallback, useMemo, useState } from "react";
 
+import Button from "./../components/ui/Button";
 import { ConfirmContext } from "./ConfirmContext";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
@@ -66,12 +67,16 @@ function ConfirmDialog({ open, options, onConfirm, onCancel }) {
                 <H id="confirm-dialog-title">{options.title}</H>
                 <Text>{options.content}</Text>
                 <Actions>
-                    <CancelButton onClick={onCancel}>
+                    <Button
+                        variant="secondary"
+                        $width="200px"
+                        onClick={onCancel}
+                    >
                         {options.cancelText}
-                    </CancelButton>
-                    <ConfirmButton onClick={onConfirm}>
+                    </Button>
+                    <Button variant="danger" $width="200px" onClick={onConfirm}>
                         {options.confirmText}
-                    </ConfirmButton>
+                    </Button>
                 </Actions>
             </Dialog>
         </Overlay>,
@@ -91,7 +96,7 @@ const Overlay = styled.div`
 
 const Dialog = styled.div`
     width: min(480px, 100%);
-    background: var(--color-card);
+    background: #fff;
     border-radius: 18px;
     box-shadow: rgba(15, 23, 42, 0.18) 0px 20px 60px;
     padding: 1.5rem;
@@ -102,32 +107,4 @@ const Dialog = styled.div`
 
 const Actions = styled.div`
     display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-`;
-
-const Button = styled.button`
-    font-size: 1em;
-    font-weight: 600;
-    padding: 0.5em 1em;
-    border: 0;
-    border-radius: 0.5em;
-`;
-
-const CancelButton = styled(Button)`
-    flex: 1;
-    background-color: var(--color-on-primary);
-
-    &:hover {
-        background-color: var(--color-on-secondary);
-    }
-`;
-const ConfirmButton = styled(Button)`
-    flex: 1;
-    background-color: var(--color-error-hover);
-
-    &:hover {
-        background-color: var(--color-error);
-    }
 `;
