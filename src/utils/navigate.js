@@ -17,3 +17,20 @@ export const navigate = (path) => {
 export const navigateBack = () => {
     window.history.back();
 };
+
+export function getIdsFromPath(...idsName) {
+    const pathArr = window.location.pathname.split("/").filter(Boolean);
+
+    return idsName.reduce((result, idName) => {
+        const idx = pathArr.indexOf(idName);
+
+        if (idx === -1 || pathArr[idx + 1] === undefined)
+            throw new Error(`${idName} not found in path`);
+
+        result[idName] = pathArr[idx + 1];
+
+        return result;
+    }, {});
+}
+// const ids = getIdsFromPath(path, "course", "quiz")
+// ==> {course: "sdfhsjkdh", quiz: "kjgdsaf"}

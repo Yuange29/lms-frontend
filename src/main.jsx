@@ -6,6 +6,7 @@ import { CourseProvider } from "./contexts/CourseProvider";
 import { LessonProvider } from "./contexts/LessonProvider.jsx";
 import { QuizProvider } from "./contexts/QuizProvider.jsx";
 import { StrictMode } from "react";
+import { SubmissionProvider } from "./contexts/SubmissionProvider.jsx";
 import { ToastProvider } from "./contexts/ToastProvider.jsx";
 import { createRoot } from "react-dom/client";
 
@@ -18,7 +19,9 @@ createRoot(document.getElementById("root")).render(
                         <CourseProvider>
                             <QuizProvider>
                                 <LessonProvider>
-                                    <App />
+                                    <SubmissionProvider>
+                                        <App />
+                                    </SubmissionProvider>
                                 </LessonProvider>
                             </QuizProvider>
                         </CourseProvider>

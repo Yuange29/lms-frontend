@@ -1,12 +1,12 @@
-import { CourseDetailHeader, CourseDetailMeta } from "../course/courses-style";
+import { CourseDetailHeader, CourseDetailMeta } from "../course.style";
 import {
     LoadingDivWrapper,
     LoadingLine,
     LoadingRectangle,
     LoadingSquare,
-} from "./loading-style";
+} from "../../../components/loading/loading-style";
 
-import { Section } from "../ui/Secttion";
+import { Section } from "../../../components/ui/Section";
 import { memo } from "react";
 import styled from "styled-components";
 

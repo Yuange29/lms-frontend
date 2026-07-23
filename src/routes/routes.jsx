@@ -1,12 +1,13 @@
 import AuthLayout from "../components/layout/AuthLayout";
-import Course from "./../pages/Course";
-import CourseCreatePage from "../pages/CourseCreatePage";
-import CourseDetailPage from "../pages/CourseDetailPage.jsx";
-import CreateQuizPage from "../pages/CreateQuizPage";
+import CourseCreatePage from "../pages/course/CourseCreatePage.jsx";
+import CourseDetailPage from "../pages/course/CourseDetailPage.jsx";
+import CoursesPage from "../pages/course/CoursesPage.jsx";
+import CreateQuizPage from "../pages/quiz/CreateQuizPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import MainLayout from "../components/layout/MainLayout.jsx";
-import QuizShowPage from "../pages/QuizShowPage.jsx";
+import QuizResultPage from "../pages/quiz/QuizResultPage.jsx";
+import QuizShowPage from "../pages/quiz/QuizShowPage.jsx";
 import RegisterPage from "../pages/RegisterPage";
 import SettingPage from "../pages/SettingPage";
 import { paths } from "./paths";
@@ -34,7 +35,7 @@ export const routes = [
     },
     {
         path: paths.course,
-        component: Course,
+        component: CoursesPage,
         layout: MainLayout,
     },
     {
@@ -59,6 +60,18 @@ export function getRoute(pathname) {
     const exactRoute = routes.find((route) => route.path === pathname);
     if (exactRoute) {
         return exactRoute;
+    }
+
+    // If path is /quiz/:id/submission -> render CreateQuizPage
+    if (
+        pathname.startsWith(`${paths.quiz}/`) &&
+        pathname.endsWith("/submission")
+    ) {
+        return {
+            path: pathname,
+            component: QuizResultPage,
+            layout: MainLayout,
+        };
     }
 
     // If path is /course-info/:id/quiz -> render CreateQuizPage

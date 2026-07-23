@@ -4,12 +4,16 @@ import {
     DialogActions,
     DialogForm,
     DialogHeader,
-    Overlay,
-} from "./courses-style";
-import { FormGroup, FormInput, FormLabel } from "../ui/form_ui";
+} from "../../../styles/Dialog";
+import {
+    FormGroup,
+    FormInput,
+    FormLabel,
+} from "../../../components/ui/form_ui";
 
-import Button from "../ui/Button";
-import { useCourse } from "../../hooks/courseHook";
+import Button from "../../../components/ui/Button";
+import { Overlay } from "../../../styles/Overlay";
+import { useCourse } from "../../../hooks/courseHook";
 import { useState } from "react";
 
 export function CreateCourseForm() {

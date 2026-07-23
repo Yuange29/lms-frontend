@@ -1,26 +1,27 @@
 import {
     QuestionBox,
+    QuizCreateWrapper,
     QuizFormWrapper,
     QuizHeader,
     QuizWrapper,
-} from "../components/QuizComponent/quiz";
-import { navigate, navigateBack } from "../utils/navigate";
+} from "./quiz.style";
+import { navigate, navigateBack } from "../../utils/navigate";
 import { useEffect, useState } from "react";
 
-import Button from "../components/ui/Button";
-import CourseItemSkeleton from "../components/loading/CourseItemSkeleton";
-import { FormContainer } from "../components/ui/form_ui/FormContainer";
-import FormGroup from "../components/ui/form_ui/FormGroup";
-import { QuizInpuFrom as FormInput } from "../components/QuizComponent/quiz";
-import FormLabel from "../components/ui/form_ui/FormLabel";
-import FormTitle from "../components/ui/form_ui/FormTitle";
-import { Text } from "../components/ui/Text";
-import answerService from "../services/answer.service";
-import questionService from "../services/question.service";
-import quizService from "../services/quiz.service";
-import { useConfirm } from "./../hooks/confirmHook";
-import { useCourse } from "./../hooks/courseHook";
-import { useToast } from "../hooks/toastHook";
+import Button from "../../components/ui/Button";
+import CourseItemSkeleton from "../course/components/CourseLoading";
+import { FormContainer } from "../../components/ui/form_ui/FormContainer";
+import FormGroup from "../../components/ui/form_ui/FormGroup";
+import { QuizInpuFrom as FormInput } from "./quiz.style";
+import FormLabel from "../../components/ui/form_ui/FormLabel";
+import FormTitle from "../../components/ui/form_ui/FormTitle";
+import { Text } from "../../components/ui/Text";
+import answerService from "../../services/answer.service";
+import questionService from "../../services/question.service";
+import quizService from "../../services/quiz.service";
+import { useConfirm } from "../../hooks/confirmHook";
+import { useCourse } from "../../hooks/courseHook";
+import { useToast } from "../../hooks/toastHook";
 
 function getCourseIdFromPath() {
     const segments = window.location.pathname.split("/").filter(Boolean);
@@ -202,7 +203,7 @@ export default function CreateQuizPage() {
     }
 
     return (
-        <QuizWrapper>
+        <QuizCreateWrapper>
             <QuizHeader>
                 <Text color="muted">Khóa học</Text>
                 <div>
@@ -343,6 +344,6 @@ export default function CreateQuizPage() {
                     </div>
                 </QuizFormWrapper>
             </FormContainer>
-        </QuizWrapper>
+        </QuizCreateWrapper>
     );
 }

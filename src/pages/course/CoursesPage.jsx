@@ -1,10 +1,10 @@
-import CourseInfo from "../components/course/course";
-import { CoursesSkeleton } from "../components/loading/CourseItemSkeleton";
-import { H } from "../components/ui/Text";
-import { LoadingLine } from "../components/loading/loading-style";
-import { Section } from "../components/ui/Secttion";
-import { useAuth } from "./../hooks/authHook";
-import { useCourse } from "../hooks/courseHook";
+import CoursesDisplay from "./components/CoursesDisplay";
+import { CoursesSkeleton } from "./components/CourseLoading";
+import { H } from "../../components/ui/Text";
+import { LoadingLine } from "../../components/loading/loading-style";
+import { Section } from "../../components/ui/Section";
+import { useAuth } from "../../hooks/authHook";
+import { useCourse } from "../../hooks/courseHook";
 import { useEffect } from "react";
 
 export default function Course() {
@@ -13,7 +13,6 @@ export default function Course() {
 
     useEffect(() => {
         const fetchCourses = async () => await getOwnerCourses();
-
         fetchCourses();
     }, [getOwnerCourses, role]);
 
@@ -35,7 +34,7 @@ export default function Course() {
                             Các khóa học
                             {role === "Giáo Viên" ? " đã tạo" : " đã tham gia"}
                         </H>
-                        <CourseInfo courses={courses} />
+                        <CoursesDisplay courses={courses} />
                     </>
                 )}
             </Section>

@@ -34,15 +34,17 @@ export const QuizProvider = ({ children }) => {
 
     const getQuiz = useCallback(
         async (courseId, quizId) => {
-            if (!courseId || !quizId) return;
+            if (!courseId || !quizId) return null;
 
             setLoadingQuiz(true);
             try {
                 const res = await quizService.getQuiz(courseId, quizId);
                 setQuiz(res);
+                return res;
             } catch (error) {
                 toast.error("Lấy quiz thất bại!");
                 console.error("fetch quiz: ", error);
+                return null;
             } finally {
                 setLoadingQuiz(false);
             }

@@ -4,34 +4,26 @@ import {
     CourseDetailMeta,
     CourseDetailThumbnail,
     InfoCardLabel,
-} from "../components/course/courses-style";
-import { H, HeaderCard } from "../components/ui/Text";
-import SectionsCard, {
-    AddSectionCard,
-} from "../components/course/SectionsCard";
-import { formatDate, formatPrice } from "../utils/format";
-import { navigate, navigateBack } from "../utils/navigate";
+} from "./course.style";
+import { H, HeaderCard } from "../../components/ui/Text";
+import SectionsCard, { AddSectionCard } from "./components/SectionsCard";
+import { formatDate, formatPrice } from "../../utils/format";
+import { getIdsFromPath, navigate, navigateBack } from "../../utils/navigate";
 import { useEffect, useState } from "react";
 
-import Button from "../components/ui/Button";
-import { CourseDetailPageSkeleton } from "../components/loading/CourseItemSkeleton";
-import { InfomationCard } from "../components/course/course";
-import QuizCards from "../components/course/QuizCards";
-import { Section } from "../components/ui/Secttion";
-import { courseService } from "../services/course.service";
-import defaultImg from "../assets/defaultImg.png";
-import { useConfirm } from "../hooks/confirmHook";
-import { useCourse } from "./../hooks/courseHook";
-import { useQuiz } from "./../hooks/quizHook";
-import { useToast } from "./../hooks/toastHook";
+import Button from "../../components/ui/Button";
+import { CourseDetailPageSkeleton } from "./components/CourseLoading";
+import { InfomationCard } from "../../components/InfomationLabel";
+import QuizCards from "../quiz/components/QuizCards";
+import { Section } from "../../components/ui/Section";
+import { courseService } from "../../services/course.service";
+import defaultImg from "../../assets/defaultImg.png";
+import { useConfirm } from "../../hooks/confirmHook";
+import { useCourse } from "../../hooks/courseHook";
+import { useQuiz } from "../../hooks/quizHook";
+import { useToast } from "../../hooks/toastHook";
 
-const getCourseIdFromPath = () => {
-    const segments = window.location.pathname.split("/").filter(Boolean);
-    if (segments[0] !== "course-info") {
-        return "";
-    }
-    return segments.slice(1).join("/");
-};
+const id = getIdsFromPath("course");
 
 export default function CourseDetailPage() {
     const { toast } = useToast();
@@ -102,7 +94,7 @@ export default function CourseDetailPage() {
         }
     };
 
-    useEffect(() => setCourseId(getCourseIdFromPath()), [setCourseId]);
+    useEffect(() => setCourseId(id.course), [setCourseId]);
 
     useEffect(() => {
         if (!courseId) return;
@@ -117,7 +109,7 @@ export default function CourseDetailPage() {
 
     useEffect(() => {
         const handleRouteChange = () => {
-            setCourseId(getCourseIdFromPath());
+            setCourseId(id.course);
         };
 
         window.addEventListener("popstate", handleRouteChange);

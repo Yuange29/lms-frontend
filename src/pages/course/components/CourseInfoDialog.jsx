@@ -4,15 +4,15 @@ import {
     DialogActions,
     DialogBody,
     DialogHeader,
-    Overlay,
-} from "./courses-style";
+} from "../../../styles/Dialog";
 
-import Button from "../ui/Button";
-import { CourseDialogSkeleton } from "../loading/CourseItemSkeleton";
-import { GreyDialogContent } from "../InfomationLabel";
-import { Text } from "../ui/Text";
-import { useAuth } from "./../../hooks/authHook";
-import { useToast } from "./../../hooks/toastHook";
+import Button from "./../../../components/ui/Button";
+import { CourseDialogSkeleton } from "./CourseLoading";
+import { GreyDialogContent } from "./../../../components/InfomationLabel";
+import { Overlay } from "./../../../styles/Overlay";
+import { Text } from "../../../components/ui/Text";
+import { useAuth } from "./../../../hooks/authHook";
+import { useToast } from "./../../../hooks/toastHook";
 
 const countLessons = (sections) => {
     let count = 0;
@@ -33,9 +33,9 @@ function CourseInfoDialog({ course, quiz, courseId, loading, error, onClose }) {
     const quizTotal = quiz?.length | 0;
 
     const viewDetailPath = course?.id
-        ? `/course-info/${course.id}`
+        ? `/course/${course.id}`
         : courseId
-          ? `/course-info/${courseId}`
+          ? `/course/${courseId}`
           : null;
 
     return (

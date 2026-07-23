@@ -1,20 +1,29 @@
-import { CourseCardWrapper, QuizWrapper } from "./quiz-style";
+import { CourseCardWrapper, QuizWrapper } from "../quiz.style";
 import {
     Dialog,
     DialogActions,
     DialogBody,
     DialogHeader,
-    Overlay,
-} from "./courses-style";
-import { memo, useCallback, useMemo, useState } from "react";
+} from "../../../styles/Dialog";
+import { useCallback, useMemo, useState } from "react";
 
-import Button from "../ui/Button";
-import { GreyDialogContent } from "../InfomationLabel";
-import { Text } from "../ui/Text";
-import { navigate } from "../../utils/navigate";
+import Button from "../../../components/ui/Button";
+import { GreyDialogContent } from "../../../components/InfomationLabel";
+import { LoadingLine } from "./../../../components/loading/loading-style";
+import { Overlay } from "../../../styles/Overlay";
+import { Text } from "../../../components/ui/Text";
+import { memo } from "react";
+import { navigate } from "./../../../utils/navigate";
+import { useSubmisson } from "./../../../hooks/submissonHook";
+import { useToast } from "../../../hooks/toastHook";
 
 function QuizzesInfo({ quizzes, children }) {
+    const { toast } = useToast();
+    const { submission, getSubmission, loading } = useSubmisson();
+
     const [selectedQuizId, setSelectedQuizId] = useState(null);
+
+    const score = submission ? `${submission?.score} điểm` : "Chưa làm";
 
     const selectedQuiz = useMemo(() => {
         if (!selectedQuizId || !quizzes?.length) return null;
@@ -23,9 +32,24 @@ function QuizzesInfo({ quizzes, children }) {
 
     const isOpen = Boolean(selectedQuiz);
 
-    const handleClick = useCallback((quiz) => {
-        setSelectedQuizId((prevId) => (prevId === quiz.id ? null : quiz.id));
-    }, []);
+    const handleClick = useCallback(
+        async (quiz) => {
+            setSelectedQuizId((prevId) =>
+                prevId === quiz.id ? null : quiz.id,
+            );
+            await getSubmission(quiz?.id);
+        },
+        [getSubmission],
+    );
+
+    const handleCheck = useCallback(
+        async (quizId) => {
+            if (!quizId) return toast.error("Không tìm thấy khóa học");
+            if (!submission) return toast.error("Bạn chưa từng làm bài");
+            navigate(`/quiz/${quizId}/submission`);
+        },
+        [submission, toast],
+    );
 
     const handleClose = useCallback(() => {
         setSelectedQuizId(null);
@@ -38,6 +62,7 @@ function QuizzesInfo({ quizzes, children }) {
             `/course/${selectedQuiz.course_id}/quiz/${selectedQuiz.id}/show`,
         );
     }, [selectedQuiz]);
+
     return (
         <>
             <QuizWrapper>
@@ -51,7 +76,7 @@ function QuizzesInfo({ quizzes, children }) {
                         <Dialog>
                             <DialogHeader>
                                 <Button variant="ghost" onClick={handleClose}>
-                                    x
+                                    <i className="fa-solid fa-x"></i>
                                 </Button>
                             </DialogHeader>
                             <DialogBody>
@@ -70,19 +95,32 @@ function QuizzesInfo({ quizzes, children }) {
                                     label={"Thời gian"}
                                     content={`${selectedQuiz?.time_limit} phút`}
                                 />
+                                {loading ? (
+                                    <LoadingLine $width="100%" />
+                                ) : (
+                                    <GreyDialogContent
+                                        label={"Điểm số"}
+                                        content={score}
+                                    />
+                                )}
                             </DialogBody>
                             <DialogActions>
                                 <Button
                                     variant="secondary"
-                                    $width="200px"
-                                    onClick={handleClose}
+                                    onClick={handleCheck}
+                                    disabled={
+                                        !submission?.score || loading === true
+                                    }
                                 >
-                                    Chưa làm
+                                    {submission?.score ? "Xem lại" : "Chưa làm"}
                                 </Button>
                                 <Button
-                                    $width="200px"
-                                    onClick={() => handleDoQuiz()}
+                                    variant="secondary"
+                                    onClick={handleClose}
                                 >
+                                    Hủy
+                                </Button>
+                                <Button onClick={() => handleDoQuiz()}>
                                     Làm bài
                                 </Button>
                             </DialogActions>

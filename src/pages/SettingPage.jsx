@@ -1,7 +1,7 @@
 import { H, Text } from "../components/ui/Text";
 
 import Button from "../components/ui/Button";
-import { Section } from "../components/ui/Secttion";
+import { Section } from "../components/ui/Section";
 import styled from "styled-components";
 import { useAuth } from "../hooks/authHook";
 import { useTheme } from "../hooks/themehHook";

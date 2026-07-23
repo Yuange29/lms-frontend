@@ -1,11 +1,11 @@
-import CourseInfo from "../components/course/course";
-import { CoursesSkeleton } from "../components/loading/CourseItemSkeleton";
-import { CreateCourseForm } from "../components/course/createCourseFrom";
-import { H } from "../components/ui/Text";
-import { LoadingLine } from "../components/loading/loading-style";
-import { Section } from "../components/ui/Secttion";
-import { useAuth } from "./../hooks/authHook";
-import { useCourse } from "./../hooks/courseHook";
+import CoursesDisplay from "./components/CoursesDisplay";
+import { CoursesSkeleton } from "./components/CourseLoading";
+import { CreateCourseForm } from "./components/CreateCourseFrom";
+import { H } from "../../components/ui/Text";
+import { LoadingLine } from "../../components/loading/loading-style";
+import { Section } from "../../components/ui/Section";
+import { useAuth } from "../../hooks/authHook";
+import { useCourse } from "../../hooks/courseHook";
 import { useEffect } from "react";
 
 export default function CourseCreatePage() {
@@ -27,7 +27,7 @@ export default function CourseCreatePage() {
                 ) : (
                     <>
                         <H>Các khóa học đã tạo</H>
-                        <CourseInfo courses={courses} />
+                        <CoursesDisplay courses={courses} />
                     </>
                 )}
             </Section>

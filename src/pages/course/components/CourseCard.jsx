@@ -8,11 +8,11 @@ import {
     MenuButton,
     MenuWrapper,
     ThumbnailImage,
-} from "./courses-style";
+} from "../course.style";
 
-import { Text } from "../ui/Text";
-import defaultImg from "../../assets/defaultImg.png";
-import { formatPrice } from "../../utils/format";
+import { Text } from "../../../components/ui/Text";
+import defaultImg from "../../../assets/defaultImg.png";
+import { formatPrice } from "./../../../utils/format";
 import { useState } from "react";
 
 function CourseCard({ course, onClick }) {
