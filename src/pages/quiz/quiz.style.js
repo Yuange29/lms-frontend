@@ -1,6 +1,6 @@
 import { CourseWrapper, CoursesWrapper } from "../course/course.style";
 
-import { baseFlex } from "../../styles/CommonStyles";
+import { baseFlex } from "./../../styles/CommonStyles";
 import styled from "styled-components";
 
 export const QuizWrapper = styled(CoursesWrapper)`
@@ -255,5 +255,86 @@ export const StyledQuestionCard = styled.div`
                 box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
             }
         }
+    }
+`;
+
+// Quiz result Page
+
+const scoreToneStyles = {
+    weak: {
+        background: "#fee2e2",
+        border: "#fca5a5",
+        accent: "#ef4444",
+        text: "#991b1b",
+    },
+    average: {
+        background: "#fef3c7",
+        border: "#fcd34d",
+        accent: "#f59e0b",
+        text: "#92400e",
+    },
+    good: {
+        background: "#dcfce7",
+        border: "#86efac",
+        accent: "#22c55e",
+        text: "#166534",
+    },
+};
+
+export const ScoreWrapper = styled.div`
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 1fr 0.5fr;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid
+        ${({ $tone }) =>
+            scoreToneStyles[$tone]?.border || scoreToneStyles.good.border};
+    background-color: ${({ $tone }) =>
+        scoreToneStyles[$tone]?.background || scoreToneStyles.good.background};
+    color: ${({ $tone }) =>
+        scoreToneStyles[$tone]?.text || scoreToneStyles.good.text};
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    transition: all 0.25s ease;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
+export const ScoreInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+`;
+
+export const ScoreLabel = styled.span`
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0.9;
+`;
+
+export const ScoreBox = styled.div`
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    background-color: ${({ $tone }) =>
+        scoreToneStyles[$tone]?.accent || scoreToneStyles.good.accent};
+    color: #fff;
+
+    & > span {
+        font-weight: 1000;
+        font-size: 1.8em;
+        margin-right: 0.25em;
+    }
+
+    @media (max-width: 768px) {
+        width: calc(100% - 120px);
+        margin: 0 auto;
     }
 `;

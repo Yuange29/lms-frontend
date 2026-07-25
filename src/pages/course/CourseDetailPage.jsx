@@ -23,8 +23,6 @@ import { useCourse } from "../../hooks/courseHook";
 import { useQuiz } from "../../hooks/quizHook";
 import { useToast } from "../../hooks/toastHook";
 
-const id = getIdsFromPath("course");
-
 export default function CourseDetailPage() {
     const { toast } = useToast();
     const {
@@ -42,6 +40,8 @@ export default function CourseDetailPage() {
     const [isRemove, setIsRemove] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
     const [isHideAddSection, setIsHideAddSection] = useState(true);
+
+    const id = getIdsFromPath("course");
 
     const handlePublish = async (courseId) => {
         const isOk = await confirm({

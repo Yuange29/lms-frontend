@@ -27,7 +27,7 @@ const baseCss = css`
 
 // use for letter
 export const LoadingLine = styled.div`
-    height: 1.5em;
+    height: 1em;
     border-radius: 999px;
     ${baseCss}
 `;

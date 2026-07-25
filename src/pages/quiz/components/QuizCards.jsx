@@ -9,7 +9,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import Button from "../../../components/ui/Button";
 import { GreyDialogContent } from "../../../components/InfomationLabel";
-import { LoadingLine } from "./../../../components/loading/loading-style";
+import { LoadingRectangle } from "./../../../components/loading/loading-style";
 import { Overlay } from "../../../styles/Overlay";
 import { Text } from "../../../components/ui/Text";
 import { memo } from "react";
@@ -20,6 +20,9 @@ import { useToast } from "../../../hooks/toastHook";
 function QuizzesInfo({ quizzes, children }) {
     const { toast } = useToast();
     const { submission, getSubmission, loading } = useSubmisson();
+
+    const courseId = quizzes ? quizzes[0]?.course_id : null;
+    console.log(courseId);
 
     const [selectedQuizId, setSelectedQuizId] = useState(null);
 
@@ -43,10 +46,10 @@ function QuizzesInfo({ quizzes, children }) {
     );
 
     const handleCheck = useCallback(
-        async (quizId) => {
+        async (courseId, quizId) => {
             if (!quizId) return toast.error("Không tìm thấy khóa học");
             if (!submission) return toast.error("Bạn chưa từng làm bài");
-            navigate(`/quiz/${quizId}/submission`);
+            navigate(`/course/${courseId}/quiz/${quizId}/submission`);
         },
         [submission, toast],
     );
@@ -96,7 +99,10 @@ function QuizzesInfo({ quizzes, children }) {
                                     content={`${selectedQuiz?.time_limit} phút`}
                                 />
                                 {loading ? (
-                                    <LoadingLine $width="100%" />
+                                    <LoadingRectangle
+                                        $height="2.5em"
+                                        $width="100%"
+                                    />
                                 ) : (
                                     <GreyDialogContent
                                         label={"Điểm số"}
@@ -107,7 +113,9 @@ function QuizzesInfo({ quizzes, children }) {
                             <DialogActions>
                                 <Button
                                     variant="secondary"
-                                    onClick={handleCheck}
+                                    onClick={() =>
+                                        handleCheck(courseId, selectedQuiz.id)
+                                    }
                                     disabled={
                                         !submission?.score || loading === true
                                     }

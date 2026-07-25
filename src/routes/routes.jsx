@@ -64,7 +64,7 @@ export function getRoute(pathname) {
 
     // If path is /quiz/:id/submission -> render CreateQuizPage
     if (
-        pathname.startsWith(`${paths.quiz}/`) &&
+        pathname.startsWith(`${paths.courseDetail}/`) &&
         pathname.endsWith("/submission")
     ) {
         return {

@@ -49,4 +49,12 @@ const QuestionCard = memo(function QuestionCard({
     );
 });
 
-export { QuestionCard };
+const SubmissionCard = memo(function SubmissionCard({
+    question,
+    sub_ans,
+    correct_ans,
+}) {
+    return <></>;
+});
+
+export { QuestionCard, SubmissionCard };
