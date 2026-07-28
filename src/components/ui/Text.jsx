@@ -1,7 +1,5 @@
 import styled, { css } from "styled-components";
 
-import { baseFlex } from "./../../styles/CommonStyles";
-
 const textColors = {
     default: "var(--color-text)",
     soft: "var(--color-text-soft)",
@@ -110,17 +108,22 @@ function H({
     );
 }
 
-function HeaderCard({ title }) {
+function HeaderCard({ title, id }) {
     return (
-        <HeaderCardStyle>
+        <HeaderCardStyle id={id}>
             <H>{title}</H>
         </HeaderCardStyle>
     );
 }
 
 const HeaderCardStyle = styled.div`
-    ${baseFlex}
+    padding: 1em 1.5em;
+    border: 0;
+    border-radius: 8px;
     background-color: var(--color-focus-ring);
+    & > h2 {
+        color: #fff;
+    }
 `;
 
 export { H, Text, HeaderCard };

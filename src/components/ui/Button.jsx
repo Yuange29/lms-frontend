@@ -70,6 +70,22 @@ const variants = {
         border: "transparent",
         shadow: "transparent",
     },
+    warn: {
+        background: "#FFD000",
+        color: "#fff",
+        hover: "#FFE366",
+        active: "#CCA700",
+        border: "transparent",
+        shadow: "transparent",
+    },
+    safe: {
+        background: "#2a9717",
+        color: "#fff",
+        hover: "#226416",
+        active: "#153d0d",
+        border: "transparent",
+        shadow: "transparent",
+    },
 };
 
 const sizes = {

@@ -5,7 +5,7 @@ import {
     QuizHeader,
     QuizWrapper,
 } from "./quiz.style";
-import { navigate, navigateBack } from "../../utils/navigate";
+import { getIdsFromPath, navigate, navigateBack } from "../../utils/navigate";
 import { useEffect, useState } from "react";
 
 import Button from "../../components/ui/Button";
@@ -23,16 +23,8 @@ import { useConfirm } from "../../hooks/confirmHook";
 import { useCourse } from "../../hooks/courseHook";
 import { useToast } from "../../hooks/toastHook";
 
-function getCourseIdFromPath() {
-    const segments = window.location.pathname.split("/").filter(Boolean);
-
-    if (segments[0] !== "course-info") return "";
-    const middle = segments.slice(1, -1);
-    return middle.join("/");
-}
-
 export default function CreateQuizPage() {
-    const courseId = getCourseIdFromPath();
+    const id = getIdsFromPath("course");
 
     const { course, getCourseDetail } = useCourse();
     const { toast } = useToast();
@@ -63,9 +55,9 @@ export default function CreateQuizPage() {
         let mounted = true;
 
         async function load() {
-            if (!courseId) return;
+            if (!id.course) return;
             try {
-                await getCourseDetail(courseId);
+                await getCourseDetail(id.course);
                 if (!mounted) return;
             } catch (err) {
                 navigateBack();
@@ -80,7 +72,7 @@ export default function CreateQuizPage() {
         return () => {
             mounted = false;
         };
-    }, [courseId, getCourseDetail, toast]);
+    }, [getCourseDetail, toast]);
 
     useEffect(() => {
         setQuestions((prev) => {
@@ -184,7 +176,7 @@ export default function CreateQuizPage() {
                 }
             }
 
-            navigate(`/course-info/${course.id}`);
+            navigate(`/course/${course.id}`);
             toast.success("Tạo quiz thành công!");
         } catch (err) {
             console.log(err);

@@ -46,9 +46,9 @@ export default function CourseDetailPage() {
     const handlePublish = async (courseId) => {
         const isOk = await confirm({
             title: "Đăng khóa học",
-            content: `Bạn chắc chắn muốn ${course?.publish ? "hủy đăng" : "đăng"} khóa học này chứ`,
-            confirmText: `${!course?.publish ? "Đăng" : "Gỡ"}`,
-            cancelText: "Chờ đã",
+            content: `Bạn chắc chắn muốn ${course?.published ? "hủy đăng" : "đăng"} khóa học này chứ`,
+            confirmText: `${!course?.published ? "Đăng" : "Gỡ"}`,
+            cancelText: `Hủy`,
         });
 
         if (!isOk) return;
@@ -59,7 +59,7 @@ export default function CourseDetailPage() {
             await courseService.publishCourse(courseId);
             toast.success("Cập nhật trạng thái thành công");
             await getCourseDetail(courseId);
-            console.log("Publish Course Success: ", course);
+            // console.log("Publish Course Success: ", course);
         } catch (error) {
             toast.error("Cập nhật trạng thái thất bại");
             console.log("Publish Course Error: ", error);
@@ -208,7 +208,7 @@ export default function CourseDetailPage() {
                                 onClick={() =>
                                     navigate(
                                         courseId
-                                            ? `/course-info/${courseId}/quiz`
+                                            ? `/course/${courseId}/quiz`
                                             : undefined,
                                     )
                                 }
@@ -228,11 +228,11 @@ export default function CourseDetailPage() {
                         >
                             <Button
                                 $width="200px"
-                                variant="secondary"
+                                variant={course?.published ? "safe" : "warn"}
                                 disabled={isPublish}
                                 onClick={() => handlePublish(course.id)}
                             >
-                                {course?.publish ? "Đã đăng" : "Chưa đăng"}
+                                {course?.published ? "Đã đăng" : "Chưa đăng"}
                             </Button>
                             <Button
                                 $width="200px"

@@ -22,7 +22,7 @@ function QuizzesInfo({ quizzes, children }) {
     const { submission, getSubmission, loading } = useSubmisson();
 
     const courseId = quizzes ? quizzes[0]?.course_id : null;
-    console.log(courseId);
+    // console.log(courseId);
 
     const [selectedQuizId, setSelectedQuizId] = useState(null);
 

@@ -289,34 +289,38 @@ export const ScoreWrapper = styled.div`
     grid-template-columns: 1fr 0.5fr;
     align-items: center;
     gap: 1rem;
-    border: 1px solid
-        ${({ $tone }) =>
-            scoreToneStyles[$tone]?.border || scoreToneStyles.good.border};
-    background-color: ${({ $tone }) =>
-        scoreToneStyles[$tone]?.background || scoreToneStyles.good.background};
     color: ${({ $tone }) =>
         scoreToneStyles[$tone]?.text || scoreToneStyles.good.text};
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
     transition: all 0.25s ease;
+
+    .score {
+        width: 100%;
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+        background-color: ${({ $tone }) =>
+            scoreToneStyles[$tone]?.background ||
+            scoreToneStyles.good.background};
+        border: 1px solid
+            ${({ $tone }) =>
+                scoreToneStyles[$tone]?.border || scoreToneStyles.good.border};
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
     }
 `;
 
-export const ScoreInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-`;
-
 export const ScoreLabel = styled.span`
+    display: block;
     font-size: 0.9rem;
     font-weight: 600;
     opacity: 0.9;
+    margin-bottom: 1em;
 `;
 
 export const ScoreBox = styled.div`
+    width: 100%;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -332,9 +336,62 @@ export const ScoreBox = styled.div`
         font-size: 1.8em;
         margin-right: 0.25em;
     }
+`;
 
-    @media (max-width: 768px) {
-        width: calc(100% - 120px);
-        margin: 0 auto;
+export const SubmissionCardWrapper = styled.div`
+    padding: 1em 1.5em;
+    border-radius: 0.5em;
+    border: 0;
+    background-color: var(--color-section);
+    margin-top: 1em;
+    border-color: ${({ $isTrue }) =>
+        $isTrue ? "rgb(134, 239, 172)" : "rgb(155, 117, 100)"};
+
+    .question-box {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 60px;
+        padding: 0.5em 1em;
+        border-radius: 8px;
+        background-color: var(--color-surface);
+    }
+    .ans {
+        display: flex;
+        align-items: center;
+
+        & > p {
+            margin-left: 0.5em;
+            border-radius: 8px;
+            width: 100%;
+            padding: 0.5em 1em;
+        }
+
+        & > div {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border-radius: 50%;
+        }
+
+        & > .rightIcon {
+            background-color: rgb(37, 199, 64);
+        }
+        & > .falseIcon {
+            background-color: rgb(239, 68, 68);
+        }
+    }
+
+    .right {
+        border: 1px solid rgb(134, 239, 172);
+        background-color: rgb(220, 252, 231);
+    }
+
+    .false {
+        background-color: rgb(254, 226, 226);
+        border: 1px solid rgb(252, 165, 165);
     }
 `;
