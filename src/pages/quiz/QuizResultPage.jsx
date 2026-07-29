@@ -67,7 +67,7 @@ function QuizResultPage() {
             <HeaderCard title={"Thông tin bài tập"} />
             <Section>
                 <ScoreWrapper $tone={scoreMeta.tone}>
-                    <div class="info">
+                    <div className="info">
                         <InfomationCard label="Bài tập" content={quiz?.title} />
                         <InfomationCard
                             label="Thời gian"

@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { ROLENAME, ROLE as roleContants } from "../constants/role.js";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AuthContext } from "./AuthContext.js";
 import { authService } from "../services/auth.service";
@@ -11,14 +12,19 @@ export const AuthProvider = ({ children }) => {
     const [role, setRole] = useState(null);
 
     const ROLE = {
-        "fd4546e4-bf5c-4d4d-8a88-f62a8b43e832": "STUDENT",
-        "151a0ceb-af16-4e7f-8d7c-f40f415dfb26": "INSTRUCTOR",
+        "fd4546e4-bf5c-4d4d-8a88-f62a8b43e832": roleContants.admin,
+        "151a0ceb-af16-4e7f-8d7c-f40f415dfb26": roleContants.instructor,
     };
 
+    const canManage = useCallback(() => {
+        return role === roleContants.instructor || role === roleContants.admin;
+    }, [role]);
+
     const getRole = (roleId) => {
-        if (ROLE[roleId] === "ADMIN") return "Quản lí";
-        if (ROLE[roleId] === "INSTRUCTOR") return "Giáo Viên";
-        if (ROLE[roleId] === "STUDENT") return "Học sinh";
+        if (ROLE[roleId] === roleContants.admin) return ROLENAME.admin;
+        if (ROLE[roleId] === roleContants.instructor)
+            return ROLENAME.instructor;
+        if (ROLE[roleId] === roleContants.student) return ROLENAME.student;
         return "Khách";
     };
 
@@ -46,8 +52,8 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const value = useMemo(
-        () => ({ user, setUser, loading, role, setRole }),
-        [user, setUser, loading, role, setRole],
+        () => ({ user, canManage, setUser, loading, role, setRole }),
+        [user, canManage, setUser, loading, role, setRole],
     );
 
     return (

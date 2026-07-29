@@ -8,91 +8,37 @@ import {
 import { H, HeaderCard } from "../../components/ui/Text";
 import SectionsCard, { AddSectionCard } from "./components/SectionsCard";
 import { formatDate, formatPrice } from "../../utils/format";
-import { getIdsFromPath, navigate, navigateBack } from "../../utils/navigate";
+import { getIdsFromPath, navigate } from "../../utils/navigate";
 import { useEffect, useState } from "react";
 
 import Button from "../../components/ui/Button";
 import { CourseDetailPageSkeleton } from "./components/CourseLoading";
+import EnrollersBox from "./components/EnrollersBox";
 import { InfomationCard } from "../../components/InfomationLabel";
 import QuizCards from "../quiz/components/QuizCards";
 import { Section } from "../../components/ui/Section";
-import { courseService } from "../../services/course.service";
 import defaultImg from "../../assets/defaultImg.png";
-import { useConfirm } from "../../hooks/confirmHook";
+import { useAuth } from "../../hooks/authHook";
 import { useCourse } from "../../hooks/courseHook";
 import { useQuiz } from "../../hooks/quizHook";
-import { useToast } from "../../hooks/toastHook";
 
 export default function CourseDetailPage() {
-    const { toast } = useToast();
+    const { canManage } = useAuth();
     const {
         course,
-        courses,
         loadingCourse,
         courseId,
-        setCourses,
         setCourseId,
         getCourseDetail,
+        loadingPublish,
+        publishCourse,
+        removeCourse,
+        loadingDelete,
     } = useCourse();
-    const { confirm } = useConfirm();
     const { quizzes, getQuizzes, loading: loadingQuizzes } = useQuiz();
-
-    const [isRemove, setIsRemove] = useState(false);
-    const [isPublish, setIsPublish] = useState(false);
     const [isHideAddSection, setIsHideAddSection] = useState(true);
 
     const id = getIdsFromPath("course");
-
-    const handlePublish = async (courseId) => {
-        const isOk = await confirm({
-            title: "Đăng khóa học",
-            content: `Bạn chắc chắn muốn ${course?.published ? "hủy đăng" : "đăng"} khóa học này chứ`,
-            confirmText: `${!course?.published ? "Đăng" : "Gỡ"}`,
-            cancelText: `Hủy`,
-        });
-
-        if (!isOk) return;
-
-        setIsPublish(true);
-
-        try {
-            await courseService.publishCourse(courseId);
-            toast.success("Cập nhật trạng thái thành công");
-            await getCourseDetail(courseId);
-            // console.log("Publish Course Success: ", course);
-        } catch (error) {
-            toast.error("Cập nhật trạng thái thất bại");
-            console.log("Publish Course Error: ", error);
-        } finally {
-            setIsPublish(false);
-        }
-    };
-
-    const handleRemove = async (courseId) => {
-        const isOk = await confirm({
-            title: "Xóa khóa học",
-            content: "Bạn chắc chắn muốn xóa khóa học này chứ",
-            confirmText: "Chắc chắn",
-            cancelText: "Hủy",
-        });
-
-        if (!isOk) return;
-
-        setIsRemove(true);
-        try {
-            await courseService.deleteCourse(courseId);
-
-            toast.success("Xóa thành công");
-            navigateBack();
-
-            setCourses(courses.filter((i) => i.id != courseId));
-        } catch (error) {
-            toast.error("Xóa thất bại");
-            console.log("Delete Course Error: ", error);
-        } finally {
-            setIsRemove(false);
-        }
-    };
 
     useEffect(() => setCourseId(id.course), [setCourseId]);
 
@@ -121,7 +67,7 @@ export default function CourseDetailPage() {
         };
     }, [setCourseId]);
 
-    const publish = course?.publish ? "Đã đăng" : "Chưa đăng";
+    const publish = course?.published ? "Đã đăng" : "Chưa đăng";
 
     return (
         <>
@@ -219,31 +165,65 @@ export default function CourseDetailPage() {
                         <QuizCards quizzes={quizzes} />
                     </Section>
 
+                    {canManage && (
+                        <Section>
+                            <HeaderCard title={"Các học viên"} />
+                            <EnrollersBox />
+                        </Section>
+                    )}
+
                     <Section>
                         <div
                             style={{
                                 display: "flex",
-                                justifyContent: "space-between",
+                                justifyContent: "center",
                             }}
                         >
                             <Button
                                 $width="200px"
-                                variant={course?.published ? "safe" : "warn"}
-                                disabled={isPublish}
-                                onClick={() => handlePublish(course.id)}
+                                disabled={loadingPublish}
+                                onClick={async () =>
+                                    await publishCourse(course.id)
+                                }
                             >
-                                {course?.published ? "Đã đăng" : "Chưa đăng"}
-                            </Button>
-                            <Button
-                                $width="200px"
-                                variant="danger"
-                                disabled={isRemove}
-                                onClick={() => handleRemove(course.id)}
-                            >
-                                Xóa khóa học
+                                Tham gia khóa học
                             </Button>
                         </div>
                     </Section>
+
+                    {canManage && (
+                        <Section>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Button
+                                    $width="200px"
+                                    variant={
+                                        course?.published ? "safe" : "warn"
+                                    }
+                                    disabled={loadingPublish}
+                                    onClick={async () =>
+                                        await publishCourse(course.id)
+                                    }
+                                >
+                                    {course?.published
+                                        ? "Đã đăng"
+                                        : "Chưa đăng"}
+                                </Button>
+                                <Button
+                                    $width="200px"
+                                    variant="danger"
+                                    disabled={loadingDelete}
+                                    onClick={() => removeCourse(course.id)}
+                                >
+                                    Xóa khóa học
+                                </Button>
+                            </div>
+                        </Section>
+                    )}
                 </CourseDetailContainer>
             )}
         </>

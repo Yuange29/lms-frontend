@@ -3,6 +3,7 @@ import { AppThemeProvider } from "./contexts/ThemeProvider.jsx";
 import { AuthProvider } from "./contexts/AuthProvider.jsx";
 import { ConfirmProvider } from "./contexts/ConfirmProvider.jsx";
 import { CourseProvider } from "./contexts/CourseProvider";
+import { EnrollProvider } from "./contexts/EnrollProvider.jsx";
 import { LessonProvider } from "./contexts/LessonProvider.jsx";
 import { QuizProvider } from "./contexts/QuizProvider.jsx";
 import { StrictMode } from "react";
@@ -17,13 +18,15 @@ createRoot(document.getElementById("root")).render(
                 <ConfirmProvider>
                     <AuthProvider>
                         <CourseProvider>
-                            <QuizProvider>
-                                <LessonProvider>
-                                    <SubmissionProvider>
-                                        <App />
-                                    </SubmissionProvider>
-                                </LessonProvider>
-                            </QuizProvider>
+                            <EnrollProvider>
+                                <QuizProvider>
+                                    <LessonProvider>
+                                        <SubmissionProvider>
+                                            <App />
+                                        </SubmissionProvider>
+                                    </LessonProvider>
+                                </QuizProvider>
+                            </EnrollProvider>
                         </CourseProvider>
                     </AuthProvider>
                 </ConfirmProvider>

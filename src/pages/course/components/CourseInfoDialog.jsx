@@ -26,7 +26,7 @@ function CourseInfoDialog({ course, quiz, courseId, loading, error, onClose }) {
     const { toast } = useToast();
     const { role } = useAuth();
 
-    const publish = course?.publish ? "Đã đăng" : "Chưa đăng";
+    const publish = course?.published ? "Đã đăng" : "Chưa đăng";
     const sectionTotal = course?.sections?.length | 0;
     const lessonTotal = countLessons(course?.sections) | 0;
 

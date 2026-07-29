@@ -67,6 +67,9 @@ const SubmissionCard = memo(function SubmissionCard({
 
             {isTrue ? (
                 <>
+                    <Text size="sm" color="muted">
+                        Đáp án án đúng
+                    </Text>
                     <div className="ans">
                         <div className="rightIcon">
                             <i className="fa-solid fa-check"></i>
